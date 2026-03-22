@@ -539,13 +539,13 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 /* "Above waterline" eyebrow */
 .ice-sky-tag {
   display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(71,158,245,.12);
-  border: 1px solid rgba(71,158,245,.22);
+  background: rgba(71,158,245,.14);
+  border: 1px solid rgba(71,158,245,.28);
   border-radius: 100px;
-  padding: 4px 11px;
-  font-size: 10px; font-weight: 700;
+  padding: 5px 13px;
+  font-size: 11px; font-weight: 700;
   letter-spacing: .08em; text-transform: uppercase;
-  color: rgba(71,200,245,.7);
+  color: rgba(71,220,255,.95);
   margin-bottom: 18px;
 }
 .ice-sky-tag-dot {
@@ -568,12 +568,12 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   transition: all .3s ease;
 }
 .ice-net-label {
-  font-size: 13px; font-weight: 500;
-  color: rgba(255,255,255,.45);
+  font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,.82);
   display: block; margin-bottom: 4px;
 }
 .ice-net-monthly {
-  font-size: 12px; color: rgba(255,255,255,.28);
+  font-size: 13px; color: rgba(255,255,255,.65);
   display: block;
 }
 
@@ -602,7 +602,7 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 }
 .ice-prop-labels {
   display: flex; justify-content: space-between;
-  font-size: 11px; margin-top: 5px; margin-bottom: 20px;
+  font-size: 13px; font-weight: 600; margin-top: 6px; margin-bottom: 20px;
 }
 .ice-prop-lbl-net { color: #4ade80; font-weight: 600; }
 .ice-prop-lbl-tax { color: rgba(234,100,80,.8); font-weight: 600; text-align: right; }
@@ -634,13 +634,13 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   padding-bottom: 24px;
 }
 .ice-pill {
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.09);
-  border-radius: 100px; padding: 5px 11px;
-  font-size: 11px; color: rgba(255,255,255,.4);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 100px; padding: 5px 12px;
+  font-size: 12px; color: rgba(255,255,255,.72);
   display: flex; align-items: center; gap: 5px;
 }
-.ice-pill strong { color: rgba(255,255,255,.82); font-weight: 600; }
+.ice-pill strong { color: #fff; font-weight: 700; }
 
 /* Period toggle */
 .period-tog {
@@ -716,8 +716,8 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   position: relative; z-index: 2;
 }
 .waterline-label {
-  font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
-  color: rgba(71,158,245,.55); white-space: nowrap; flex-shrink: 0;
+  font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+  color: rgba(71,220,255,.92); white-space: nowrap; flex-shrink: 0;
 }
 .waterline-rule {
   flex: 1; height: 1px;
@@ -769,12 +769,12 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 /* Text info */
 .itr-info { flex: 1; min-width: 0; }
 .itr-name {
-  font-size: 12px; font-weight: 600;
-  color: rgba(255,255,255,.6); display: block;
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,.92); display: block;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .itr-sub {
-  font-size: 10px; color: rgba(255,255,255,.28);
+  font-size: 11px; color: rgba(255,255,255,.6);
   display: block; margin-top: 2px;
 }
 
@@ -792,11 +792,11 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 .state   .itr-seg-fill { background: linear-gradient(90deg,#1a73e8,#34a853); }
 .fica    .itr-seg-fill { background: linear-gradient(90deg,#fbbc04,#ea4335); }
 .total   .itr-seg-fill { background: rgba(255,255,255,.3); }
-.itr-seg-pct { font-size: 10px; color: rgba(255,255,255,.3); text-align: right; display: block; }
+.itr-seg-pct { font-size: 11px; color: rgba(255,255,255,.65); text-align: right; display: block; font-weight: 500; }
 
 /* Amount */
 .itr-amount {
-  font-family: var(--font-d); font-size: 14px; font-weight: 700;
+  font-family: var(--font-d); font-size: 15px; font-weight: 700;
   color: #fff; white-space: nowrap; flex-shrink: 0;
 }
 
@@ -806,8 +806,8 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   border-color: rgba(255,255,255,.11);
   margin-top: 6px;
 }
-.total .itr-amount { font-size: 16px; }
-.total .itr-name { color: rgba(255,255,255,.85); font-size: 13px; }
+.total .itr-amount { font-size: 18px; }
+.total .itr-name { color: #fff; font-size: 14px; }
 
 /* Depth / context sentence */
 .ice-context {
@@ -815,13 +815,13 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   position: relative; z-index: 1;
 }
 .ice-context-text {
-  font-size: 12px; color: rgba(255,255,255,.3);
-  line-height: 1.55; text-align: center;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.05);
-  border-radius: var(--r2); padding: 10px 14px;
+  font-size: 13px; color: rgba(255,255,255,.72);
+  line-height: 1.6; text-align: center;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: var(--r2); padding: 12px 16px;
 }
-.ice-context-text strong { color: rgba(255,255,255,.55); }
+.ice-context-text strong { color: #fff; }
 
 /* Bottom stat pills */
 .ice-bottom-pills {
@@ -831,13 +831,13 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   border-top: 1px solid rgba(255,255,255,.04);
 }
 .ice-pill-b {
-  background: rgba(71,158,245,.08);
-  border: 1px solid rgba(71,158,245,.14);
-  border-radius: 100px; padding: 5px 11px;
-  font-size: 11px; color: rgba(255,255,255,.38);
+  background: rgba(71,158,245,.12);
+  border: 1px solid rgba(71,158,245,.22);
+  border-radius: 100px; padding: 5px 12px;
+  font-size: 12px; color: rgba(255,255,255,.72);
   display: flex; align-items: center; gap: 5px;
 }
-.ice-pill-b strong { color: rgba(71,200,245,.7); font-weight: 600; }
+.ice-pill-b strong { color: rgba(100,220,255,.95); font-weight: 700; }
 
 /* responsive */
 @media (max-width: 640px) {
@@ -1930,6 +1930,9 @@ select.sol-input {
               <stop offset="80%" stop-color="rgba(71,158,245,0.3)"/>
               <stop offset="100%" stop-color="rgba(71,158,245,0.0)"/>
             </linearGradient>
+            <clipPath id="waveClip">
+              <rect width="900" height="110"/>
+            </clipPath>
           </defs>
 
           <!-- Sky bg fill -->
@@ -1970,34 +1973,53 @@ select.sol-input {
             fill="rgba(120,180,230,0.20)"
           />
 
-          <!-- ─── WAVE LAYERS ─── -->
-          <!-- Wave trough 1 -->
-          <path
-            d="M0,57 Q56,50 112,57 Q168,64 224,57 Q280,50 336,57 Q392,64 448,57 Q504,50 560,57 Q616,64 672,57 Q728,50 784,57 Q842,64 900,57 L900,110 L0,110 Z"
-            fill="#0c3352" opacity="0.85"
-          />
-          <!-- Wave trough 2 (lighter) -->
-          <path
-            d="M0,60 Q75,53 150,60 Q225,67 300,60 Q375,53 450,60 Q525,67 600,60 Q675,53 750,60 Q825,67 900,60 L900,67 L0,67 Z"
-            fill="rgba(8,39,67,0.6)"
-          />
-          <!-- Foam line on wave crest -->
-          <path
-            d="M0,57 Q56,50 112,57 Q168,64 224,57 Q280,50 336,57 Q392,64 448,57 Q504,50 560,57 Q616,64 672,57 Q728,50 784,57 Q842,64 900,57"
-            fill="none"
-            stroke="url(#waveGrad)"
-            stroke-width="1.8"
-          />
-          <!-- Sparkle foam dots -->
-          <circle cx="112" cy="57" r="2.5" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="336" cy="57" r="2"   fill="rgba(255,255,255,0.4)"/>
-          <circle cx="560" cy="57" r="2.5" fill="rgba(255,255,255,0.5)"/>
-          <circle cx="784" cy="57" r="2"   fill="rgba(255,255,255,0.4)"/>
+          <!-- ─── WAVE LAYERS (animated) ─── -->
+          <g clip-path="url(#waveClip)">
 
-          <!-- Sea level text label -->
-          <text x="20" y="55" font-family="DM Sans,sans-serif" font-size="9" font-weight="600"
-            fill="rgba(71,158,245,0.55)" letter-spacing="1.5">SEA LEVEL</text>
-          <line x1="76" y1="51" x2="130" y2="51" stroke="rgba(71,158,245,0.3)" stroke-width="1"/>
+            <!-- Primary rolling wave (fills sea) -->
+            <g>
+              <animateTransform attributeName="transform" type="translate"
+                from="0,0" to="-900,0" dur="7s" repeatCount="indefinite"/>
+              <path
+                d="M0,57 Q56,50 112,57 Q168,64 224,57 Q280,50 336,57 Q392,64 448,57 Q504,50 560,57 Q616,64 672,57 Q728,50 784,57 Q842,64 900,57 Q956,50 1012,57 Q1068,64 1124,57 Q1180,50 1236,57 Q1292,64 1348,57 Q1404,50 1460,57 Q1516,64 1572,57 Q1628,50 1684,57 Q1740,64 1800,57 L1800,110 L0,110 Z"
+                fill="#0c3352" opacity="0.92"
+              />
+            </g>
+
+            <!-- Secondary wave (different phase + speed for depth) -->
+            <g opacity="0.55">
+              <animateTransform attributeName="transform" type="translate"
+                from="-150,0" to="-1050,0" dur="11s" repeatCount="indefinite"/>
+              <path
+                d="M0,60 Q75,53 150,60 Q225,67 300,60 Q375,53 450,60 Q525,67 600,60 Q675,53 750,60 Q825,67 900,60 Q975,53 1050,60 Q1125,67 1200,60 Q1275,53 1350,60 Q1425,67 1500,60 Q1575,53 1650,60 Q1725,67 1800,60 L1800,67 L0,67 Z"
+                fill="rgba(8,39,67,0.7)"
+              />
+            </g>
+
+            <!-- Animated foam crest line + sparkle dots -->
+            <g>
+              <animateTransform attributeName="transform" type="translate"
+                from="0,0" to="-900,0" dur="7s" repeatCount="indefinite"/>
+              <path
+                d="M0,57 Q56,50 112,57 Q168,64 224,57 Q280,50 336,57 Q392,64 448,57 Q504,50 560,57 Q616,64 672,57 Q728,50 784,57 Q842,64 900,57 Q956,50 1012,57 Q1068,64 1124,57 Q1180,50 1236,57 Q1292,64 1348,57 Q1404,50 1460,57 Q1516,64 1572,57 Q1628,50 1684,57 Q1740,64 1800,57"
+                fill="none" stroke="rgba(100,210,255,0.65)" stroke-width="2.2"
+              />
+              <circle cx="112"  cy="57" r="2.5" fill="rgba(255,255,255,0.65)"/>
+              <circle cx="336"  cy="57" r="2"   fill="rgba(255,255,255,0.5)"/>
+              <circle cx="560"  cy="57" r="2.5" fill="rgba(255,255,255,0.65)"/>
+              <circle cx="784"  cy="57" r="2"   fill="rgba(255,255,255,0.5)"/>
+              <circle cx="1012" cy="57" r="2.5" fill="rgba(255,255,255,0.65)"/>
+              <circle cx="1236" cy="57" r="2"   fill="rgba(255,255,255,0.5)"/>
+              <circle cx="1460" cy="57" r="2.5" fill="rgba(255,255,255,0.65)"/>
+              <circle cx="1684" cy="57" r="2"   fill="rgba(255,255,255,0.5)"/>
+            </g>
+
+          </g><!-- /wave clip -->
+
+          <!-- Sea level label (static, always visible above clip) -->
+          <text x="20" y="54" font-family="DM Sans,sans-serif" font-size="9" font-weight="700"
+            fill="rgba(71,210,255,0.85)" letter-spacing="1.5">SEA LEVEL</text>
+          <line x1="80" y1="50" x2="145" y2="50" stroke="rgba(71,210,255,0.45)" stroke-width="1"/>
         </svg>
       </div>
 
