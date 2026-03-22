@@ -664,18 +664,56 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 }
 .period-tog:hover { background: rgba(71,158,245,.15); color: rgba(255,255,255,.65); }
 
-/* ── ICEBERG SVG DIVIDER ── */
+/* ── ICEBERG IMAGE SCENE ── */
 .ice-berg-svg-wrap {
   position: relative;
-  height: 260px;
+  height: 320px;
   overflow: hidden;
   z-index: 2;
+  background: linear-gradient(180deg, #14305e 0%, #0c3352 50%, #041120 100%);
 }
-.ice-berg-svg-wrap svg {
+/* Water animation fills the lower half */
+.ice-water-anim {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 55%;
   width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
+  object-fit: cover;
+  object-position: top center;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.92;
+}
+/* Iceberg PNG centered, straddling the waterline */
+.ice-berg-img {
+  position: absolute;
+  left: 50%; bottom: 42%;
+  transform: translateX(-50%);
+  height: 88%;
+  width: auto;
+  max-width: 70%;
+  z-index: 2;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(71,210,255,0.35));
+  pointer-events: none;
+}
+/* Sea level label overlay */
+.ice-sealevel-label {
+  position: absolute;
+  left: 14px;
+  bottom: calc(42% + 4px);
+  font-family: var(--font-b);
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(71,210,255,0.9);
+  z-index: 3;
+  display: flex; align-items: center; gap: 6px;
+  pointer-events: none;
+}
+.ice-sealevel-label::after {
+  content: '';
+  display: block; width: 40px; height: 1px;
+  background: rgba(71,210,255,0.45);
 }
 
 /* ── SEA ZONE ── */
@@ -1917,112 +1955,18 @@ select.sol-input {
         </div>
       </div>
 
-      <!-- 🌊 ── ICEBERG SVG — FULL VISUALIZATION ── 🌊 -->
+      <!-- 🌊 ── ICEBERG IMAGE SCENE ── 🌊 -->
       <div class="ice-berg-svg-wrap">
-        <svg viewBox="0 0 900 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="iceGradAbove" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#14305e"/>
-              <stop offset="100%" stop-color="#16366a"/>
-            </linearGradient>
-            <linearGradient id="iceGradBelow" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#0c3352"/>
-              <stop offset="100%" stop-color="#041120"/>
-            </linearGradient>
-            <linearGradient id="iceBodyGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(255,255,255,0.96)"/>
-              <stop offset="100%" stop-color="rgba(180,225,255,0.70)"/>
-            </linearGradient>
-            <linearGradient id="iceTipGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(255,255,255,0.98)"/>
-              <stop offset="100%" stop-color="rgba(220,242,255,0.90)"/>
-            </linearGradient>
-            <filter id="iceGlow">
-              <feGaussianBlur stdDeviation="4" result="blur"/>
-              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-            </filter>
-            <clipPath id="waveClip">
-              <rect width="900" height="260"/>
-            </clipPath>
-          </defs>
-
-          <!-- Sky bg -->
-          <rect width="900" height="120" fill="url(#iceGradAbove)"/>
-          <!-- Sea bg -->
-          <rect y="120" width="900" height="140" fill="url(#iceGradBelow)"/>
-
-          <!-- ─── ICEBERG ABOVE WATER (tip) ─── -->
-          <polygon id="ice-tip-poly"
-            points="390,18  510,18  580,120  320,120"
-            fill="url(#iceTipGrad)"
-            filter="url(#iceGlow)"
-          />
-          <!-- Facet lines on tip -->
-          <line x1="430" y1="22" x2="390" y2="118" stroke="rgba(180,220,255,0.28)" stroke-width="1"/>
-          <line x1="450" y1="18" x2="320" y2="120" stroke="rgba(180,220,255,0.20)" stroke-width="1"/>
-          <line x1="470" y1="22" x2="580" y2="120" stroke="rgba(180,220,255,0.20)" stroke-width="1"/>
-          <!-- Shadow right of tip -->
-          <polygon points="490,18 510,18 580,120 550,120" fill="rgba(140,195,240,0.22)"/>
-
-          <!-- ─── ICEBERG BELOW WATER (body) ─── -->
-          <polygon id="ice-body-poly"
-            points="320,120  580,120  670,255  230,255"
-            fill="url(#iceBodyGrad)"
-            opacity="0.84"
-          />
-          <!-- Facet on body -->
-          <line x1="450" y1="120" x2="495" y2="255" stroke="rgba(160,210,250,0.25)" stroke-width="1.5"/>
-          <line x1="320" y1="120" x2="450" y2="255" stroke="rgba(160,210,250,0.18)" stroke-width="1"/>
-          <!-- Shadow right of body -->
-          <polygon points="550,120 580,120 670,255 635,255" fill="rgba(120,180,230,0.18)"/>
-
-          <!-- ─── WAVE LAYERS (animated) ─── -->
-          <g clip-path="url(#waveClip)">
-
-            <!-- Primary rolling wave -->
-            <g>
-              <animateTransform attributeName="transform" type="translate"
-                from="0,0" to="-900,0" dur="7s" repeatCount="indefinite"/>
-              <path
-                d="M0,117 Q56,109 112,117 Q168,125 224,117 Q280,109 336,117 Q392,125 448,117 Q504,109 560,117 Q616,125 672,117 Q728,109 784,117 Q842,125 900,117 Q956,109 1012,117 Q1068,125 1124,117 Q1180,109 1236,117 Q1292,125 1348,117 Q1404,109 1460,117 Q1516,125 1572,117 Q1628,109 1684,117 Q1740,125 1800,117 L1800,260 L0,260 Z"
-                fill="#0c3352" opacity="0.94"
-              />
-            </g>
-
-            <!-- Secondary wave (slower, offset) -->
-            <g opacity="0.5">
-              <animateTransform attributeName="transform" type="translate"
-                from="-150,0" to="-1050,0" dur="11s" repeatCount="indefinite"/>
-              <path
-                d="M0,120 Q75,112 150,120 Q225,128 300,120 Q375,112 450,120 Q525,128 600,120 Q675,112 750,120 Q825,128 900,120 Q975,112 1050,120 Q1125,128 1200,120 Q1275,112 1350,120 Q1425,128 1500,120 Q1575,112 1650,120 Q1725,128 1800,120 L1800,128 L0,128 Z"
-                fill="rgba(8,39,67,0.75)"
-              />
-            </g>
-
-            <!-- Foam crest + sparkle dots -->
-            <g>
-              <animateTransform attributeName="transform" type="translate"
-                from="0,0" to="-900,0" dur="7s" repeatCount="indefinite"/>
-              <path
-                d="M0,117 Q56,109 112,117 Q168,125 224,117 Q280,109 336,117 Q392,125 448,117 Q504,109 560,117 Q616,125 672,117 Q728,109 784,117 Q842,125 900,117 Q956,109 1012,117 Q1068,125 1124,117 Q1180,109 1236,117 Q1292,125 1348,117 Q1404,109 1460,117 Q1516,125 1572,117 Q1628,109 1684,117 Q1740,125 1800,117"
-                fill="none" stroke="rgba(100,210,255,0.70)" stroke-width="2"
-              />
-              <circle cx="112"  cy="117" r="2.5" fill="rgba(255,255,255,0.65)"/>
-              <circle cx="336"  cy="117" r="2"   fill="rgba(255,255,255,0.5)"/>
-              <circle cx="560"  cy="117" r="2.5" fill="rgba(255,255,255,0.65)"/>
-              <circle cx="784"  cy="117" r="2"   fill="rgba(255,255,255,0.5)"/>
-              <circle cx="1012" cy="117" r="2.5" fill="rgba(255,255,255,0.65)"/>
-              <circle cx="1236" cy="117" r="2"   fill="rgba(255,255,255,0.5)"/>
-              <circle cx="1460" cy="117" r="2.5" fill="rgba(255,255,255,0.65)"/>
-              <circle cx="1684" cy="117" r="2"   fill="rgba(255,255,255,0.5)"/>
-            </g>
-
-          </g><!-- /wave clip -->
-
-          <!-- Sea level label -->
-          <text x="20" y="114" font-family="DM Sans,sans-serif" font-size="9" font-weight="700"
-            fill="rgba(71,210,255,0.90)" letter-spacing="1.5">SEA LEVEL</text>
-          <line x1="82" y1="110" x2="150" y2="110" stroke="rgba(71,210,255,0.50)" stroke-width="1"/>
+        <!-- Water animation (bottom half) -->
+        <img class="ice-water-anim" src="water.webp" alt="" aria-hidden="true">
+        <!-- Iceberg PNG -->
+        <img class="ice-berg-img" id="ice-berg-img" src="iceberg.png" alt="Tax Iceberg Visualization">
+        <!-- Sea level label -->
+        <div class="ice-sealevel-label">SEA LEVEL</div>
+        <!-- hidden SVG just to keep polygon JS references alive -->
+        <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+          <polygon id="ice-tip-poly"/>
+          <polygon id="ice-body-poly"/>
         </svg>
       </div>
 
