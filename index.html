@@ -50,7 +50,7 @@ body { font-family: var(--font-b); background: var(--bg); color: var(--body); fo
 
 /* utilities */
 .g-text { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; }
-.eyebrow { font-family: var(--font-d); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 8px; }
+.eyebrow { font-family: var(--font-d); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 8px; }
 
 /* header */
 header {
@@ -96,7 +96,7 @@ header {
 .form-group:last-child { margin-bottom: 0; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
-label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 5px; }
+label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 5px; }
 .input-wrap { position: relative; }
 .ia { position: absolute; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--faint); pointer-events: none; }
 .ia.l { left: 11px; } .ia.r { right: 11px; }
@@ -122,7 +122,7 @@ textarea { height: auto; padding: 9px 11px; resize: vertical; }
 /* slider */
 .slider-section { background: var(--bg3); border-radius: var(--r2); padding: 14px; margin-top: 2px; }
 .slider-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.slider-lbl { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.slider-lbl { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
 .slider-val { font-family: var(--font-d); font-size: 13px; font-weight: 700; color: var(--blue); background: var(--blue-t); padding: 3px 9px; border-radius: 100px; min-width: 80px; text-align: center; }
 input[type=range] { width: 100%; height: 4px; border-radius: 100px; background: var(--border); outline: none; appearance: none; cursor: pointer; border: none; padding: 0; box-shadow: none; }
 input[type=range]::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--blue); border: 2px solid #fff; box-shadow: 0 1px 6px rgba(26,115,232,.4); cursor: pointer; }
@@ -142,7 +142,7 @@ input[type=range]:focus { box-shadow: none; border-color: transparent; }
 }
 .summary-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 80% 20%, rgba(71,158,245,.14), transparent); pointer-events: none; }
 .sc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-.sc-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.3); display: block; margin-bottom: 5px; }
+.sc-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.3); display: block; margin-bottom: 5px; }
 .sc-total { font-family: var(--font-d); font-size: 36px; font-weight: 700; line-height: 1; background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; }
 .sc-rates-col { text-align: right; }
 .sc-rate { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 3px; }
@@ -162,16 +162,16 @@ input[type=range]:focus { box-shadow: none; border-color: transparent; }
 .sc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 18px; }
 @media (max-width: 480px) { .sc-grid { grid-template-columns: repeat(2,1fr); } }
 .sc-item { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.07); border-radius: var(--r2); padding: 12px; }
-.sc-lbl { font-size: 10px; color: rgba(255,255,255,.3); margin-bottom: 5px; letter-spacing: .03em; text-transform: uppercase; }
+.sc-lbl { font-size: 11px; color: rgba(255,255,255,.3); margin-bottom: 5px; letter-spacing: .03em; text-transform: uppercase; }
 .sc-val { font-family: var(--font-d); font-size: 16px; font-weight: 700; color: #fff; }
 .sc-sub { font-size: 10px; color: rgba(255,255,255,.25); margin-top: 2px; }
 
 /* bar chart */
 .bar-chart { background: rgba(255,255,255,.04); border-radius: var(--r2); padding: 14px; }
-.bc-title { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: rgba(255,255,255,.25); margin-bottom: 12px; }
+.bc-title { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: rgba(255,255,255,.25); margin-bottom: 12px; }
 .bc-row { margin-bottom: 9px; }
 .bc-row:last-child { margin-bottom: 0; }
-.bc-meta { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,.45); margin-bottom: 4px; }
+.bc-meta { display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,.45); margin-bottom: 4px; }
 .bc-v { color: rgba(255,255,255,.75); font-weight: 500; }
 .bc-track { height: 5px; background: rgba(255,255,255,.07); border-radius: 100px; overflow: hidden; }
 .bc-fill { height: 100%; border-radius: 100px; transition: width .7s cubic-bezier(.4,0,.2,1); }
@@ -185,9 +185,9 @@ input[type=range]:focus { box-shadow: none; border-color: transparent; }
 .bk-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r2); padding: 14px; transition: box-shadow var(--t), border-color var(--t); }
 .bk-card:hover { box-shadow: var(--sh2); border-color: #c5d8f8; }
 .bk-icon { font-size: 18px; margin-bottom: 7px; display: block; }
-.bk-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
-.bk-val { font-family: var(--font-d); font-size: 18px; font-weight: 700; color: var(--text); }
-.bk-sub { font-size: 11px; color: var(--faint); margin-top: 2px; }
+.bk-lbl { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+.bk-val { font-family: var(--font-d); font-size: 19px; font-weight: 700; color: var(--text); }
+.bk-sub { font-size: 12px; color: var(--faint); margin-top: 2px; }
 
 /* compare */
 .compare-tabs { display: flex; gap: 8px; margin-bottom: 14px; }
@@ -198,8 +198,8 @@ input[type=range]:focus { box-shadow: none; border-color: transparent; }
 .tip-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border2); }
 .tip-item:last-child { border-bottom: none; padding-bottom: 0; }
 .tip-ico { width: 34px; height: 34px; flex-shrink: 0; background: var(--bg3); border-radius: var(--r); display: flex; align-items: center; justify-content: center; font-size: 16px; }
-.tip-t { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
-.tip-b { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.tip-t { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.tip-b { font-size: 13px; color: var(--muted); line-height: 1.5; }
 .tip-tag { font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; margin-top: 5px; display: inline-block; padding: 2px 7px; border-radius: 100px; }
 .tt-high { background: var(--red-bg); color: var(--red); }
 .tt-medium { background: var(--blue-t); color: var(--blue); }
@@ -226,9 +226,9 @@ input[type=range]:focus { box-shadow: none; border-color: transparent; }
 .fp:hover { box-shadow: var(--sh2); }
 .fp-hd { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
 .fp-av { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
-.fp-nm { font-size: 13px; font-weight: 600; color: var(--text); }
-.fp-tm { font-size: 11px; color: var(--faint); margin-left: auto; }
-.fp-q { font-size: 13px; color: var(--body); line-height: 1.5; }
+.fp-nm { font-size: 14px; font-weight: 600; color: var(--text); }
+.fp-tm { font-size: 12px; color: var(--faint); margin-left: auto; }
+.fp-q { font-size: 14px; color: var(--body); line-height: 1.5; }
 .fp-lk { font-size: 11px; color: var(--faint); margin-top: 7px; cursor: pointer; transition: color var(--t); user-select: none; }
 .fp-lk:hover { color: var(--blue); }
 
@@ -264,6 +264,11 @@ input[type=range]:focus { box-shadow: none; border-color: transparent; }
 @keyframes pulse-ring { 0%{box-shadow:0 0 0 0 rgba(26,115,232,.4)} 70%{box-shadow:0 0 0 10px rgba(26,115,232,0)} 100%{box-shadow:0 0 0 0 rgba(26,115,232,0)} }
 @keyframes float-up { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
 @keyframes dl-flash { 0%{background:#e6f4ea} 100%{background:var(--bg2)} }
+@keyframes iceberg-bob { 0%,100%{transform:translateY(0) rotate(0deg)} 30%{transform:translateY(-6px) rotate(.3deg)} 60%{transform:translateY(-4px) rotate(-.2deg)} }
+@keyframes wave-slide { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+@media (prefers-reduced-motion: reduce) {
+  .iceberg-card { animation: none; }
+}
 .fade-up { animation: fadeUp .4s ease both; }
 .d1{animation-delay:.06s} .d2{animation-delay:.12s} .d3{animation-delay:.18s}
 .pop-anim { animation: pop .25s ease; }
@@ -390,6 +395,67 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 .f-links a:hover { color: #8AB4F8; }
 .f-copy { font-size: 11px; color: rgba(255,255,255,.18); margin-top: 18px; border-top: 1px solid rgba(255,255,255,.07); padding-top: 14px; }
 
+/* ── LOGIN GATE ── */
+.community-gate {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 32px 20px; text-align: center; gap: 12px;
+}
+.community-gate-icon { font-size: 32px; margin-bottom: 4px; }
+.community-gate-title { font-family: var(--font-d); font-size: 16px; font-weight: 700; color: var(--text); }
+.community-gate-sub { font-size: 14px; color: var(--muted); max-width: 320px; line-height: 1.5; }
+.community-gate-btn { margin-top: 4px; padding: 10px 24px; background: var(--grad); color: #fff; border: none; border-radius: var(--r); font-family: var(--font-b); font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity var(--t), box-shadow var(--t); }
+.community-gate-btn:hover { opacity: .9; box-shadow: var(--glow); }
+
+/* ── FAQ SECTION ── */
+.faq-section { margin-top: 0; }
+.faq-item { border-bottom: 1px solid var(--border2); }
+.faq-item:last-child { border-bottom: none; }
+.faq-q {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0; cursor: pointer; gap: 12px;
+  font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.4;
+  user-select: none; transition: color var(--t);
+}
+.faq-q:hover { color: var(--blue); }
+.faq-chevron {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--bg3); display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--muted); transition: transform var(--t), background var(--t);
+}
+.faq-item.open .faq-chevron { transform: rotate(180deg); background: var(--blue-t); color: var(--blue); }
+.faq-a {
+  font-size: 14px; color: var(--body); line-height: 1.7;
+  max-height: 0; overflow: hidden;
+  transition: max-height .35s ease, padding .35s ease;
+  padding-bottom: 0;
+}
+.faq-item.open .faq-a { max-height: 400px; padding-bottom: 16px; }
+
+/* ── AUTH MODAL ── */
+.auth-tab-row { display: flex; background: var(--bg3); border-radius: var(--r); padding: 3px; margin-bottom: 20px; }
+.auth-tab { flex: 1; padding: 8px; background: none; border: none; font-family: var(--font-b); font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; border-radius: 6px; transition: all var(--t); }
+.auth-tab.active { background: var(--bg2); color: var(--blue); box-shadow: var(--sh); }
+.auth-user-bar { display: flex; align-items: center; gap: 10px; }
+.auth-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--grad-d); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.auth-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.auth-logout { font-size: 12px; color: var(--muted); background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: var(--r); transition: all var(--t); margin-left: auto; }
+.auth-logout:hover { background: var(--red-bg); color: var(--red); }
+
+/* ── PRINT STYLES ── */
+@media print {
+  header, .hero, footer, .expert-banner, .action-row, .dc-btn,
+  #page-solar, #page-home, #page-mort, .modal-overlay,
+  .forum-input-row, .faq-section, .community-gate,
+  nav, .nav-pg-btn, #modal-help { display: none !important; }
+  body { background: #fff !important; color: #000 !important; font-size: 13px !important; }
+  .app-shell { max-width: 100%; padding: 0 !important; }
+  .main-grid { grid-template-columns: 1fr !important; }
+  .panel, .iceberg-card, .summary-card, .bk-card { box-shadow: none !important; border: 1px solid #ccc !important; }
+  .iceberg-card { animation: none !important; }
+  .results-stack { gap: 12px !important; }
+  @page { margin: 1.5cm; }
+}
+
 /* ══════════════════════════════════════════════════════════
    ICEBERG VISUALIZATION — Tax Iceberg
    ══════════════════════════════════════════════════════════ */
@@ -399,13 +465,15 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   overflow: hidden;
   position: relative;
   box-shadow: 0 8px 40px rgba(0,0,0,.35);
+  animation: iceberg-bob 7s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* ── SKY ZONE ── */
 .ice-sky {
   background: linear-gradient(180deg,
     #050e1f 0%, #091629 20%, #0d2040 50%, #112b55 75%, #14305e 100%);
-  padding: 32px 28px 0;
+  padding: 44px 28px 0;
   position: relative;
   overflow: hidden;
 }
@@ -1480,6 +1548,14 @@ select.sol-input {
       <span id="header-crumb-name" style="font-weight:500;color:var(--text)"></span>
     </span>
     <button id="header-back-btn" onclick="go('home')" style="display:none;background:none;border:1px solid var(--border);border-radius:var(--r);font-family:var(--font-b);font-size:12px;font-weight:500;color:var(--muted);padding:5px 12px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">← All Tools</button>
+    <div id="auth-header-area">
+      <button id="header-login-btn" onclick="openModal('auth')" style="background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-family:var(--font-b);font-size:13px;font-weight:500;padding:6px 14px;cursor:pointer;transition:background var(--t);" onmouseover="this.style.background='var(--blue-h)'" onmouseout="this.style.background='var(--blue)'">Sign In</button>
+      <div id="header-user" style="display:none" class="auth-user-bar">
+        <div class="auth-avatar" id="header-avatar">U</div>
+        <span class="auth-name" id="header-username"></span>
+        <button class="auth-logout" onclick="logOut()">Sign Out</button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -1623,7 +1699,7 @@ select.sol-input {
   </div>
 <div class="hero">
   <div class="hero-tag"><span class="hero-tag-dot"></span> Free · No Sign-up · Instant Results</div>
-  <h1>Quick Tax <span class="g-text">Estimator</span></h1>
+  <h1>US Income Tax <span class="g-text">Calculator</span></h1>
   <p class="hero-sub">Estimate your 2024 federal and state taxes instantly. Plan smarter, save more.</p>
   <div class="hero-stats">
     <div class="hs"><span class="hs-n">50</span><span class="hs-l">States Covered</span></div>
@@ -2024,43 +2100,7 @@ select.sol-input {
       </div>
     </div>
 
-    <!-- Breakdown Detail -->
-    <div class="panel fade-up d1">
-      <div class="panel-head">
-        <span class="panel-title">🔍 Detailed Breakdown</span>
-        <span id="deduction-badge" style="font-size:11px;color:var(--muted)"></span>
-      </div>
-      <div class="panel-body">
-        <div class="bk-grid">
-          <div class="bk-card">
-            <span class="bk-icon">🏛️</span>
-            <div class="bk-lbl">Federal Tax</div>
-            <div class="bk-val" id="bd-fed">—</div>
-            <div class="bk-sub" id="bd-fed-sub">—</div>
-          </div>
-          <div class="bk-card">
-            <span class="bk-icon">🏠</span>
-            <div class="bk-lbl">State Tax</div>
-            <div class="bk-val" id="bd-sta">—</div>
-            <div class="bk-sub" id="bd-sta-sub">—</div>
-          </div>
-          <div class="bk-card">
-            <span class="bk-icon">🔒</span>
-            <div class="bk-lbl">Social Security</div>
-            <div class="bk-val" id="bd-ss">—</div>
-            <div class="bk-sub">6.2% up to $168,600</div>
-          </div>
-          <div class="bk-card">
-            <span class="bk-icon">🏥</span>
-            <div class="bk-lbl">Medicare</div>
-            <div class="bk-val" id="bd-med">—</div>
-            <div class="bk-sub">1.45% (+ 0.9% above threshold)</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 🤝 EXPERT HELP BANNER — between breakdown & tips -->
+    <!-- 🤝 EXPERT HELP BANNER — between comparison & tips -->
     <div class="expert-banner fade-up d2" onclick="openModal('help')">
       <div class="eb-glow"></div>
       <span class="eb-eyebrow">Free consultation · Certified CPAs</span>
@@ -2104,17 +2144,17 @@ select.sol-input {
           </svg>
         </div>
         <div class="dc-text">
-          <div class="dc-title">Download Tax Planning Report</div>
-          <div class="dc-sub">Full breakdown with tips to reduce your tax bill next year.</div>
+          <div class="dc-title">Print Tax Planning Report</div>
+          <div class="dc-sub">Print a full breakdown with tax-saving tips for your records.</div>
           <div class="dc-tags">
-            <span class="dc-tag">PDF / TXT</span>
+            <span class="dc-tag">Print / PDF</span>
             <span class="dc-tag">Instant</span>
             <span class="dc-tag">Free</span>
           </div>
         </div>
-        <button class="dc-btn" onclick="downloadPDFStyled(this)">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12v2h12v-2M8 2v8M5 7l3 3 3-3"/></svg>
-          Download
+        <button class="dc-btn" onclick="printReport(this)">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V2h10v5M1 7h14v7H1zM4 13h8"/><rect x="4" y="9" width="2" height="2"/></svg>
+          Print Report
         </button>
       </div>
     </div>
@@ -2123,15 +2163,33 @@ select.sol-input {
     <div class="panel fade-up d3">
       <div class="panel-head">
         <span class="panel-title">💬 Ask the Community</span>
-        <span style="font-size:11px;color:var(--faint)">Questions & discussions</span>
+        <span style="font-size:12px;color:var(--faint)">Questions &amp; discussions</span>
       </div>
-      <div class="panel-body">
-        <div class="forum-input-row">
-          <input type="text" id="forum-input" placeholder="Ask a tax question…" maxlength="200" onkeydown="if(event.key==='Enter')postQuestion()">
-          <button class="btn btn-primary" onclick="postQuestion()">Post</button>
+      <div class="panel-body" id="community-panel-body">
+        <!-- Login gate — shown when logged out -->
+        <div class="community-gate" id="community-gate">
+          <div class="community-gate-icon">🔐</div>
+          <div class="community-gate-title">Sign in to join the conversation</div>
+          <div class="community-gate-sub">Create a free account to ask questions, share tips, and discuss tax strategies with the community.</div>
+          <button class="community-gate-btn" onclick="openModal('auth')">Sign In / Create Account</button>
         </div>
-        <div class="forum-list" id="forum-list"></div>
+        <!-- Forum — shown when logged in -->
+        <div id="community-forum" style="display:none">
+          <div class="forum-input-row">
+            <input type="text" id="forum-input" placeholder="Ask a tax question…" maxlength="200" onkeydown="if(event.key==='Enter')postQuestion()">
+            <button class="btn btn-primary" onclick="postQuestion()">Post</button>
+          </div>
+          <div class="forum-list" id="forum-list"></div>
+        </div>
       </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="panel fade-up d3">
+      <div class="panel-head">
+        <span class="panel-title">❓ Frequently Asked Questions</span>
+      </div>
+      <div class="panel-body faq-section" id="faq-section"></div>
     </div>
 
   </div>
@@ -2756,6 +2814,50 @@ select.sol-input {
         <div class="modal-success-icon">✅</div>
         <p style="font-weight:600;color:var(--text);margin-bottom:6px">You're all set!</p>
         <p style="font-size:13px;color:var(--muted)">We'll reach out within 24 hours to confirm your appointment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="modal-auth">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title">👤 Sign In to ToolKit Pro</span>
+      <button class="modal-x" onclick="closeModal('auth')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="auth-tab-row">
+        <button class="auth-tab active" id="auth-tab-in" onclick="switchAuthTab('in')">Sign In</button>
+        <button class="auth-tab" id="auth-tab-up" onclick="switchAuthTab('up')">Create Account</button>
+      </div>
+      <div id="auth-form-in">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="auth-email-in" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-pass-in" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;height:42px;font-size:14px" onclick="doSignIn()">Sign In →</button>
+        <p id="auth-err-in" style="font-size:12px;color:var(--red);margin-top:8px;display:none"></p>
+      </div>
+      <div id="auth-form-up" style="display:none">
+        <div class="form-group">
+          <label>Display Name</label>
+          <input type="text" id="auth-name-up" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="auth-email-up" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-pass-up" placeholder="At least 6 characters">
+        </div>
+        <button class="btn btn-grad" style="width:100%;justify-content:center;margin-top:8px;height:42px;font-size:14px" onclick="doSignUp()">Create Account →</button>
+        <p id="auth-err-up" style="font-size:12px;color:var(--red);margin-top:8px;display:none"></p>
       </div>
     </div>
   </div>
@@ -3654,13 +3756,14 @@ function renderForum() {
 }
 
 function postQuestion() {
+  if (!currentUser) { openModal('auth'); return; }
   const inp = document.getElementById('forum-input');
   const q = inp.value.trim();
   if (!q) return;
   const colors = ['#1A73E8','#E67E22','#27AE60','#9B59B6','#E74C3C'];
   const newPost = {
     id: Date.now(),
-    user: 'You',
+    user: currentUser.name,
     q,
     time: 'just now',
     likes: 0,
@@ -3708,6 +3811,164 @@ function submitHelp() {
 }
 
 // ============================================================
+// AUTH (client-side, localStorage-backed — prototype only)
+// NOTE: This is a demo authentication system for prototyping.
+// Passwords are stored as base64 in localStorage and are NOT
+// cryptographically secure. For production, use a proper
+// backend authentication service (e.g. Supabase Auth).
+// ============================================================
+const AUTH_KEY = 'qtp-auth';
+let currentUser = JSON.parse(localStorage.getItem(AUTH_KEY) || 'null');
+
+function updateAuthUI() {
+  const loginBtn  = document.getElementById('header-login-btn');
+  const userBar   = document.getElementById('header-user');
+  const gate      = document.getElementById('community-gate');
+  const forum     = document.getElementById('community-forum');
+  const avatar    = document.getElementById('header-avatar');
+  const uname     = document.getElementById('header-username');
+  if (currentUser) {
+    if (loginBtn)  loginBtn.style.display  = 'none';
+    if (userBar)   userBar.style.display   = 'flex';
+    if (avatar)    avatar.textContent      = currentUser.name.slice(0,1).toUpperCase();
+    if (uname)     uname.textContent       = currentUser.name;
+    if (gate)      gate.style.display      = 'none';
+    if (forum)     { forum.style.display = 'block'; renderForum(); }
+  } else {
+    if (loginBtn)  loginBtn.style.display  = 'block';
+    if (userBar)   userBar.style.display   = 'none';
+    if (gate)      gate.style.display      = 'flex';
+    if (forum)     forum.style.display     = 'none';
+  }
+}
+
+function switchAuthTab(tab) {
+  document.getElementById('auth-tab-in').classList.toggle('active', tab === 'in');
+  document.getElementById('auth-tab-up').classList.toggle('active', tab === 'up');
+  document.getElementById('auth-form-in').style.display = tab === 'in' ? 'block' : 'none';
+  document.getElementById('auth-form-up').style.display = tab === 'up' ? 'block' : 'none';
+}
+
+function doSignIn() {
+  const email = document.getElementById('auth-email-in').value.trim();
+  const pass  = document.getElementById('auth-pass-in').value;
+  const err   = document.getElementById('auth-err-in');
+  if (!email || !pass) { showAuthErr(err, 'Please fill in all fields.'); return; }
+  const users = JSON.parse(localStorage.getItem('qtp-users') || '{}');
+  if (!users[email] || users[email].pass !== btoa(pass)) {
+    showAuthErr(err, 'Invalid email or password.'); return;
+  }
+  currentUser = { email, name: users[email].name };
+  localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+  closeModal('auth');
+  updateAuthUI();
+}
+
+function doSignUp() {
+  const name  = document.getElementById('auth-name-up').value.trim();
+  const email = document.getElementById('auth-email-up').value.trim();
+  const pass  = document.getElementById('auth-pass-up').value;
+  const err   = document.getElementById('auth-err-up');
+  if (!name || !email || !pass) { showAuthErr(err, 'Please fill in all fields.'); return; }
+  if (pass.length < 6) { showAuthErr(err, 'Password must be at least 6 characters.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showAuthErr(err, 'Please enter a valid email address.'); return; }
+  const users = JSON.parse(localStorage.getItem('qtp-users') || '{}');
+  if (users[email]) { showAuthErr(err, 'An account with this email already exists.'); return; }
+  users[email] = { name, pass: btoa(pass) };
+  localStorage.setItem('qtp-users', JSON.stringify(users));
+  currentUser = { email, name };
+  localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+  closeModal('auth');
+  updateAuthUI();
+}
+
+function showAuthErr(el, msg) {
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 3500);
+}
+
+function logOut() {
+  currentUser = null;
+  localStorage.removeItem(AUTH_KEY);
+  updateAuthUI();
+}
+
+// ============================================================
+// PRINT REPORT
+// ============================================================
+function printReport(btn) {
+  const r = state.lastResult;
+  if (!r) { alert('Please calculate your taxes first.'); return; }
+  const card = document.getElementById('download-card-el');
+  if (card) { card.classList.add('dl-success'); setTimeout(() => card.classList.remove('dl-success'), 800); }
+  const orig = btn.innerHTML;
+  btn.textContent = '⏳ Preparing…';
+  btn.disabled = true;
+  setTimeout(() => {
+    window.print();
+    btn.innerHTML = orig;
+    btn.disabled = false;
+  }, 400);
+}
+
+// ============================================================
+// FAQ
+// ============================================================
+const FAQ_DATA = [
+  {
+    q: 'How much tax will I pay on my salary in the US?',
+    a: 'The amount of tax you pay depends on your total annual income, filing status, and the state you live in. The US uses a progressive tax system, meaning different portions of your income are taxed at different rates. In addition to federal income tax, you may also pay state income tax and payroll taxes (Social Security and Medicare). This tool combines all these factors to give you an instant estimate of your total tax liability and expected refund or amount owed.'
+  },
+  {
+    q: 'How do I calculate my federal income tax quickly?',
+    a: 'Federal income tax is calculated using tax brackets set by the IRS. Each portion of your income falls into a specific bracket and is taxed at a corresponding rate — the first portion at a lower rate, and higher income portions at higher rates. Manually calculating this can be confusing, especially when deductions are involved. This estimator automatically applies the correct brackets and deductions to give you an accurate result instantly.'
+  },
+  {
+    q: 'How much state tax do I pay based on where I live?',
+    a: 'State income tax varies significantly across the US. Some states like Texas and Florida charge no state income tax, while others like California and New York have multiple brackets with higher rates. Your state tax depends on your taxable income and your state\'s specific rules. This tool uses your selected state to apply the correct tax structure, helping you understand how location impacts your total tax burden.'
+  },
+  {
+    q: 'How can I reduce my taxable income legally in the US?',
+    a: 'There are several legal ways to reduce your taxable income. Contributing to pre-tax accounts such as a 401(k), IRA, or Health Savings Account (HSA) reduces your taxable income before taxes are calculated. You can also benefit from the standard deduction or itemized deductions like mortgage interest and charitable donations. Tax credits like the Child Tax Credit directly reduce your tax owed. Use the what-if slider in this tool to test different contribution scenarios.'
+  },
+  {
+    q: 'What is the difference between taxable income and gross income?',
+    a: 'Gross income is the total amount you earn before any deductions or taxes — including salary, bonuses, and additional income. Taxable income is what remains after subtracting deductions and adjustments such as retirement contributions or the standard deduction. Taxes are calculated only on your taxable (reduced) amount. Lowering your taxable income is one of the most effective ways to reduce your overall taxes.'
+  },
+  {
+    q: 'Why is my tax refund or amount owed changing?',
+    a: 'Your refund or amount owed is the difference between the total tax you owe and the amount already withheld from your paycheck throughout the year. If your income increases, deductions change, or withholding is adjusted, your final tax outcome changes too. Even small changes in salary or contributions can affect your refund. This estimator updates results instantly so you can see how different decisions impact your tax position.'
+  },
+  {
+    q: 'How accurate is an online tax calculator?',
+    a: 'Online tax calculators provide a close estimate based on standard federal and state tax rules. They are very useful for planning and understanding your tax situation. However, actual results may vary depending on additional factors such as specific tax credits, exemptions, investments, or unique financial situations. For final filing, always use certified tax software or consult a qualified CPA or tax professional.'
+  },
+  {
+    q: 'Do I need to pay state tax if I work remotely in another state?',
+    a: 'State tax rules for remote work can be complex. In many cases you pay taxes in the state where you live (your state of residence). However, some states may also require taxes based on where your employer is located. Certain states have reciprocity agreements to avoid double taxation, but this is not universal. If you work remotely across state lines, consult a tax expert for your specific filing requirements.'
+  }
+];
+
+function renderFAQ() {
+  const container = document.getElementById('faq-section');
+  if (!container) return;
+  container.innerHTML = FAQ_DATA.map((item, i) => `
+    <div class="faq-item" id="faq-${i}">
+      <div class="faq-q" onclick="toggleFAQ(${i})">
+        <span>${item.q}</span>
+        <span class="faq-chevron">▼</span>
+      </div>
+      <div class="faq-a">${item.a}</div>
+    </div>
+  `).join('');
+}
+
+function toggleFAQ(i) {
+  const item = document.getElementById('faq-' + i);
+  if (item) item.classList.toggle('open');
+}
+
+// ============================================================
 // INIT
 // ============================================================
 // ── PAGE ROUTING ──────────────────────────────────
@@ -3740,6 +4001,8 @@ document.addEventListener('DOMContentLoaded', () => {
   populateStates();
   renderSavedList();
   renderForum();
+  renderFAQ();
+  updateAuthUI();
   // Pre-fill with a sensible example
   document.getElementById('inp-salary').value = 85000;
   document.getElementById('inp-state').value = 'CA';
