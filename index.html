@@ -468,6 +468,7 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   animation: iceberg-bob 7s ease-in-out infinite;
   will-change: transform;
 }
+#ice-tip-poly, #ice-body-poly { transition: points 0.7s cubic-bezier(.4,0,.2,1); }
 
 /* ── SKY ZONE ── */
 .ice-sky {
@@ -1938,7 +1939,7 @@ select.sol-input {
 
           <!-- ─── ICEBERG ABOVE WATER (tip) ─── -->
           <!-- Main tip shape -->
-          <polygon
+          <polygon id="ice-tip-poly"
             points="340,4  560,4  608,60  292,60"
             fill="url(#iceTipGrad)"
             filter="url(#iceGlow)"
@@ -1955,7 +1956,7 @@ select.sol-input {
           />
 
           <!-- ─── ICEBERG BELOW WATER (body) ─── -->
-          <polygon
+          <polygon id="ice-body-poly"
             points="292,60  608,60  680,110  220,110"
             fill="url(#iceBodyGrad)"
             opacity="0.82"
@@ -3319,6 +3320,23 @@ function renderIceberg(r, inputs) {
   if (propTax) propTax.style.width = taxPct.toFixed(1) + '%';
   set('ice-prop-net-lbl', `Keep ${netPct.toFixed(0)}%`);
   set('ice-prop-tax-lbl', `${taxPct.toFixed(0)}% taxes`);
+
+  // ── SVG Iceberg: dynamic shape based on net vs tax ratio ──
+  if (r.salary > 0) {
+    // TIP above waterline: taller tip = more take-home pay
+    const tipTopY   = Math.round(Math.max(4, 60 - (netPct / 100) * 54));
+    const tipHalfW  = Math.round(Math.max(12, (netPct / 100) * 110));
+    const tL = 450 - tipHalfW;  const tR = 450 + tipHalfW;
+    const tipEl = document.getElementById('ice-tip-poly');
+    if (tipEl) tipEl.setAttribute('points', `${tL},${tipTopY} ${tR},${tipTopY} 608,60 292,60`);
+
+    // BODY below waterline: deeper & wider body = higher tax burden
+    const bodyDepthY = Math.round(Math.min(108, 60 + (taxPct / 100) * 46));
+    const bodySpread = Math.round((taxPct / 100) * 72);
+    const bL = 292 - bodySpread;  const bR = 608 + bodySpread;
+    const bodyEl = document.getElementById('ice-body-poly');
+    if (bodyEl) bodyEl.setAttribute('points', `292,60 608,60 ${bR},${bodyDepthY} ${bL},${bodyDepthY}`);
+  }
 
   // ── Rate pills ──
   set('ice-eff',  pct(r.effTotal));
