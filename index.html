@@ -470,11 +470,23 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 }
 #ice-tip-poly, #ice-body-poly { transition: points 0.7s cubic-bezier(.4,0,.2,1); }
 
+/* ── US FLAG ── */
+.ice-flag-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  margin: 0 auto 14px; width: fit-content;
+}
+.ice-flag-emoji { font-size: 28px; line-height: 1; }
+.ice-flag-pole {
+  width: 2px; height: 22px;
+  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.1));
+  margin-top: 2px; border-radius: 1px;
+}
+
 /* ── SKY ZONE ── */
 .ice-sky {
   background: linear-gradient(180deg,
     #050e1f 0%, #091629 20%, #0d2040 50%, #112b55 75%, #14305e 100%);
-  padding: 44px 28px 0;
+  padding: 24px 28px 0;
   position: relative;
   overflow: hidden;
 }
@@ -655,8 +667,8 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 /* ── ICEBERG SVG DIVIDER ── */
 .ice-berg-svg-wrap {
   position: relative;
-  height: 110px;
-  overflow: visible;
+  height: 260px;
+  overflow: hidden;
   z-index: 2;
 }
 .ice-berg-svg-wrap svg {
@@ -1857,6 +1869,12 @@ select.sol-input {
         <div class="ice-moon"></div>
         <div class="ice-aurora"></div>
 
+        <!-- 🇺🇸 US Flag -->
+        <div class="ice-flag-wrap">
+          <span class="ice-flag-emoji">🇺🇸</span>
+          <div class="ice-flag-pole"></div>
+        </div>
+
         <!-- Eyebrow tag -->
         <div class="ice-sky-tag">
           <span class="ice-sky-tag-dot"></span>
@@ -1899,9 +1917,9 @@ select.sol-input {
         </div>
       </div>
 
-      <!-- 🌊 ── ICEBERG SVG — THE WATERLINE ── 🌊 -->
+      <!-- 🌊 ── ICEBERG SVG — FULL VISUALIZATION ── 🌊 -->
       <div class="ice-berg-svg-wrap">
-        <svg viewBox="0 0 900 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 900 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="iceGradAbove" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#14305e"/>
@@ -1909,117 +1927,102 @@ select.sol-input {
             </linearGradient>
             <linearGradient id="iceGradBelow" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#0c3352"/>
-              <stop offset="100%" stop-color="#082743"/>
+              <stop offset="100%" stop-color="#041120"/>
             </linearGradient>
             <linearGradient id="iceBodyGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="rgba(255,255,255,0.96)"/>
-              <stop offset="100%" stop-color="rgba(200,235,255,0.78)"/>
+              <stop offset="100%" stop-color="rgba(180,225,255,0.70)"/>
             </linearGradient>
             <linearGradient id="iceTipGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="rgba(255,255,255,0.98)"/>
               <stop offset="100%" stop-color="rgba(220,242,255,0.90)"/>
             </linearGradient>
             <filter id="iceGlow">
-              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feGaussianBlur stdDeviation="4" result="blur"/>
               <feComposite in="SourceGraphic" in2="blur" operator="over"/>
             </filter>
-            <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="rgba(71,158,245,0.0)"/>
-              <stop offset="20%" stop-color="rgba(71,158,245,0.3)"/>
-              <stop offset="50%" stop-color="rgba(71,200,245,0.45)"/>
-              <stop offset="80%" stop-color="rgba(71,158,245,0.3)"/>
-              <stop offset="100%" stop-color="rgba(71,158,245,0.0)"/>
-            </linearGradient>
             <clipPath id="waveClip">
-              <rect width="900" height="110"/>
+              <rect width="900" height="260"/>
             </clipPath>
           </defs>
 
-          <!-- Sky bg fill -->
-          <rect width="900" height="60" fill="url(#iceGradAbove)"/>
-          <!-- Sea bg fill -->
-          <rect y="60" width="900" height="50" fill="url(#iceGradBelow)"/>
+          <!-- Sky bg -->
+          <rect width="900" height="120" fill="url(#iceGradAbove)"/>
+          <!-- Sea bg -->
+          <rect y="120" width="900" height="140" fill="url(#iceGradBelow)"/>
 
           <!-- ─── ICEBERG ABOVE WATER (tip) ─── -->
-          <!-- Main tip shape -->
           <polygon id="ice-tip-poly"
-            points="340,4  560,4  608,60  292,60"
+            points="390,18  510,18  580,120  320,120"
             fill="url(#iceTipGrad)"
             filter="url(#iceGlow)"
           />
-          <!-- Facet lines on tip for crystalline look -->
-          <line x1="400" y1="8"  x2="340" y2="58" stroke="rgba(180,220,255,0.25)" stroke-width="1"/>
-          <line x1="450" y1="4"  x2="292" y2="60" stroke="rgba(180,220,255,0.18)" stroke-width="1"/>
-          <line x1="500" y1="8"  x2="608" y2="60" stroke="rgba(180,220,255,0.18)" stroke-width="1"/>
-          <line x1="450" y1="4"  x2="608" y2="60" stroke="rgba(180,220,255,0.12)" stroke-width="1"/>
-          <!-- Shadow edge on right of tip -->
-          <polygon
-            points="530,4  560,4  608,60  575,60"
-            fill="rgba(140,195,240,0.25)"
-          />
+          <!-- Facet lines on tip -->
+          <line x1="430" y1="22" x2="390" y2="118" stroke="rgba(180,220,255,0.28)" stroke-width="1"/>
+          <line x1="450" y1="18" x2="320" y2="120" stroke="rgba(180,220,255,0.20)" stroke-width="1"/>
+          <line x1="470" y1="22" x2="580" y2="120" stroke="rgba(180,220,255,0.20)" stroke-width="1"/>
+          <!-- Shadow right of tip -->
+          <polygon points="490,18 510,18 580,120 550,120" fill="rgba(140,195,240,0.22)"/>
 
           <!-- ─── ICEBERG BELOW WATER (body) ─── -->
           <polygon id="ice-body-poly"
-            points="292,60  608,60  680,110  220,110"
+            points="320,120  580,120  670,255  230,255"
             fill="url(#iceBodyGrad)"
-            opacity="0.82"
+            opacity="0.84"
           />
-          <!-- Facet on underwater body -->
-          <line x1="450" y1="60" x2="500" y2="110" stroke="rgba(160,210,250,0.22)" stroke-width="1.5"/>
-          <line x1="292" y1="60" x2="450" y2="110" stroke="rgba(160,210,250,0.15)" stroke-width="1"/>
-          <!-- Shadow right side underwater -->
-          <polygon
-            points="580,60  608,60  680,110  640,110"
-            fill="rgba(120,180,230,0.20)"
-          />
+          <!-- Facet on body -->
+          <line x1="450" y1="120" x2="495" y2="255" stroke="rgba(160,210,250,0.25)" stroke-width="1.5"/>
+          <line x1="320" y1="120" x2="450" y2="255" stroke="rgba(160,210,250,0.18)" stroke-width="1"/>
+          <!-- Shadow right of body -->
+          <polygon points="550,120 580,120 670,255 635,255" fill="rgba(120,180,230,0.18)"/>
 
           <!-- ─── WAVE LAYERS (animated) ─── -->
           <g clip-path="url(#waveClip)">
 
-            <!-- Primary rolling wave (fills sea) -->
+            <!-- Primary rolling wave -->
             <g>
               <animateTransform attributeName="transform" type="translate"
                 from="0,0" to="-900,0" dur="7s" repeatCount="indefinite"/>
               <path
-                d="M0,57 Q56,50 112,57 Q168,64 224,57 Q280,50 336,57 Q392,64 448,57 Q504,50 560,57 Q616,64 672,57 Q728,50 784,57 Q842,64 900,57 Q956,50 1012,57 Q1068,64 1124,57 Q1180,50 1236,57 Q1292,64 1348,57 Q1404,50 1460,57 Q1516,64 1572,57 Q1628,50 1684,57 Q1740,64 1800,57 L1800,110 L0,110 Z"
-                fill="#0c3352" opacity="0.92"
+                d="M0,117 Q56,109 112,117 Q168,125 224,117 Q280,109 336,117 Q392,125 448,117 Q504,109 560,117 Q616,125 672,117 Q728,109 784,117 Q842,125 900,117 Q956,109 1012,117 Q1068,125 1124,117 Q1180,109 1236,117 Q1292,125 1348,117 Q1404,109 1460,117 Q1516,125 1572,117 Q1628,109 1684,117 Q1740,125 1800,117 L1800,260 L0,260 Z"
+                fill="#0c3352" opacity="0.94"
               />
             </g>
 
-            <!-- Secondary wave (different phase + speed for depth) -->
-            <g opacity="0.55">
+            <!-- Secondary wave (slower, offset) -->
+            <g opacity="0.5">
               <animateTransform attributeName="transform" type="translate"
                 from="-150,0" to="-1050,0" dur="11s" repeatCount="indefinite"/>
               <path
-                d="M0,60 Q75,53 150,60 Q225,67 300,60 Q375,53 450,60 Q525,67 600,60 Q675,53 750,60 Q825,67 900,60 Q975,53 1050,60 Q1125,67 1200,60 Q1275,53 1350,60 Q1425,67 1500,60 Q1575,53 1650,60 Q1725,67 1800,60 L1800,67 L0,67 Z"
-                fill="rgba(8,39,67,0.7)"
+                d="M0,120 Q75,112 150,120 Q225,128 300,120 Q375,112 450,120 Q525,128 600,120 Q675,112 750,120 Q825,128 900,120 Q975,112 1050,120 Q1125,128 1200,120 Q1275,112 1350,120 Q1425,128 1500,120 Q1575,112 1650,120 Q1725,128 1800,120 L1800,128 L0,128 Z"
+                fill="rgba(8,39,67,0.75)"
               />
             </g>
 
-            <!-- Animated foam crest line + sparkle dots -->
+            <!-- Foam crest + sparkle dots -->
             <g>
               <animateTransform attributeName="transform" type="translate"
                 from="0,0" to="-900,0" dur="7s" repeatCount="indefinite"/>
               <path
-                d="M0,57 Q56,50 112,57 Q168,64 224,57 Q280,50 336,57 Q392,64 448,57 Q504,50 560,57 Q616,64 672,57 Q728,50 784,57 Q842,64 900,57 Q956,50 1012,57 Q1068,64 1124,57 Q1180,50 1236,57 Q1292,64 1348,57 Q1404,50 1460,57 Q1516,64 1572,57 Q1628,50 1684,57 Q1740,64 1800,57"
-                fill="none" stroke="rgba(100,210,255,0.65)" stroke-width="2.2"
+                d="M0,117 Q56,109 112,117 Q168,125 224,117 Q280,109 336,117 Q392,125 448,117 Q504,109 560,117 Q616,125 672,117 Q728,109 784,117 Q842,125 900,117 Q956,109 1012,117 Q1068,125 1124,117 Q1180,109 1236,117 Q1292,125 1348,117 Q1404,109 1460,117 Q1516,125 1572,117 Q1628,109 1684,117 Q1740,125 1800,117"
+                fill="none" stroke="rgba(100,210,255,0.70)" stroke-width="2"
               />
-              <circle cx="112"  cy="57" r="2.5" fill="rgba(255,255,255,0.65)"/>
-              <circle cx="336"  cy="57" r="2"   fill="rgba(255,255,255,0.5)"/>
-              <circle cx="560"  cy="57" r="2.5" fill="rgba(255,255,255,0.65)"/>
-              <circle cx="784"  cy="57" r="2"   fill="rgba(255,255,255,0.5)"/>
-              <circle cx="1012" cy="57" r="2.5" fill="rgba(255,255,255,0.65)"/>
-              <circle cx="1236" cy="57" r="2"   fill="rgba(255,255,255,0.5)"/>
-              <circle cx="1460" cy="57" r="2.5" fill="rgba(255,255,255,0.65)"/>
-              <circle cx="1684" cy="57" r="2"   fill="rgba(255,255,255,0.5)"/>
+              <circle cx="112"  cy="117" r="2.5" fill="rgba(255,255,255,0.65)"/>
+              <circle cx="336"  cy="117" r="2"   fill="rgba(255,255,255,0.5)"/>
+              <circle cx="560"  cy="117" r="2.5" fill="rgba(255,255,255,0.65)"/>
+              <circle cx="784"  cy="117" r="2"   fill="rgba(255,255,255,0.5)"/>
+              <circle cx="1012" cy="117" r="2.5" fill="rgba(255,255,255,0.65)"/>
+              <circle cx="1236" cy="117" r="2"   fill="rgba(255,255,255,0.5)"/>
+              <circle cx="1460" cy="117" r="2.5" fill="rgba(255,255,255,0.65)"/>
+              <circle cx="1684" cy="117" r="2"   fill="rgba(255,255,255,0.5)"/>
             </g>
 
           </g><!-- /wave clip -->
 
-          <!-- Sea level label (static, always visible above clip) -->
-          <text x="20" y="54" font-family="DM Sans,sans-serif" font-size="9" font-weight="700"
-            fill="rgba(71,210,255,0.85)" letter-spacing="1.5">SEA LEVEL</text>
-          <line x1="80" y1="50" x2="145" y2="50" stroke="rgba(71,210,255,0.45)" stroke-width="1"/>
+          <!-- Sea level label -->
+          <text x="20" y="114" font-family="DM Sans,sans-serif" font-size="9" font-weight="700"
+            fill="rgba(71,210,255,0.90)" letter-spacing="1.5">SEA LEVEL</text>
+          <line x1="82" y1="110" x2="150" y2="110" stroke="rgba(71,210,255,0.50)" stroke-width="1"/>
         </svg>
       </div>
 
@@ -3345,19 +3348,23 @@ function renderIceberg(r, inputs) {
 
   // ── SVG Iceberg: dynamic shape based on net vs tax ratio ──
   if (r.salary > 0) {
-    // TIP above waterline: taller tip = more take-home pay
-    const tipTopY   = Math.round(Math.max(4, 60 - (netPct / 100) * 54));
-    const tipHalfW  = Math.round(Math.max(12, (netPct / 100) * 110));
-    const tL = 450 - tipHalfW;  const tR = 450 + tipHalfW;
-    const tipEl = document.getElementById('ice-tip-poly');
-    if (tipEl) tipEl.setAttribute('points', `${tL},${tipTopY} ${tR},${tipTopY} 608,60 292,60`);
+    // Waterline at y=120 in new 900×260 viewBox
+    const wHalfW = 130; // waterline half-width (fixed)
+    const wL = 450 - wHalfW; const wR = 450 + wHalfW; // 320, 580
 
-    // BODY below waterline: deeper & wider body = higher tax burden
-    const bodyDepthY = Math.round(Math.min(108, 60 + (taxPct / 100) * 46));
-    const bodySpread = Math.round((taxPct / 100) * 72);
-    const bL = 292 - bodySpread;  const bR = 608 + bodySpread;
+    // TIP above waterline: taller = more take-home
+    const tipTopY  = Math.round(Math.max(10, 120 - (netPct / 100) * 100));
+    const tipHalfW = Math.round(Math.max(20, (netPct / 100) * 80));
+    const tL = 450 - tipHalfW; const tR = 450 + tipHalfW;
+    const tipEl = document.getElementById('ice-tip-poly');
+    if (tipEl) tipEl.setAttribute('points', `${tL},${tipTopY} ${tR},${tipTopY} ${wR},120 ${wL},120`);
+
+    // BODY below waterline: deeper + wider = higher tax burden
+    const bodyDepthY = Math.round(Math.min(255, 120 + (taxPct / 100) * 128));
+    const bodySpread = Math.round((taxPct / 100) * 80);
+    const bL = wL - bodySpread; const bR = wR + bodySpread;
     const bodyEl = document.getElementById('ice-body-poly');
-    if (bodyEl) bodyEl.setAttribute('points', `292,60 608,60 ${bR},${bodyDepthY} ${bL},${bodyDepthY}`);
+    if (bodyEl) bodyEl.setAttribute('points', `${wL},120 ${wR},120 ${bR},${bodyDepthY} ${bL},${bodyDepthY}`);
   }
 
   // ── Rate pills ──
