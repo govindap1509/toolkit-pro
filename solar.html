@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Solar Planner — ToolKit Pro</title>
+<meta name="description" content="Plan your home solar system. Know cost, savings, payback and CO₂ impact instantly. All 50 states covered.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- ════════════════ HEADER ════════════════ -->
+<header>
+  <div class="logo" onclick="go('home')" style="cursor:pointer">
+    <div class="logo-mark">T</div>
+    <span class="logo-text">ToolKit<span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pro</span></span>
+  </div>
+  <div class="header-right" style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px">
+      <span style="opacity:.35">/ </span>
+      <span style="font-weight:500;color:var(--text)">Home Solar Planner</span>
+    </span>
+    <button onclick="go('home')" style="background:none;border:1px solid var(--border);border-radius:var(--r);font-family:var(--font-b);font-size:12px;font-weight:500;color:var(--muted);padding:5px 12px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">← All Tools</button>
+    <div id="auth-header-area">
+      <button id="header-login-btn" onclick="openModal('auth')" style="background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-family:var(--font-b);font-size:13px;font-weight:500;padding:6px 14px;cursor:pointer;transition:background var(--t);" onmouseover="this.style.background='var(--blue-h)'" onmouseout="this.style.background='var(--blue)'">Sign In</button>
+      <div id="header-user" style="display:none" class="auth-user-bar">
+        <div class="auth-avatar" id="header-avatar">U</div>
+        <span class="auth-name" id="header-username"></span>
+        <button class="auth-logout" onclick="logOut()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════ SOLAR PAGE ════════════════ -->
+<div class="page" id="page-solar" style="display:flex;flex-direction:column">
+
+  <!-- breadcrumb -->
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border2);padding:10px 24px;display:flex;align-items:center;gap:8px">
+    <button onclick="go('home')" style="background:none;border:none;font-family:var(--font-b);font-size:12px;font-weight:500;color:#137333;cursor:pointer;padding:0">← All Tools</button>
+    <span style="font-size:11px;color:var(--ghost);margin:0 4px">/</span>
+    <span style="font-size:12px;color:var(--muted)">Home Solar Planner</span>
+  </div>
+
+  <!-- SOLAR HERO -->
+  <div id="sol-hero">
+    <div id="sol-hero-ray1"></div>
+    <div id="sol-hero-ray2"></div>
+    <div id="sol-hero-orb"></div>
+
+    <div id="sol-hero-tag">
+      <span id="sol-hero-dot"></span>
+      Free · No Sign-up · Instant Estimates
+    </div>
+
+    <h1 id="sol-hero-h1">
+      Plan Your Home Solar<br>
+      <span id="sol-hero-accent">in 60 Seconds</span>
+    </h1>
+    <p id="sol-hero-sub">Know cost, savings, payback and CO₂ impact instantly. All 50 states covered.</p>
+
+    <div id="sol-hero-stats">
+      <div class="sol-stat"><span class="sol-stat-n">30%</span><span class="sol-stat-l">Federal Tax Credit</span></div>
+      <div class="sol-stat"><span class="sol-stat-n">25yr</span><span class="sol-stat-l">System Life</span></div>
+      <div class="sol-stat"><span class="sol-stat-n">50</span><span class="sol-stat-l">States Covered</span></div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div id="sol-shell">
+    <div id="sol-grid">
+
+      <!-- ══ LEFT: INPUTS ══ -->
+      <div id="sol-left-col">
+
+        <div class="sol-panel">
+          <div class="sol-panel-head">
+            <span class="sol-panel-ico">⚡</span>
+            <span class="sol-panel-title">Your Energy Usage</span>
+          </div>
+          <div class="sol-panel-body">
+
+            <div class="sol-fg">
+              <label class="sol-label">Monthly Electricity Usage</label>
+              <div class="sol-iw sol-hs">
+                <input type="number" id="sol-kwh" class="sol-input" placeholder="900" value="900" min="50" max="5000" oninput="solarCalc()">
+                <span class="sol-suffix">kWh/mo</span>
+              </div>
+            </div>
+
+            <div class="sol-row2">
+              <div class="sol-fg">
+                <label class="sol-label">State</label>
+                <div class="sol-iw">
+                  <select id="sol-state" class="sol-input" onchange="solarStateChange()">
+                    <option value="">Select state…</option>
+                  </select>
+                </div>
+              </div>
+              <div class="sol-fg">
+                <label class="sol-label">Rate ($/kWh)</label>
+                <div class="sol-iw sol-hs">
+                  <span class="sol-prefix">$</span>
+                  <input type="number" id="sol-rate" class="sol-input sol-pl" placeholder="0.14" step="0.01" oninput="solarCalc()">
+                </div>
+              </div>
+            </div>
+
+            <div class="sol-row2">
+              <div class="sol-fg">
+                <label class="sol-label">Sunlight Level</label>
+                <div class="sol-iw">
+                  <select id="sol-sun" class="sol-input" onchange="solarCalc()">
+                    <option value="low">Low (1,200 kWh/kW)</option>
+                    <option value="medium" selected>Medium (1,400 kWh/kW)</option>
+                    <option value="high">High (1,600 kWh/kW)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="sol-fg">
+                <label class="sol-label">Roof Type</label>
+                <div class="sol-iw">
+                  <select id="sol-roof" class="sol-input" onchange="solarCalc()">
+                    <option value="asphalt">Asphalt Shingle</option>
+                    <option value="metal">Metal</option>
+                    <option value="tile">Tile</option>
+                    <option value="flat">Flat</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="sol-panel">
+          <div class="sol-panel-head">
+            <span class="sol-panel-ico">☀️</span>
+            <span class="sol-panel-title">Solar Panel Configuration</span>
+            <span id="sol-panel-badge" class="sol-badge sol-badge-green">Recommended</span>
+          </div>
+          <div class="sol-panel-body">
+
+            <div id="sol-slider-section">
+              <div id="sol-slider-top">
+                <span id="sol-slider-label" class="sol-slider-lbl">Number of Panels</span>
+                <span id="sol-panel-count-pill" class="sol-pill-count">12</span>
+              </div>
+              <input type="range" id="sol-panels" min="1" max="50" value="12" class="sol-range" oninput="solarSlider(this.value)">
+              <div id="sol-slider-ticks">
+                <span>1</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span>
+              </div>
+            </div>
+
+            <div id="sol-panel-viz-wrap">
+              <div id="sol-panel-viz" title="Each cell = 1 panel (400W)"></div>
+              <p id="sol-viz-caption">Each cell represents one 400W solar panel</p>
+            </div>
+
+            <div id="sol-sys-pills">
+              <div class="sol-sys-pill">
+                <span class="sol-sys-pill-lbl">System Size</span>
+                <span class="sol-sys-pill-val" id="sol-sys-kw">—</span>
+              </div>
+              <div class="sol-sys-pill">
+                <span class="sol-sys-pill-lbl">Annual Output</span>
+                <span class="sol-sys-pill-val" id="sol-sys-kwh">—</span>
+              </div>
+              <div class="sol-sys-pill">
+                <span class="sol-sys-pill-lbl">Coverage</span>
+                <span class="sol-sys-pill-val" id="sol-coverage">—</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ RIGHT: RESULTS ══ -->
+      <div id="sol-right-col">
+
+        <div id="sol-results-hero">
+          <div id="sol-sky">
+            <div id="sol-sky-sun">
+              <div id="sol-sky-sun-core"></div>
+              <div class="sol-ray sol-ray-1"></div>
+              <div class="sol-ray sol-ray-2"></div>
+              <div class="sol-ray sol-ray-3"></div>
+              <div class="sol-ray sol-ray-4"></div>
+              <div class="sol-ray sol-ray-5"></div>
+              <div class="sol-ray sol-ray-6"></div>
+              <div class="sol-ray sol-ray-7"></div>
+              <div class="sol-ray sol-ray-8"></div>
+            </div>
+            <div id="sol-sky-cloud-l"></div>
+            <div id="sol-sky-cloud-r"></div>
+
+            <span id="sol-sky-tag">☀️ Above the break-even — your gains</span>
+            <div id="sol-savings-big" class="sol-anim-el">
+              <span id="sol-savings-num">—</span>
+              <span id="sol-savings-lbl">25-Year Net Savings</span>
+              <span id="sol-savings-mo">—</span>
+            </div>
+
+            <div id="sol-prop-wrap">
+              <div id="sol-prop-bar">
+                <div id="sol-prop-gain"></div>
+                <div id="sol-prop-cost"></div>
+              </div>
+              <div id="sol-prop-labels">
+                <span id="sol-prop-gain-lbl" style="color:#4ade80;font-weight:600"></span>
+                <span id="sol-prop-cost-lbl" style="color:rgba(251,188,4,.8);font-weight:600"></span>
+              </div>
+            </div>
+
+            <div id="sol-payback-badge">
+              <span id="sol-payback-icon">⚡</span>
+              <span id="sol-payback-txt">Enter your details to calculate</span>
+            </div>
+
+            <div id="sol-sky-pills">
+              <div class="sol-sky-pill">IRR <strong id="sol-irr-pill">—</strong></div>
+              <div class="sol-sky-pill">CO₂/yr <strong id="sol-co2-pill">—</strong></div>
+              <div class="sol-sky-pill">Trees <strong id="sol-trees-pill">—</strong></div>
+            </div>
+          </div>
+
+          <div id="sol-ground">
+            <div id="sol-house-wrap">
+              <svg id="sol-house-svg" viewBox="0 0 900 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="solSkyGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#0d3320"/>
+                    <stop offset="100%" stop-color="#155228"/>
+                  </linearGradient>
+                  <linearGradient id="solGroundGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#0a4020"/>
+                    <stop offset="100%" stop-color="#062a14"/>
+                  </linearGradient>
+                  <linearGradient id="solRoofGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="rgba(255,255,255,0.95)"/>
+                    <stop offset="100%" stop-color="rgba(200,240,210,0.80)"/>
+                  </linearGradient>
+                  <linearGradient id="solPanelGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="rgba(52,168,83,0.9)"/>
+                    <stop offset="100%" stop-color="rgba(19,115,51,0.7)"/>
+                  </linearGradient>
+                  <linearGradient id="solGrassGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="rgba(52,168,83,0)"/>
+                    <stop offset="30%" stop-color="rgba(52,168,83,0.4)"/>
+                    <stop offset="70%" stop-color="rgba(52,168,83,0.4)"/>
+                    <stop offset="100%" stop-color="rgba(52,168,83,0)"/>
+                  </linearGradient>
+                </defs>
+                <rect width="900" height="55" fill="url(#solSkyGrad)"/>
+                <rect y="55" width="900" height="45" fill="url(#solGroundGrad)"/>
+                <rect x="360" y="35" width="180" height="25" fill="rgba(255,255,255,0.12)" rx="1"/>
+                <polygon points="340,35 450,5 560,35" fill="url(#solRoofGrad)" opacity="0.92"/>
+                <polygon points="450,5 560,35 540,35 450,10" fill="rgba(150,210,170,0.25)"/>
+                <rect x="385" y="18" width="38" height="14" rx="2" fill="url(#solPanelGrad)" opacity="0.9"/>
+                <rect x="430" y="14" width="38" height="14" rx="2" fill="url(#solPanelGrad)" opacity="0.9"/>
+                <rect x="475" y="18" width="38" height="14" rx="2" fill="url(#solPanelGrad)" opacity="0.85"/>
+                <line x1="404" y1="18" x2="404" y2="32" stroke="rgba(0,50,20,.3)" stroke-width="0.8"/>
+                <line x1="449" y1="14" x2="449" y2="28" stroke="rgba(0,50,20,.3)" stroke-width="0.8"/>
+                <line x1="494" y1="18" x2="494" y2="32" stroke="rgba(0,50,20,.3)" stroke-width="0.8"/>
+                <rect x="435" y="45" width="30" height="15" rx="1" fill="rgba(0,0,0,.18)"/>
+                <rect x="375" y="42" width="22" height="15" rx="1" fill="rgba(255,255,255,.15)"/>
+                <rect x="517" y="42" width="22" height="15" rx="1" fill="rgba(255,255,255,.15)"/>
+                <path d="M0,55 Q225,48 450,55 Q675,62 900,55 L900,58 L0,58 Z" fill="rgba(52,168,83,0.35)"/>
+                <path d="M0,56 Q225,50 450,57 Q675,64 900,56" fill="none" stroke="url(#solGrassGrad)" stroke-width="2.5"/>
+                <circle cx="225" cy="56" r="2.5" fill="rgba(52,168,83,0.5)"/>
+                <circle cx="450" cy="57" r="2.5" fill="rgba(52,168,83,0.5)"/>
+                <circle cx="675" cy="56" r="2.5" fill="rgba(52,168,83,0.5)"/>
+                <text x="22" y="52" font-family="DM Sans,sans-serif" font-size="8.5" font-weight="600" fill="rgba(52,168,83,0.55)" letter-spacing="1.5">INVESTMENT</text>
+                <line x1="98" y1="49" x2="140" y2="49" stroke="rgba(52,168,83,0.3)" stroke-width="1"/>
+              </svg>
+            </div>
+
+            <div class="sol-bubble" style="width:6px;height:6px;left:8%;bottom:18px;animation-delay:0s;animation-duration:5s"></div>
+            <div class="sol-bubble" style="width:4px;height:4px;left:25%;bottom:12px;animation-delay:1.3s;animation-duration:4.2s"></div>
+            <div class="sol-bubble" style="width:8px;height:8px;left:60%;bottom:8px;animation-delay:.6s;animation-duration:6.5s"></div>
+            <div class="sol-bubble" style="width:5px;height:5px;left:78%;bottom:20px;animation-delay:2.8s;animation-duration:5s"></div>
+            <div class="sol-bubble" style="width:4px;height:4px;left:44%;bottom:28px;animation-delay:3.5s;animation-duration:4.8s"></div>
+
+            <div id="sol-ground-label">▼ Below the break-even — your investment</div>
+            <div id="sol-cost-rows">
+              <div class="sol-cost-row sol-cost-install">
+                <div class="sol-cost-ico">🏗️</div>
+                <div class="sol-cost-info">
+                  <span class="sol-cost-name">Installation Cost</span>
+                  <span class="sol-cost-sub" id="scr-install-sub">Before 30% federal tax credit</span>
+                </div>
+                <div class="sol-cost-seg-wrap">
+                  <div class="sol-cost-seg-track"><div class="sol-cost-seg-fill sol-fill-install" id="scr-install-bar" style="width:100%"></div></div>
+                  <span class="sol-cost-seg-pct" id="scr-install-pct">—</span>
+                </div>
+                <span class="sol-cost-amt" id="scr-install">—</span>
+              </div>
+              <div class="sol-cost-row sol-cost-credit">
+                <div class="sol-cost-ico">✅</div>
+                <div class="sol-cost-info">
+                  <span class="sol-cost-name">Federal Tax Credit (30%)</span>
+                  <span class="sol-cost-sub">ITC deduction off your tax bill</span>
+                </div>
+                <div class="sol-cost-seg-wrap">
+                  <div class="sol-cost-seg-track"><div class="sol-cost-seg-fill sol-fill-credit" id="scr-credit-bar" style="width:30%"></div></div>
+                  <span class="sol-cost-seg-pct">30%</span>
+                </div>
+                <span class="sol-cost-amt sol-credit-green" id="scr-credit">—</span>
+              </div>
+              <div class="sol-cost-row sol-cost-net">
+                <div class="sol-cost-ico">📊</div>
+                <div class="sol-cost-info">
+                  <span class="sol-cost-name">Your Net Investment</span>
+                  <span class="sol-cost-sub" id="scr-net-sub">After federal tax credit</span>
+                </div>
+                <div class="sol-cost-seg-wrap">
+                  <div class="sol-cost-seg-track"><div class="sol-cost-seg-fill sol-fill-net" id="scr-net-bar" style="width:70%"></div></div>
+                  <span class="sol-cost-seg-pct" id="scr-net-pct">—</span>
+                </div>
+                <span class="sol-cost-amt sol-net-yellow" id="scr-net">—</span>
+              </div>
+              <div class="sol-cost-row sol-cost-maint">
+                <div class="sol-cost-ico">🔧</div>
+                <div class="sol-cost-info">
+                  <span class="sol-cost-name">Annual Maintenance</span>
+                  <span class="sol-cost-sub">~1% of system cost / year</span>
+                </div>
+                <div class="sol-cost-seg-wrap">
+                  <div class="sol-cost-seg-track"><div class="sol-cost-seg-fill sol-fill-maint" id="scr-maint-bar" style="width:5%"></div></div>
+                  <span class="sol-cost-seg-pct" id="scr-maint-pct">—</span>
+                </div>
+                <span class="sol-cost-amt" id="scr-maint">—</span>
+              </div>
+            </div>
+
+            <div id="sol-context-wrap">
+              <p class="sol-context-text" id="sol-context-txt">⚡ Enter your electricity usage above to reveal your solar plan.</p>
+            </div>
+
+            <div id="sol-ground-pills">
+              <div class="sol-gpill">Panels <strong id="sgp-panels">—</strong></div>
+              <div class="sol-gpill">System <strong id="sgp-system">—</strong></div>
+              <div class="sol-gpill">$/Watt <strong id="sgp-cpw">$3.00</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial Detail Cards -->
+        <div id="sol-fin-grid">
+          <div class="sol-fin-card">
+            <span class="sol-fin-ico">💰</span>
+            <div class="sol-fin-lbl">Annual Savings</div>
+            <div class="sol-fin-val" id="sfc-annual">—</div>
+            <div class="sol-fin-sub" id="sfc-annual-sub">—</div>
+          </div>
+          <div class="sol-fin-card">
+            <span class="sol-fin-ico">📅</span>
+            <div class="sol-fin-lbl">Monthly Savings</div>
+            <div class="sol-fin-val" id="sfc-monthly">—</div>
+            <div class="sol-fin-sub">avg first year</div>
+          </div>
+          <div class="sol-fin-card">
+            <span class="sol-fin-ico">⏱️</span>
+            <div class="sol-fin-lbl">Payback Period</div>
+            <div class="sol-fin-val" id="sfc-payback">—</div>
+            <div class="sol-fin-sub">then pure profit</div>
+          </div>
+          <div class="sol-fin-card">
+            <span class="sol-fin-ico">📈</span>
+            <div class="sol-fin-lbl">IRR</div>
+            <div class="sol-fin-val" id="sfc-irr">—</div>
+            <div class="sol-fin-sub">internal rate of return</div>
+          </div>
+        </div>
+
+        <!-- 25-Year Cash Flow Chart -->
+        <div class="sol-panel">
+          <div class="sol-panel-head">
+            <span class="sol-panel-ico">📈</span>
+            <span class="sol-panel-title">25-Year Cash Flow</span>
+            <span id="sol-chart-be-label" class="sol-badge sol-badge-green" style="display:none"></span>
+          </div>
+          <div class="sol-panel-body" style="padding:12px 16px 20px">
+            <canvas id="sol-chart" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- Investment Comparison -->
+        <div class="sol-panel">
+          <div class="sol-panel-head">
+            <span class="sol-panel-ico">⚖️</span>
+            <span class="sol-panel-title">Investment Comparison (25 Years)</span>
+          </div>
+          <div class="sol-panel-body">
+            <div id="sol-compare-grid">
+              <div class="sol-cmp-card sol-cmp-solar">
+                <div class="sol-cmp-top">
+                  <span class="sol-cmp-ico">☀️</span>
+                  <span class="sol-cmp-badge sol-badge-green">Best</span>
+                </div>
+                <div class="sol-cmp-lbl">Solar Investment</div>
+                <div class="sol-cmp-val" id="sc-solar">—</div>
+                <div class="sol-cmp-bar-wrap"><div class="sol-cmp-bar sol-cmp-bar-solar" id="sc-solar-bar" style="width:100%"></div></div>
+                <div class="sol-cmp-sub">IRR: <span id="sc-solar-irr">—</span></div>
+              </div>
+              <div class="sol-cmp-card">
+                <div class="sol-cmp-top">
+                  <span class="sol-cmp-ico">📊</span>
+                </div>
+                <div class="sol-cmp-lbl">Stock Market (8%/yr)</div>
+                <div class="sol-cmp-val" id="sc-stock">—</div>
+                <div class="sol-cmp-bar-wrap"><div class="sol-cmp-bar sol-cmp-bar-stock" id="sc-stock-bar" style="width:0%"></div></div>
+                <div class="sol-cmp-sub">Assumes 8% avg return</div>
+              </div>
+              <div class="sol-cmp-card">
+                <div class="sol-cmp-top">
+                  <span class="sol-cmp-ico">🏦</span>
+                </div>
+                <div class="sol-cmp-lbl">Fixed Deposit (5%/yr)</div>
+                <div class="sol-cmp-val" id="sc-fd">—</div>
+                <div class="sol-cmp-bar-wrap"><div class="sol-cmp-bar sol-cmp-bar-fd" id="sc-fd-bar" style="width:0%"></div></div>
+                <div class="sol-cmp-sub">Assumes 5% compound</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Environmental Impact -->
+        <div class="sol-panel">
+          <div class="sol-panel-head">
+            <span class="sol-panel-ico">🌱</span>
+            <span class="sol-panel-title">Environmental Impact</span>
+          </div>
+          <div class="sol-panel-body">
+            <div id="sol-env-grid">
+              <div class="sol-env-card">
+                <div class="sol-env-ico">🌫️</div>
+                <div class="sol-env-lbl">CO₂ Avoided / Year</div>
+                <div class="sol-env-val" id="senv-co2yr">—</div>
+              </div>
+              <div class="sol-env-card">
+                <div class="sol-env-ico">🌍</div>
+                <div class="sol-env-lbl">CO₂ over 25 Years</div>
+                <div class="sol-env-val" id="senv-co225">—</div>
+              </div>
+              <div class="sol-env-card">
+                <div class="sol-env-ico">🌳</div>
+                <div class="sol-env-lbl">Trees Equivalent</div>
+                <div class="sol-env-val" id="senv-trees">—</div>
+              </div>
+              <div class="sol-env-card">
+                <div class="sol-env-ico">🚗</div>
+                <div class="sol-env-lbl">Cars Off Road / Year</div>
+                <div class="sol-env-val" id="senv-cars">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Solar CTA Banner -->
+        <div class="sol-cta-banner" onclick="openModal('help')">
+          <div class="sol-cta-glow"></div>
+          <span class="sol-cta-eyebrow">Free Consultation · Licensed Installers</span>
+          <h3 class="sol-cta-title">Get a Free Solar Feasibility<br>Evaluation for Your Home</h3>
+          <p class="sol-cta-sub">Connect with a certified solar installer who will assess your roof, local incentives and give an exact quote.</p>
+          <div class="sol-cta-row">
+            <button class="sol-cta-btn" onclick="event.stopPropagation();openModal('help')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.09 1.18 2 2 0 012.07 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-.85a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              Get Free Evaluation →
+            </button>
+            <div class="sol-cta-chips">
+              <span class="sol-cta-chip"><span class="sol-cta-chip-dot"></span>No obligation</span>
+              <span class="sol-cta-chip"><span class="sol-cta-chip-dot"></span>Licensed pros</span>
+              <span class="sol-cta-chip"><span class="sol-cta-chip-dot"></span>48hr response</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download Report Card -->
+        <div class="sol-dl-card" id="sol-dl-el">
+          <div class="sol-dl-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#137333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <polyline points="9 15 12 18 15 15"/>
+            </svg>
+          </div>
+          <div class="sol-dl-text">
+            <div class="sol-dl-title">Download Solar Planning Report</div>
+            <div class="sol-dl-sub">Full breakdown — costs, savings, IRR, CO₂ impact and 25-year projection.</div>
+            <div class="sol-dl-tags">
+              <span class="sol-dl-tag">TXT Report</span>
+              <span class="sol-dl-tag">Instant</span>
+              <span class="sol-dl-tag">Free</span>
+            </div>
+          </div>
+          <button class="sol-dl-btn" onclick="solarDownload(this)">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12v2h12v-2M8 2v8M5 7l3 3 3-3"/></svg>
+            Download
+          </button>
+        </div>
+
+        <!-- Notes / Disclaimer -->
+        <div class="sol-panel">
+          <div class="sol-panel-head">
+            <span class="sol-panel-ico">📋</span>
+            <span class="sol-panel-title">Assumptions & Notes</span>
+          </div>
+          <div class="sol-panel-body">
+            <div id="sol-notes">
+              <div class="sol-note-item">
+                <span class="sol-note-dot"></span>
+                <p>Panel size: 400W each. System efficiency factor: 0.80 (accounts for real-world losses).</p>
+              </div>
+              <div class="sol-note-item">
+                <span class="sol-note-dot"></span>
+                <p>Installation cost: $3.00/watt national average (2024). Actual quotes vary ±30% by location.</p>
+              </div>
+              <div class="sol-note-item">
+                <span class="sol-note-dot"></span>
+                <p>Federal Investment Tax Credit (ITC): 30% of gross system cost, valid through 2032.</p>
+              </div>
+              <div class="sol-note-item">
+                <span class="sol-note-dot"></span>
+                <p>Electricity price growth assumed at 3% per year. CO₂ factor: 0.4 kg per kWh.</p>
+              </div>
+              <div class="sol-note-item">
+                <span class="sol-note-dot"></span>
+                <p>Maintenance: 1% of system cost annually. IRR calculated over 25-year system life.</p>
+              </div>
+              <div class="sol-note-item sol-note-warn">
+                <span class="sol-note-dot sol-note-dot-warn"></span>
+                <p><strong>Disclaimer:</strong> All figures are estimates for planning purposes only. Actual performance depends on your specific roof, location, shading, utility policies and installer. Always get multiple quotes from licensed solar installers.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-solar -->
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer>
+  <div class="f-brand">ToolKit<span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pro</span></div>
+  <p class="f-disc">This tool provides estimates for educational and planning purposes only. Actual tax liability may differ. Consult a qualified tax professional for advice. Tax brackets reflect 2024 IRS guidelines.</p>
+  <div class="f-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Disclaimer</a>
+    <a href="#">IRS.gov</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="f-copy">© 2026 ToolKit Pro · All calculations are estimates only · Not affiliated with the IRS</div>
+</footer>
+
+<!-- ════════════════ MODALS ════════════════ -->
+<div class="modal-overlay" id="modal-help">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title">👋 Get Expert Help</span>
+      <button class="modal-x" onclick="closeModal('help')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="modal-plan">
+        <strong>Free 30-minute consultation</strong> with a certified solar and tax professional. We'll review your situation and identify opportunities to save.<br><br>
+        📅 Available Mon–Fri · 9am–6pm EST · Video or Phone
+      </div>
+      <div id="help-form">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="m-name" placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="m-email" placeholder="jane@email.com">
+        </div>
+        <div class="form-group">
+          <label>Message (optional)</label>
+          <textarea id="m-msg" placeholder="Describe your situation…" style="height:80px"></textarea>
+        </div>
+        <button class="btn btn-grad" style="width:100%;justify-content:center;margin-top:6px" onclick="submitHelp()">Request Consultation →</button>
+      </div>
+      <div class="modal-success" id="help-success">
+        <div class="modal-success-icon">✅</div>
+        <p style="font-weight:600;color:var(--text);margin-bottom:6px">You're all set!</p>
+        <p style="font-size:13px;color:var(--muted)">We'll reach out within 24 hours to confirm your appointment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-auth">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title">👤 Sign In to ToolKit Pro</span>
+      <button class="modal-x" onclick="closeModal('auth')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="auth-tab-row">
+        <button class="auth-tab active" id="auth-tab-in" onclick="switchAuthTab('in')">Sign In</button>
+        <button class="auth-tab" id="auth-tab-up" onclick="switchAuthTab('up')">Create Account</button>
+      </div>
+      <div id="auth-form-in">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="auth-email-in" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-pass-in" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;height:42px;font-size:14px" onclick="doSignIn()">Sign In →</button>
+        <p id="auth-err-in" style="font-size:12px;color:var(--red);margin-top:8px;display:none"></p>
+      </div>
+      <div id="auth-form-up" style="display:none">
+        <div class="form-group">
+          <label>Display Name</label>
+          <input type="text" id="auth-name-up" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="auth-email-up" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-pass-up" placeholder="At least 6 characters">
+        </div>
+        <button class="btn btn-grad" style="width:100%;justify-content:center;margin-top:8px;height:42px;font-size:14px" onclick="doSignUp()">Create Account →</button>
+        <p id="auth-err-up" style="font-size:12px;color:var(--red);margin-top:8px;display:none"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/shared.js"></script>
+<script src="/js/solar.js"></script>
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US Income Tax Estimator — ToolKit Pro</title>
+<meta name="description" content="Estimate your 2024 US federal and state income taxes instantly. Free, no sign-up required.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- ════════════════ HEADER ════════════════ -->
+<header>
+  <div class="logo" onclick="go('home')" style="cursor:pointer">
+    <div class="logo-mark">T</div>
+    <span class="logo-text">ToolKit<span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pro</span></span>
+  </div>
+  <div class="header-right" style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px">
+      <span style="opacity:.35">/ </span>
+      <span style="font-weight:500;color:var(--text)">US Income Tax Estimator</span>
+    </span>
+    <button onclick="go('home')" style="background:none;border:1px solid var(--border);border-radius:var(--r);font-family:var(--font-b);font-size:12px;font-weight:500;color:var(--muted);padding:5px 12px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">← All Tools</button>
+    <div id="auth-header-area">
+      <button id="header-login-btn" onclick="openModal('auth')" style="background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-family:var(--font-b);font-size:13px;font-weight:500;padding:6px 14px;cursor:pointer;transition:background var(--t);" onmouseover="this.style.background='var(--blue-h)'" onmouseout="this.style.background='var(--blue)'">Sign In</button>
+      <div id="header-user" style="display:none" class="auth-user-bar">
+        <div class="auth-avatar" id="header-avatar">U</div>
+        <span class="auth-name" id="header-username"></span>
+        <button class="auth-logout" onclick="logOut()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════ TAX PAGE ════════════════ -->
+<div class="page" id="page-tax" style="display:flex;flex-direction:column">
+  <div style="background:var(--bg2);border-bottom:1px solid var(--border2);padding:10px 24px;display:flex;align-items:center;gap:8px">
+    <button onclick="go('home')" style="background:none;border:none;font-family:var(--font-b);font-size:12px;font-weight:500;color:var(--blue);cursor:pointer;padding:0">← All Tools</button>
+    <span style="font-size:11px;color:var(--ghost);margin:0 4px">/</span>
+    <span style="font-size:12px;color:var(--muted)">US Income Tax Estimator</span>
+  </div>
+<div class="hero">
+  <div class="hero-tag"><span class="hero-tag-dot"></span> Free · No Sign-up · Instant Results</div>
+  <h1>US Income Tax <span class="g-text">Calculator</span></h1>
+  <p class="hero-sub">Estimate your 2024 federal and state taxes instantly. Plan smarter, save more.</p>
+  <div class="hero-stats">
+    <div class="hs"><span class="hs-n">50</span><span class="hs-l">States Covered</span></div>
+    <div class="hs"><span class="hs-n">2024</span><span class="hs-l">Tax Brackets</span></div>
+    <div class="hs"><span class="hs-n">Instant</span><span class="hs-l">Calculation</span></div>
+  </div>
+</div>
+
+<!-- ════════════════ MAIN APP ════════════════ -->
+<div class="app-shell">
+<div class="main-grid">
+
+  <!-- ── LEFT: INPUTS ── -->
+  <div style="display:flex;flex-direction:column;gap:18px">
+
+    <!-- Input Panel -->
+    <div class="panel fade-up">
+      <div class="panel-head">
+        <span class="panel-title">📝 Your Tax Information</span>
+        <span style="font-size:11px;color:var(--faint)">All fields optional except salary</span>
+      </div>
+      <div class="panel-body">
+
+        <div class="toggle-row">
+          <button class="toggle-btn active" id="tog-yr" onclick="setMode('yearly')">Annual Income</button>
+          <button class="toggle-btn" id="tog-mo" onclick="setMode('monthly')">Monthly Income</button>
+        </div>
+
+        <div class="compare-tabs" id="compare-tabs" style="display:none">
+          <button class="cmp-tab active" id="tab-a" onclick="setScenario('A')">Scenario A</button>
+          <button class="cmp-tab" id="tab-b" onclick="setScenario('B')">Scenario B</button>
+        </div>
+
+        <div class="form-group">
+          <label id="salary-label">Annual Salary</label>
+          <div class="input-wrap hl">
+            <span class="ia l">$</span>
+            <input type="number" id="inp-salary" placeholder="75,000" min="0" oninput="onInput()">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Filing Status</label>
+            <div class="input-wrap">
+              <select id="inp-status" onchange="onInput()">
+                <option value="single">Single</option>
+                <option value="mfj">Married Joint</option>
+                <option value="hoh">Head of Household</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>State</label>
+            <div class="input-wrap">
+              <select id="inp-state" onchange="onInput()">
+                <option value="">Select state…</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Pre-tax Contributions</label>
+            <div class="input-wrap hl">
+              <span class="ia l">$</span>
+              <input type="number" id="inp-pretax" placeholder="0" min="0" oninput="onInput()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tax Withholding / yr</label>
+            <div class="input-wrap hl">
+              <span class="ia l">$</span>
+              <input type="number" id="inp-withhold" placeholder="0" min="0" oninput="onInput()">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Itemized Deductions <span style="font-weight:400;text-transform:none;letter-spacing:0">(leave blank for standard)</span></label>
+          <div class="input-wrap hl">
+            <span class="ia l">$</span>
+            <input type="number" id="inp-itemized" placeholder="0" min="0" oninput="onInput()">
+          </div>
+        </div>
+
+        <div class="slider-section">
+          <div class="slider-hd">
+            <span class="slider-lbl">What-If Salary Adjust</span>
+            <span class="slider-val" id="slider-display">0%</span>
+          </div>
+          <input type="range" id="inp-slider" min="-30" max="30" value="0" oninput="onSlider(this.value)">
+          <div class="slider-ticks">
+            <span class="slider-tick">-30%</span>
+            <span class="slider-tick">-15%</span>
+            <span class="slider-tick">0%</span>
+            <span class="slider-tick">+15%</span>
+            <span class="slider-tick">+30%</span>
+          </div>
+          <p class="slider-adj-salary" id="adj-salary-display" style="display:none">Adjusted salary: <span id="adj-salary-val"></span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Save / Compare Panel -->
+    <div class="panel fade-up d1">
+      <div class="panel-head">
+        <span class="panel-title">💾 Scenarios</span>
+        <button class="btn btn-outline" style="font-size:12px;padding:5px 12px" onclick="toggleCompare()">
+          <span id="compare-btn-text">Compare Mode</span>
+        </button>
+      </div>
+      <div class="panel-body">
+        <div class="action-row" style="margin-bottom:14px">
+          <button class="btn btn-outline" onclick="saveScenario()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M2 14V2h9l3 3v9H2z"/><path d="M5 2v4h6V2M5 9h6v5H5V9z"/></svg>
+            Save Scenario
+          </button>
+          <button class="btn btn-outline" onclick="clearInputs()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M3 3l10 10M3 13L13 3"/></svg>
+            Clear
+          </button>
+        </div>
+        <div class="saved-list" id="saved-list">
+          <div class="empty-msg">No saved scenarios yet. Fill in your details and click Save.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── RIGHT: RESULTS ── -->
+  <div class="results-stack" id="results-area">
+
+    <!-- 🧊 TAX ICEBERG VISUALIZATION -->
+    <div class="iceberg-card fade-up">
+
+      <div class="ice-sky">
+        <div class="ice-moon"></div>
+        <div class="ice-aurora"></div>
+
+        <div class="ice-sky-tag">
+          <span class="ice-sky-tag-dot"></span>
+          Above the waterline — what you keep
+        </div>
+
+        <div class="ice-net-wrap">
+          <span class="ice-net-amount" id="ice-net">—</span>
+          <span class="ice-net-label">Annual Take-Home Pay</span>
+          <span class="ice-net-monthly" id="ice-net-mo"></span>
+        </div>
+
+        <div class="ice-refund-badge green" id="ice-refund-pill">
+          <span id="ice-refund-icon">💰</span>
+          <span id="ice-refund-label">Enter your salary to calculate</span>
+        </div>
+
+        <div class="ice-pills">
+          <div class="ice-pill">Effective Rate <strong id="ice-eff">—</strong></div>
+          <div class="ice-pill">Marginal <strong id="ice-marg">—</strong></div>
+          <div class="ice-pill">AGI <strong id="ice-agi">—</strong></div>
+          <span class="period-tog" id="period-tog-btn" onclick="togglePeriod()" style="margin-left:auto">Annual →</span>
+          <button class="share-fab" id="share-fab-btn" onclick="shareResultsFab(this)" title="Copy &amp; share results">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="3" r="2"/><circle cx="5" cy="8" r="2"/><circle cx="11" cy="13" r="2"/><line x1="7" y1="6.5" x2="9.5" y2="4.5"/><line x1="7" y1="9.5" x2="9.5" y2="11.5"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+
+      <!-- 🌊 ICEBERG IMAGE SCENE -->
+      <div class="ice-berg-svg-wrap">
+        <div class="ice-water-anim" aria-hidden="true">
+          <svg class="ice-creature ice-fish-r" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 20" width="38" height="20" aria-hidden="true">
+            <path d="M34 10C30 3 13 2 4 10C13 18 30 17 34 10Z" fill="rgba(71,210,255,0.72)"/>
+            <path d="M4 10L0 4L0 16Z" fill="rgba(71,210,255,0.72)"/>
+            <circle cx="28" cy="9" r="1.8" fill="rgba(0,20,40,0.85)"/>
+            <ellipse cx="28" cy="9.4" rx="0.7" ry="0.5" fill="rgba(255,255,255,0.5)"/>
+          </svg>
+          <svg class="ice-creature ice-fish-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 14" width="26" height="14" aria-hidden="true">
+            <path d="M23 7C20 2 9 1 3 7C9 13 20 12 23 7Z" fill="rgba(120,230,200,0.65)"/>
+            <path d="M3 7L0 3L0 11Z" fill="rgba(120,230,200,0.65)"/>
+            <circle cx="19" cy="6" r="1.3" fill="rgba(0,20,40,0.8)"/>
+          </svg>
+          <svg class="ice-creature ice-fish-l" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 20" width="38" height="20" aria-hidden="true">
+            <path d="M34 10C30 3 13 2 4 10C13 18 30 17 34 10Z" fill="rgba(100,180,255,0.6)"/>
+            <path d="M4 10L0 4L0 16Z" fill="rgba(100,180,255,0.6)"/>
+            <circle cx="28" cy="9" r="1.8" fill="rgba(0,20,40,0.8)"/>
+          </svg>
+          <svg class="ice-creature ice-whale-c" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 42" width="96" height="42" aria-hidden="true">
+            <ellipse cx="52" cy="23" rx="38" ry="12" fill="rgba(50,110,200,0.52)"/>
+            <path d="M16 23L2 12L8 23L2 34Z" fill="rgba(50,110,200,0.52)"/>
+            <path d="M38 11L46 1L56 11Z" fill="rgba(50,110,200,0.42)"/>
+            <path d="M70 32 Q78 37 86 32" stroke="rgba(71,200,255,0.45)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="78" cy="19" r="2.8" fill="rgba(0,20,40,0.6)"/>
+            <ellipse cx="78.8" cy="18.4" rx="1" ry="0.7" fill="rgba(255,255,255,0.45)"/>
+            <path d="M60 11 Q63 4 60 0 Q57 4 60 11" fill="rgba(180,230,255,0.55)"/>
+          </svg>
+        </div>
+        <div class="ice-flag-wrap">
+          <span class="ice-flag-emoji">🇺🇸</span>
+        </div>
+        <img class="ice-berg-img" id="ice-berg-img" src="/iceberg.png" alt="Tax Iceberg Visualization">
+        <div class="ice-sealevel-label">SEA LEVEL</div>
+        <div class="ice-overlay-num ice-overlay-net">
+          <span class="ice-ov-label">You Keep</span>
+          <span class="ice-ov-val" id="ice-ov-net">—</span>
+          <span class="ice-ov-pct" id="ice-ov-net-pct"></span>
+        </div>
+        <div class="ice-overlay-num ice-overlay-tax">
+          <span class="ice-ov-label">Total Tax</span>
+          <span class="ice-ov-val" id="ice-ov-tax">—</span>
+          <span class="ice-ov-pct" id="ice-ov-tax-pct"></span>
+        </div>
+        <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+          <polygon id="ice-tip-poly"/>
+          <polygon id="ice-body-poly"/>
+        </svg>
+      </div>
+
+      <!-- 🌊 SEA ZONE -->
+      <div class="ice-sea">
+        <div class="ice-bubble" style="width:7px;height:7px;left:9%;bottom:20px;animation-delay:0s;animation-duration:5.5s"></div>
+        <div class="ice-bubble" style="width:4px;height:4px;left:22%;bottom:14px;animation-delay:1.4s;animation-duration:4.2s"></div>
+        <div class="ice-bubble" style="width:9px;height:9px;left:38%;bottom:8px;animation-delay:.6s;animation-duration:6.8s"></div>
+        <div class="ice-bubble" style="width:5px;height:5px;left:55%;bottom:22px;animation-delay:2.8s;animation-duration:5s"></div>
+        <div class="ice-bubble" style="width:4px;height:4px;left:69%;bottom:10px;animation-delay:.3s;animation-duration:4.8s"></div>
+        <div class="ice-bubble" style="width:6px;height:6px;left:82%;bottom:16px;animation-delay:3.5s;animation-duration:6s"></div>
+        <div class="ice-bubble" style="width:3px;height:3px;left:47%;bottom:30px;animation-delay:2s;animation-duration:4.5s"></div>
+
+        <div class="ice-waterline">
+          <span class="waterline-label">▼ Below the surface — taxes you pay</span>
+          <div class="waterline-rule"></div>
+        </div>
+
+        <div class="ice-tax-rows">
+          <div class="ice-tax-row federal">
+            <div class="itr-icon">🏛️</div>
+            <div class="itr-info">
+              <span class="itr-name">Federal Income Tax</span>
+              <span class="itr-sub" id="ice-fed-sub">—</span>
+            </div>
+            <div class="itr-seg-wrap">
+              <div class="itr-seg-track"><div class="itr-seg-fill" id="ice-fed-bar" style="width:0%"></div></div>
+              <span class="itr-seg-pct" id="ice-fed-pct">—</span>
+            </div>
+            <span class="itr-amount" id="ice-fed">—</span>
+          </div>
+          <div class="ice-tax-row state">
+            <div class="itr-icon">🗺️</div>
+            <div class="itr-info">
+              <span class="itr-name">State Income Tax</span>
+              <span class="itr-sub" id="ice-sta-sub">—</span>
+            </div>
+            <div class="itr-seg-wrap">
+              <div class="itr-seg-track"><div class="itr-seg-fill" id="ice-sta-bar" style="width:0%"></div></div>
+              <span class="itr-seg-pct" id="ice-sta-pct">—</span>
+            </div>
+            <span class="itr-amount" id="ice-sta">—</span>
+          </div>
+          <div class="ice-tax-row fica">
+            <div class="itr-icon">🔒</div>
+            <div class="itr-info">
+              <span class="itr-name">FICA — SS + Medicare</span>
+              <span class="itr-sub" id="ice-fica-sub">—</span>
+            </div>
+            <div class="itr-seg-wrap">
+              <div class="itr-seg-track"><div class="itr-seg-fill" id="ice-fica-bar" style="width:0%"></div></div>
+              <span class="itr-seg-pct" id="ice-fica-pct">—</span>
+            </div>
+            <span class="itr-amount" id="ice-fica">—</span>
+          </div>
+          <div class="ice-tax-row total">
+            <div class="itr-icon">📊</div>
+            <div class="itr-info">
+              <span class="itr-name">Total Tax Burden</span>
+              <span class="itr-sub" id="ice-total-sub">—</span>
+            </div>
+            <div class="itr-seg-wrap">
+              <div class="itr-seg-track"><div class="itr-seg-fill" id="ice-total-bar" style="width:0%"></div></div>
+              <span class="itr-seg-pct" id="ice-total-pct">—</span>
+            </div>
+            <span class="itr-amount" id="ice-total">—</span>
+          </div>
+        </div>
+
+        <div class="ice-context">
+          <p class="ice-context-text" id="ice-context-text">
+            ⚓ Enter your salary above to reveal your tax iceberg.
+          </p>
+        </div>
+
+        <div class="ice-bottom-pills">
+          <div class="ice-pill-b">Gross Salary <strong id="ice-salary-pill">—</strong></div>
+          <div class="ice-pill-b">Social Security <strong id="ice-ss-pill">—</strong></div>
+          <div class="ice-pill-b">Medicare <strong id="ice-med-pill">—</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparison View -->
+    <div class="panel fade-up d1" id="compare-panel" style="display:none">
+      <div class="panel-head"><span class="panel-title">⚖️ Scenario Comparison</span></div>
+      <div class="panel-body">
+        <div id="compare-table"></div>
+      </div>
+    </div>
+
+    <!-- Expert Help Banner -->
+    <div class="expert-banner fade-up d2" onclick="openModal('help')">
+      <div class="eb-glow"></div>
+      <span class="eb-eyebrow">Free consultation · Certified CPAs</span>
+      <h3 class="eb-title">Not sure what to do<br>with your tax situation?</h3>
+      <p class="eb-sub">Connect with a certified tax professional who can review your numbers, spot deductions you're missing, and file for you.</p>
+      <div class="eb-row">
+        <button class="eb-btn" onclick="event.stopPropagation();openModal('help')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.09 1.18 2 2 0 012.07 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-.85a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+          Get Expert Help →
+        </button>
+        <div class="eb-chips">
+          <span class="eb-chip"><span class="eb-chip-dot"></span>Free 30-min call</span>
+          <span class="eb-chip"><span class="eb-chip-dot"></span>Licensed CPAs</span>
+          <span class="eb-chip"><span class="eb-chip-dot"></span>Mon–Fri 9–6 EST</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tax Saving Tips -->
+    <div class="panel fade-up d2" id="tips-panel">
+      <div class="panel-head">
+        <span class="panel-title">💡 Personalized Tax-Saving Tips</span>
+        <span id="tips-count" style="font-size:11px;color:var(--faint)"></span>
+      </div>
+      <div class="panel-body">
+        <div id="tips-list">
+          <div class="empty-msg">Enter your salary above to get personalized tips.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Download / Print Card -->
+    <div class="fade-up d2">
+      <div class="download-card-inner" id="download-card-el">
+        <div class="dc-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A73E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <polyline points="9 15 12 18 15 15"/>
+          </svg>
+        </div>
+        <div class="dc-text">
+          <div class="dc-title">Print Tax Planning Report</div>
+          <div class="dc-sub">Print a full breakdown with tax-saving tips for your records.</div>
+          <div class="dc-tags">
+            <span class="dc-tag">Print / PDF</span>
+            <span class="dc-tag">Instant</span>
+            <span class="dc-tag">Free</span>
+          </div>
+        </div>
+        <button class="dc-btn" onclick="printReport(this)">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V2h10v5M1 7h14v7H1zM4 13h8"/><rect x="4" y="9" width="2" height="2"/></svg>
+          Print Report
+        </button>
+      </div>
+    </div>
+
+    <!-- Community Forum -->
+    <div class="panel fade-up d3">
+      <div class="panel-head">
+        <span class="panel-title">💬 Ask the Community</span>
+        <span style="font-size:12px;color:var(--faint)">Questions &amp; discussions</span>
+      </div>
+      <div class="panel-body" id="community-panel-body">
+        <div class="forum-list" id="forum-list"></div>
+        <div id="community-forum" style="display:none">
+          <div class="forum-input-row" style="margin-top:14px;">
+            <input type="text" id="forum-input" placeholder="Ask a tax question…" maxlength="200" onkeydown="if(event.key==='Enter')postQuestion()">
+            <button class="btn btn-primary" onclick="postQuestion()">Post</button>
+          </div>
+        </div>
+        <div class="community-gate" id="community-gate">
+          <div class="community-gate-icon">💬</div>
+          <div class="community-gate-title">Want to join the conversation?</div>
+          <div class="community-gate-sub">Sign in to ask questions, share tips, and discuss tax strategies.</div>
+          <button class="community-gate-btn" onclick="openModal('auth')">Sign In / Create Account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="panel fade-up d3">
+      <div class="panel-head">
+        <span class="panel-title">❓ Frequently Asked Questions</span>
+      </div>
+      <div class="panel-body faq-section" id="faq-section" style="padding:16px 16px 18px"></div>
+    </div>
+
+  </div>
+
+</div><!-- /main-grid -->
+</div><!-- /app-shell -->
+</div><!-- /page-tax -->
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer>
+  <div class="f-brand">ToolKit<span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pro</span></div>
+  <p class="f-disc">This tool provides estimates for educational and planning purposes only. Actual tax liability may differ. Consult a qualified tax professional for advice. Tax brackets reflect 2024 IRS guidelines.</p>
+  <div class="f-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Disclaimer</a>
+    <a href="#">IRS.gov</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="f-copy">© 2026 ToolKit Pro · All calculations are estimates only · Not affiliated with the IRS</div>
+</footer>
+
+<!-- ════════════════ MODALS ════════════════ -->
+<!-- Help Modal -->
+<div class="modal-overlay" id="modal-help">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title">👋 Get Expert Tax Help</span>
+      <button class="modal-x" onclick="closeModal('help')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="modal-plan">
+        <strong>Free 30-minute consultation</strong> with a certified tax professional. We'll review your tax situation and identify opportunities to save.<br><br>
+        📅 Available Mon–Fri · 9am–6pm EST · Video or Phone
+      </div>
+      <div id="help-form">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="m-name" placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="m-email" placeholder="jane@email.com">
+        </div>
+        <div class="form-group">
+          <label>Message (optional)</label>
+          <textarea id="m-msg" placeholder="Describe your tax situation…" style="height:80px"></textarea>
+        </div>
+        <button class="btn btn-grad" style="width:100%;justify-content:center;margin-top:6px" onclick="submitHelp()">Request Consultation →</button>
+      </div>
+      <div class="modal-success" id="help-success">
+        <div class="modal-success-icon">✅</div>
+        <p style="font-weight:600;color:var(--text);margin-bottom:6px">You're all set!</p>
+        <p style="font-size:13px;color:var(--muted)">We'll reach out within 24 hours to confirm your appointment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="modal-auth">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title">👤 Sign In to ToolKit Pro</span>
+      <button class="modal-x" onclick="closeModal('auth')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="auth-tab-row">
+        <button class="auth-tab active" id="auth-tab-in" onclick="switchAuthTab('in')">Sign In</button>
+        <button class="auth-tab" id="auth-tab-up" onclick="switchAuthTab('up')">Create Account</button>
+      </div>
+      <div id="auth-form-in">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="auth-email-in" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-pass-in" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;height:42px;font-size:14px" onclick="doSignIn()">Sign In →</button>
+        <p id="auth-err-in" style="font-size:12px;color:var(--red);margin-top:8px;display:none"></p>
+      </div>
+      <div id="auth-form-up" style="display:none">
+        <div class="form-group">
+          <label>Display Name</label>
+          <input type="text" id="auth-name-up" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="auth-email-up" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-pass-up" placeholder="At least 6 characters">
+        </div>
+        <button class="btn btn-grad" style="width:100%;justify-content:center;margin-top:8px;height:42px;font-size:14px" onclick="doSignUp()">Create Account →</button>
+        <p id="auth-err-up" style="font-size:12px;color:var(--red);margin-top:8px;display:none"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/js/shared.js"></script>
+<script src="/js/tax.js"></script>
+</body>
+</html>
