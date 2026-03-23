@@ -434,18 +434,6 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   user-select: none; transition: color .2s ease;
 }
 .faq-item.open .faq-q { color: var(--gp); }
-.faq-num {
-  flex-shrink: 0;
-  width: 26px; height: 26px; border-radius: 7px;
-  background: var(--bg3); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-d); font-size: 11px; font-weight: 700;
-  color: var(--muted); transition: background .25s, color .25s, border-color .25s;
-  flex-shrink: 0;
-}
-.faq-item.open .faq-num {
-  background: var(--grad-d); color: #fff; border-color: transparent;
-}
 .faq-q-text { flex: 1; }
 .faq-chevron {
   flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
@@ -461,9 +449,9 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   font-size: 13.5px; color: var(--body); line-height: 1.75;
   max-height: 0; overflow: hidden;
   transition: max-height .38s ease, padding .38s ease;
-  padding: 0 18px 0 56px;
+  padding: 0 18px 0 18px;
 }
-.faq-item.open .faq-a { max-height: 500px; padding: 0 18px 18px 56px; }
+.faq-item.open .faq-a { max-height: 500px; padding: 0 18px 18px 18px; }
 
 /* ── AUTH MODAL ── */
 .auth-tab-row { display: flex; background: var(--bg3); border-radius: var(--r); padding: 3px; margin-bottom: 20px; }
@@ -4044,7 +4032,6 @@ function renderFAQ() {
   container.innerHTML = FAQ_DATA.map((item, i) => `
     <div class="faq-item" id="faq-${i}" onclick="toggleFAQ(${i})">
       <div class="faq-q">
-        <span class="faq-num">${i + 1}</span>
         <span class="faq-q-text">${item.q}</span>
         <span class="faq-chevron">&#9660;</span>
       </div>
