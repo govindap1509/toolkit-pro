@@ -678,11 +678,36 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   bottom: 0; left: 0; right: 0;
   height: 58%;
   width: 100%;
-  object-fit: cover;
-  object-position: top center;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.95;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0a3a5c 0%, #062840 50%, #041120 100%);
+}
+@keyframes wave1 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes wave2 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ice-water-anim::before,
+.ice-water-anim::after {
+  content: '';
+  position: absolute;
+  top: -18px; left: 0;
+  width: 200%; height: 36px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 36' preserveAspectRatio='none'%3E%3Cpath d='M0 18 C50 4 100 32 150 18 C200 4 250 32 300 18 C350 4 400 32 400 18 L400 36 L0 36Z' fill='%230a3a5c'/%3E%3C/svg%3E") repeat-x;
+  background-size: 50% 36px;
+  animation: wave1 4s linear infinite;
+  opacity: 0.8;
+}
+.ice-water-anim::after {
+  top: -10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 28' preserveAspectRatio='none'%3E%3Cpath d='M0 14 C60 2 120 26 180 14 C240 2 300 26 360 14 C390 2 400 18 400 14 L400 28 L0 28Z' fill='%23062840'/%3E%3C/svg%3E") repeat-x;
+  background-size: 50% 28px;
+  animation: wave2 6s linear infinite reverse;
+  opacity: 0.6;
 }
 /* Iceberg PNG centered, straddling the waterline */
 .ice-berg-img {
@@ -1958,8 +1983,8 @@ select.sol-input {
 
       <!-- 🌊 ── ICEBERG IMAGE SCENE ── 🌊 -->
       <div class="ice-berg-svg-wrap">
-        <!-- Water animation (bottom half) -->
-        <img class="ice-water-anim" src="water.webp" alt="" aria-hidden="true">
+        <!-- Water animation (bottom half, pure CSS – no file dependency) -->
+        <div class="ice-water-anim" aria-hidden="true"></div>
         <!-- Iceberg PNG -->
         <img class="ice-berg-img" id="ice-berg-img" src="iceberg.png" alt="Tax Iceberg Visualization">
         <!-- Sea level label -->
