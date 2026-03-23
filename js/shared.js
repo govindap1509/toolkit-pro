@@ -155,8 +155,8 @@ function submitHelp() {
 // ── NAVIGATION ───────────────────────────────────────────────
 function go(id) {
   if (id === 'home') {
-    window.location.href = 'index.html';
+    window.location.href = '/';
   } else {
-    window.location.href = id + '.html';
+    window.location.href = '/' + id;
   }
 }
