@@ -4,6 +4,7 @@
   "rewrites": [
     { "source": "/tax",    "destination": "/tax.html"    },
     { "source": "/solar",  "destination": "/solar.html"  },
-    { "source": "/rental", "destination": "/rental.html" }
+    { "source": "/rental", "destination": "/rental.html" },
+    { "source": "/commercial", "destination": "/commercial.html" }
   ]
 }
