@@ -18,7 +18,8 @@ if (SUPABASE_URL && SUPABASE_KEY && window.supabase) {
 
 // ── AUTH STATE ───────────────────────────────────────────────
 const AUTH_KEY = 'qtp-auth';
-let currentUser = JSON.parse(localStorage.getItem(AUTH_KEY) || 'null');
+let currentUser = null;
+try { currentUser = JSON.parse(localStorage.getItem(AUTH_KEY) || 'null'); } catch(e) {}
 
 // On page load, check Supabase session if available
 if (supabase) {
@@ -74,13 +75,14 @@ async function doSignIn() {
     if (error) { showAuthErr(err, error.message); return; }
     currentUser = { email: data.user.email, name: data.user.user_metadata?.name || email.split('@')[0] };
   } else {
-    const users = JSON.parse(localStorage.getItem('qtp-users') || '{}');
+    let users = {};
+    try { users = JSON.parse(localStorage.getItem('qtp-users') || '{}'); } catch(e) {}
     if (!users[email] || users[email].pass !== btoa(pass)) {
       showAuthErr(err, 'Invalid email or password.'); return;
     }
     currentUser = { email, name: users[email].name };
   }
-  localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+  try { localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser)); } catch(e) {}
   closeModal('auth');
   updateAuthUI();
 }
@@ -102,13 +104,14 @@ async function doSignUp() {
     if (error) { showAuthErr(err, error.message); return; }
     currentUser = { email, name };
   } else {
-    const users = JSON.parse(localStorage.getItem('qtp-users') || '{}');
+    let users = {};
+    try { users = JSON.parse(localStorage.getItem('qtp-users') || '{}'); } catch(e) {}
     if (users[email]) { showAuthErr(err, 'An account with this email already exists.'); return; }
     users[email] = { name, pass: btoa(pass) };
-    localStorage.setItem('qtp-users', JSON.stringify(users));
+    try { localStorage.setItem('qtp-users', JSON.stringify(users)); } catch(e) {}
     currentUser = { email, name };
   }
-  localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+  try { localStorage.setItem(AUTH_KEY, JSON.stringify(currentUser)); } catch(e) {}
   closeModal('auth');
   updateAuthUI();
 }
@@ -121,7 +124,7 @@ function showAuthErr(el, msg) {
 async function logOut() {
   if (supabase) { await supabase.auth.signOut(); }
   currentUser = null;
-  localStorage.removeItem(AUTH_KEY);
+  try { localStorage.removeItem(AUTH_KEY); } catch(e) {}
   updateAuthUI();
 }
 
