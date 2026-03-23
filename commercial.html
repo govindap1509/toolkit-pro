@@ -69,10 +69,14 @@ h2 { font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 24px;
 h3 { font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 
 /* GRID */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
 .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .two-col-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+/* Input sections grid: 3 columns inside the full-width inputs card */
+.input-sections-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.input-sec-col { padding: 0 28px; border-right: 1px solid var(--border); }
+.input-sec-col:first-child { padding-left: 0; }
+.input-sec-col:last-child { border-right: none; padding-right: 0; }
 
 /* CARDS */
 .card { background: white; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 28px; transition: box-shadow var(--transition); }
@@ -258,10 +262,13 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 .metric-formula { font-size: 10px; color: var(--text-ghost); margin-top: 5px; line-height: 1.3; font-style: italic; }
 
 /* RESPONSIVE */
-@media (max-width: 1024px) { .two-col { grid-template-columns: 1fr; } .four-col { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 1024px) { .four-col { grid-template-columns: repeat(2, 1fr); } .input-sections-grid { grid-template-columns: repeat(2, 1fr); } .input-sec-col:nth-child(2) { border-right: 1px solid var(--border); } .input-sec-col:nth-child(3) { border-right: none; padding-left: 28px; border-top: 1px solid var(--border); padding-top: 24px; margin-top: 8px; } }
 @media (max-width: 640px) {
   .comm-hero h1 { font-size: 32px; }
   .three-col, .four-col, .two-col-equal { grid-template-columns: 1fr; }
+  .input-sections-grid { grid-template-columns: 1fr; }
+  .input-sec-col { padding: 0 !important; border-right: none !important; border-top: 1px solid var(--border); padding-top: 20px !important; margin-top: 8px; }
+  .input-sec-col:first-child { border-top: none; padding-top: 0 !important; margin-top: 0; }
   .container { padding: 0 16px; }
   section { padding: 48px 0; }
   .comm-hero { padding: 48px 0 40px; }
@@ -353,200 +360,192 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 <!-- ANALYZER -->
 <section id="analyzer">
   <div class="container">
-    <div class="two-col">
 
-      <!-- LEFT: INPUTS -->
-      <div>
-        <div class="card" id="input-card">
+    <!-- FULL-WIDTH INPUTS CARD -->
+    <div class="card" id="input-card" style="margin-bottom:32px">
+      <div class="input-sections-grid">
 
-          <!-- S1: Property -->
-          <div class="input-section" style="border-top:none;padding-top:0">
-            <div class="input-section-header">
-              <span class="input-section-num">01</span>
-              <span class="input-section-title">Property Details</span>
+        <!-- COL 1: Property Details + Income -->
+        <div class="input-sec-col">
+          <div class="input-section-header">
+            <span class="input-section-num">01</span>
+            <span class="input-section-title">Property Details</span>
+          </div>
+          <div class="input-group">
+            <label>Property Type</label>
+            <select id="prop-type" onchange="setTypeFromSelect(this.value)">
+              <option value="multifamily">🏘️ Multifamily (Apartments)</option>
+              <option value="office">🏢 Office Building</option>
+              <option value="retail">🏪 Retail / Strip Mall</option>
+              <option value="industrial">🏭 Industrial / Warehouse</option>
+              <option value="mixeduse">🏙️ Mixed-Use</option>
+            </select>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Purchase Price ($) <span class="tip-icon" data-tip="Total acquisition cost. Commercial properties typically trade at a multiple of NOI, expressed as cap rate.">ℹ</span></label>
+              <input type="number" id="price" value="1075000" step="50000" oninput="recalc()">
             </div>
             <div class="input-group">
-              <label>Property Type</label>
-              <select id="prop-type" onchange="setTypeFromSelect(this.value)">
-                <option value="multifamily">🏘️ Multifamily (Apartments)</option>
-                <option value="office">🏢 Office Building</option>
-                <option value="retail">🏪 Retail / Strip Mall</option>
-                <option value="industrial">🏭 Industrial / Warehouse</option>
-                <option value="mixeduse">🏙️ Mixed-Use</option>
+              <label id="units-label">Units / Sq Ft <span class="tip-icon" data-tip="For multifamily: number of units. For commercial: leasable square footage.">ℹ</span></label>
+              <input type="number" id="units" value="5" step="1" oninput="recalc()">
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Year Built (optional)</label>
+              <input type="number" id="year-built" value="1986" min="1900" max="2025" step="1" oninput="recalc()">
+            </div>
+            <div class="input-group">
+              <label>Market / Location <span class="tip-icon" data-tip="Used for context only. Adjust defaults manually to match local market conditions.">ℹ</span></label>
+              <input type="text" id="market" value="Riverside, CA 92501" style="height:44px">
+            </div>
+          </div>
+
+          <div class="input-section-header" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+            <span class="input-section-num">02</span>
+            <span class="input-section-title">Income</span>
+          </div>
+          <div class="input-group">
+            <label id="rent-label">Monthly Rent / Unit ($) <span class="tip-icon" data-tip="For multifamily: avg rent per unit. For commercial: monthly rent per sq ft × total sq ft.">ℹ</span></label>
+            <input type="number" id="rent" value="1491" step="50" oninput="recalc()">
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Parking Income ($/mo) <span class="tip-icon" data-tip="Monthly parking revenue. Common in multifamily and office. Set 0 if not applicable.">ℹ</span></label>
+              <input type="number" id="parking" value="0" step="50" oninput="recalc()">
+            </div>
+            <div class="input-group">
+              <label>Other Income ($/mo) <span class="tip-icon" data-tip="Laundry, vending, storage, service charges, CAM collections above expenses.">ℹ</span></label>
+              <input type="number" id="other-income" value="0" step="50" oninput="recalc()">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Vacancy Rate (%) <span class="tip-icon" data-tip="Multifamily: 5–8%. Office/Retail: 7–15%. Industrial: 3–5%. Be conservative — always budget vacancy.">ℹ</span></label>
+            <div class="slider-wrap">
+              <input type="range" id="vac-slider" min="0" max="30" step="0.5" value="6" oninput="syncS('vac','vac-slider');recalc()">
+              <input type="number" id="vac" value="6" min="0" max="30" step="0.5" style="width:60px;flex-shrink:0" oninput="syncI('vac','vac-slider');recalc()">
+            </div>
+          </div>
+        </div>
+
+        <!-- COL 2: Operating Expenses + Financing -->
+        <div class="input-sec-col">
+          <div class="input-section-header">
+            <span class="input-section-num">03</span>
+            <span class="input-section-title">Operating Expenses</span>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Property Tax (% of value) <span class="tip-icon" data-tip="Commercial property tax rates vary widely. US range: 0.8–3% of assessed value annually.">ℹ</span></label>
+              <input type="number" id="ptax" value="1.1" min="0" max="5" step="0.1" oninput="recalc()">
+            </div>
+            <div class="input-group">
+              <label>Insurance (% of value) <span class="tip-icon" data-tip="Commercial insurance: typically 0.5–1% of property value. Larger properties trend toward lower %.">ℹ</span></label>
+              <input type="number" id="ins-pct" value="0.65" min="0" max="3" step="0.1" oninput="recalc()">
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Maintenance (% of income) <span class="tip-icon" data-tip="Budget 5–10% of gross income. Older properties or industrial may need more. Includes repairs and upkeep.">ℹ</span></label>
+              <input type="number" id="maint" value="10" min="0" max="30" step="0.5" oninput="recalc()">
+            </div>
+            <div class="input-group">
+              <label>Utilities (% of income) <span class="tip-icon" data-tip="Only if landlord pays. Triple-net (NNN) leases shift utilities to tenants — set 0 for NNN.">ℹ</span></label>
+              <input type="number" id="utils" value="0" min="0" max="20" step="0.5" oninput="recalc()">
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Property Mgmt (% of income) <span class="tip-icon" data-tip="Commercial managers charge 4–8% of EGI. Self-managing? Set to 0.">ℹ</span></label>
+              <input type="number" id="mgmt" value="8" min="0" max="20" step="0.5" oninput="recalc()">
+            </div>
+            <div class="input-group">
+              <label>CapEx Reserve (% of income) <span class="tip-icon" data-tip="Capital expenditure reserve: roof, HVAC, major systems. Budget 3–5% of gross income annually.">ℹ</span></label>
+              <input type="number" id="capex" value="5" min="0" max="15" step="0.5" oninput="recalc()">
+            </div>
+          </div>
+
+          <div class="input-section-header" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+            <span class="input-section-num">04</span>
+            <span class="input-section-title">Financing</span>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Down Payment ($) <span class="tip-icon" data-tip="Commercial loans require 20–35% down. Higher down payment = lower debt service but lower CoC.">ℹ</span></label>
+              <input type="number" id="down" value="268750" step="25000" oninput="recalc()">
+            </div>
+            <div class="input-group">
+              <label>Interest Rate (%) <span class="tip-icon" data-tip="Commercial mortgage rates: typically 6–9%. Higher than residential. Rates vary by property type and creditworthiness.">ℹ</span></label>
+              <input type="number" id="rate" value="7.25" min="2" max="15" step="0.1" oninput="recalc()">
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Loan Term (years) <span class="tip-icon" data-tip="Commercial loans often have 5–10 year terms with 20–25 year amortization. Enter the amortization period here.">ℹ</span></label>
+              <select id="term" onchange="recalc()">
+                <option value="25" selected>25 years</option>
+                <option value="20">20 years</option>
+                <option value="15">15 years</option>
+                <option value="30">30 years</option>
               </select>
             </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Purchase Price ($) <span class="tip-icon" data-tip="Total acquisition cost. Commercial properties typically trade at a multiple of NOI, expressed as cap rate.">ℹ</span></label>
-                <input type="number" id="price" value="1075000" step="50000" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label id="units-label">Units / Sq Ft <span class="tip-icon" data-tip="For multifamily: number of units. For commercial: leasable square footage.">ℹ</span></label>
-                <input type="number" id="units" value="5" step="1" oninput="recalc()">
-              </div>
-            </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Year Built (optional)</label>
-                <input type="number" id="year-built" value="1986" min="1900" max="2025" step="1" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label>Market / Location <span class="tip-icon" data-tip="Used for context only. Adjust defaults manually to match local market conditions.">ℹ</span></label>
-                <input type="text" id="market" value="Riverside, CA 92501" style="height:44px">
-              </div>
-            </div>
-          </div>
-
-          <!-- S2: Income -->
-          <div class="input-section">
-            <div class="input-section-header">
-              <span class="input-section-num">02</span>
-              <span class="input-section-title">Income</span>
-            </div>
             <div class="input-group">
-              <label id="rent-label">Monthly Rent / Unit ($) <span class="tip-icon" data-tip="For multifamily: avg rent per unit. For commercial: monthly rent per sq ft × total sq ft.">ℹ</span></label>
-              <input type="number" id="rent" value="1491" step="50" oninput="recalc()">
-            </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Parking Income ($/mo) <span class="tip-icon" data-tip="Monthly parking revenue. Common in multifamily and office. Set 0 if not applicable.">ℹ</span></label>
-                <input type="number" id="parking" value="0" step="50" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label>Other Income ($/mo) <span class="tip-icon" data-tip="Laundry, vending, storage, service charges, CAM collections above expenses.">ℹ</span></label>
-                <input type="number" id="other-income" value="0" step="50" oninput="recalc()">
-              </div>
-            </div>
-            <div class="input-group">
-              <label>Vacancy Rate (%) <span class="tip-icon" data-tip="Multifamily: 5–8%. Office/Retail: 7–15%. Industrial: 3–5%. Be conservative — always budget vacancy.">ℹ</span></label>
-              <div class="slider-wrap">
-                <input type="range" id="vac-slider" min="0" max="30" step="0.5" value="6" oninput="syncS('vac','vac-slider');recalc()">
-                <input type="number" id="vac" value="6" min="0" max="30" step="0.5" style="width:60px;flex-shrink:0" oninput="syncI('vac','vac-slider');recalc()">
-              </div>
+              <label>Loan Type <span class="tip-icon" data-tip="Fixed: stable payments throughout. Variable: rate adjusts periodically — use fixed for conservative analysis.">ℹ</span></label>
+              <select id="loan-type" onchange="recalc()">
+                <option value="fixed">Fixed Rate</option>
+                <option value="variable">Variable Rate</option>
+              </select>
             </div>
           </div>
-
-          <!-- S3: Expenses -->
-          <div class="input-section">
-            <div class="input-section-header">
-              <span class="input-section-num">03</span>
-              <span class="input-section-title">Operating Expenses</span>
-            </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Property Tax (% of value) <span class="tip-icon" data-tip="Commercial property tax rates vary widely. US range: 0.8–3% of assessed value annually.">ℹ</span></label>
-                <input type="number" id="ptax" value="1.1" min="0" max="5" step="0.1" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label>Insurance (% of value) <span class="tip-icon" data-tip="Commercial insurance: typically 0.5–1% of property value. Larger properties trend toward lower %.">ℹ</span></label>
-                <input type="number" id="ins-pct" value="0.65" min="0" max="3" step="0.1" oninput="recalc()">
-              </div>
-            </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Maintenance (% of income) <span class="tip-icon" data-tip="Budget 5–10% of gross income. Older properties or industrial may need more. Includes repairs and upkeep.">ℹ</span></label>
-                <input type="number" id="maint" value="10" min="0" max="30" step="0.5" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label>Utilities (% of income) <span class="tip-icon" data-tip="Only if landlord pays. Triple-net (NNN) leases shift utilities to tenants — set 0 for NNN.">ℹ</span></label>
-                <input type="number" id="utils" value="0" min="0" max="20" step="0.5" oninput="recalc()">
-              </div>
-            </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Property Mgmt (% of income) <span class="tip-icon" data-tip="Commercial managers charge 4–8% of EGI. Self-managing? Set to 0.">ℹ</span></label>
-                <input type="number" id="mgmt" value="8" min="0" max="20" step="0.5" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label>CapEx Reserve (% of income) <span class="tip-icon" data-tip="Capital expenditure reserve: roof, HVAC, major systems. Budget 3–5% of gross income annually.">ℹ</span></label>
-                <input type="number" id="capex" value="5" min="0" max="15" step="0.5" oninput="recalc()">
-              </div>
-            </div>
-          </div>
-
-          <!-- S4: Financing -->
-          <div class="input-section">
-            <div class="input-section-header">
-              <span class="input-section-num">04</span>
-              <span class="input-section-title">Financing</span>
-            </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Down Payment ($) <span class="tip-icon" data-tip="Commercial loans require 20–35% down. Higher down payment = lower debt service but lower CoC.">ℹ</span></label>
-                <input type="number" id="down" value="268750" step="25000" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label>Interest Rate (%) <span class="tip-icon" data-tip="Commercial mortgage rates: typically 6–9%. Higher than residential. Rates vary by property type and creditworthiness.">ℹ</span></label>
-                <input type="number" id="rate" value="7.25" min="2" max="15" step="0.1" oninput="recalc()">
-              </div>
-            </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Loan Term (years) <span class="tip-icon" data-tip="Commercial loans often have 5–10 year terms with 20–25 year amortization. Enter the amortization period here.">ℹ</span></label>
-                <select id="term" onchange="recalc()">
-                  <option value="25" selected>25 years</option>
-                  <option value="20">20 years</option>
-                  <option value="15">15 years</option>
-                  <option value="30">30 years</option>
-                </select>
-              </div>
-              <div class="input-group">
-                <label>Loan Type <span class="tip-icon" data-tip="Fixed: stable payments throughout. Variable: rate adjusts periodically — use fixed for conservative analysis.">ℹ</span></label>
-                <select id="loan-type" onchange="recalc()">
-                  <option value="fixed">Fixed Rate</option>
-                  <option value="variable">Variable Rate</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- S5: Projections -->
-          <div class="input-section" style="margin-bottom:0">
-            <div class="input-section-header">
-              <span class="input-section-num">05</span>
-              <span class="input-section-title">Growth Assumptions</span>
-            </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Appreciation (%/yr) <span class="tip-icon" data-tip="Commercial properties appreciate more erratically than residential. Conservative: 2–3%. Growth market: 4–5%.">ℹ</span></label>
-                <input type="number" id="appr" value="3" min="0" max="15" step="0.5" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label>Income Growth (%/yr) <span class="tip-icon" data-tip="Annual rent escalation. Most commercial leases include 2–3% annual bumps. CPI-linked leases may vary.">ℹ</span></label>
-                <input type="number" id="inc-growth" value="2.5" min="0" max="10" step="0.5" oninput="recalc()">
-              </div>
-            </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Discount Rate / WACC (%) <span class="tip-icon" data-tip="Required rate of return used for NPV calculation. Typical commercial RE discount rates: 8–12%.">ℹ</span></label>
-                <input type="number" id="disc-rate" value="10" min="4" max="20" step="0.5" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label>Exit Cap Rate (%) <span class="tip-icon" data-tip="The cap rate used to estimate exit/resale value. Conservative: same as entry or 0.5% higher.">ℹ</span></label>
-                <input type="number" id="exit-cap" value="6.5" min="3" max="15" step="0.25" oninput="recalc()">
-              </div>
-            </div>
-          </div>
-            <div class="input-row">
-              <div class="input-group">
-                <label>Tax Rate (%) <span class="tip-icon" data-tip="Your marginal income tax rate. Used for depreciation and interest deduction benefits. 24–37% for most investors.">ℹ</span></label>
-                <input type="number" id="tax-rate-inp" value="28" min="0" max="50" step="1" oninput="recalc()">
-              </div>
-              <div class="input-group">
-                <label>Include Tax Benefits <span class="tip-icon" data-tip="Depreciation (39-yr commercial / 27.5-yr residential) and mortgage interest deduction reduce your tax bill each year.">ℹ</span></label>
-                <select id="tax-toggle" onchange="recalc()">
-                  <option value="1">✅ Yes — include</option>
-                  <option value="0">❌ No — exclude</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
 
-      <!-- RIGHT: RESULTS -->
-      <div id="results">
+        <!-- COL 3: Growth Assumptions + Tax -->
+        <div class="input-sec-col">
+          <div class="input-section-header">
+            <span class="input-section-num">05</span>
+            <span class="input-section-title">Growth Assumptions</span>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Appreciation (%/yr) <span class="tip-icon" data-tip="Commercial properties appreciate more erratically than residential. Conservative: 2–3%. Growth market: 4–5%.">ℹ</span></label>
+              <input type="number" id="appr" value="3" min="0" max="15" step="0.5" oninput="recalc()">
+            </div>
+            <div class="input-group">
+              <label>Income Growth (%/yr) <span class="tip-icon" data-tip="Annual rent escalation. Most commercial leases include 2–3% annual bumps. CPI-linked leases may vary.">ℹ</span></label>
+              <input type="number" id="inc-growth" value="2.5" min="0" max="10" step="0.5" oninput="recalc()">
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Discount Rate / WACC (%) <span class="tip-icon" data-tip="Required rate of return used for NPV calculation. Typical commercial RE discount rates: 8–12%.">ℹ</span></label>
+              <input type="number" id="disc-rate" value="10" min="4" max="20" step="0.5" oninput="recalc()">
+            </div>
+            <div class="input-group">
+              <label>Exit Cap Rate (%) <span class="tip-icon" data-tip="The cap rate used to estimate exit/resale value. Conservative: same as entry or 0.5% higher.">ℹ</span></label>
+              <input type="number" id="exit-cap" value="6.5" min="3" max="15" step="0.25" oninput="recalc()">
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="input-group">
+              <label>Tax Rate (%) <span class="tip-icon" data-tip="Your marginal income tax rate. Used for depreciation and interest deduction benefits. 24–37% for most investors.">ℹ</span></label>
+              <input type="number" id="tax-rate-inp" value="28" min="0" max="50" step="1" oninput="recalc()">
+            </div>
+            <div class="input-group">
+              <label>Include Tax Benefits <span class="tip-icon" data-tip="Depreciation (39-yr commercial / 27.5-yr residential) and mortgage interest deduction reduce your tax bill each year.">ℹ</span></label>
+              <select id="tax-toggle" onchange="recalc()">
+                <option value="1">✅ Yes — include</option>
+                <option value="0">❌ No — exclude</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FULL-WIDTH RESULTS -->
+    <div id="results">
 
         <!-- Type badge -->
         <div style="margin-bottom:16px;display:flex;align-items:center;gap:10px">
@@ -763,7 +762,6 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         </div>
 
       </div>
-    </div>
 
     <!-- Charts -->
     <div style="margin-top:48px">
