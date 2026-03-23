@@ -589,36 +589,6 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   display: block;
 }
 
-/* Salary proportion visual bar */
-.ice-proportion-bar {
-  display: flex; align-items: center;
-  gap: 0; height: 10px; border-radius: 100px; overflow: hidden;
-  margin: 18px 0 20px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.08);
-  position: relative;
-}
-.ice-prop-net {
-  height: 100%;
-  background: linear-gradient(90deg, #4ade80, #22d3ee);
-  border-radius: 100px 0 0 100px;
-  transition: width .8s cubic-bezier(.4,0,.2,1);
-  min-width: 3px;
-}
-.ice-prop-tax {
-  height: 100%;
-  background: linear-gradient(90deg, rgba(234,67,53,.6), rgba(184,77,198,.5));
-  transition: width .8s cubic-bezier(.4,0,.2,1);
-  min-width: 3px;
-  border-radius: 0 100px 100px 0;
-}
-.ice-prop-labels {
-  display: flex; justify-content: space-between;
-  font-size: 13px; font-weight: 600; margin-top: 6px; margin-bottom: 20px;
-}
-.ice-prop-lbl-net { color: #4ade80; font-weight: 600; }
-.ice-prop-lbl-tax { color: rgba(234,100,80,.8); font-weight: 600; text-align: right; }
-
 /* Refund badge */
 .ice-refund-badge {
   display: inline-flex; align-items: center; gap: 7px;
@@ -759,8 +729,8 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
   display: block;
   text-shadow: 0 2px 12px rgba(0,0,0,0.75);
 }
-.ice-overlay-net { top: 14px; left: 14px; color: #4ade80; }
-.ice-overlay-tax { bottom: 14px; right: 14px; color: #f87171; text-align: right; }
+.ice-overlay-net { top: 22px; left: 50%; transform: translateX(-105%); color: #4ade80; }
+.ice-overlay-tax { bottom: 22px; left: 50%; transform: translateX(5%); color: #f87171; text-align: left; }
 
 /* ── UNDERWATER CREATURES ── */
 .ice-creature { position: absolute; pointer-events: none; z-index: 2; }
@@ -1992,15 +1962,7 @@ select.sol-input {
           <span class="ice-net-monthly" id="ice-net-mo"></span>
         </div>
 
-        <!-- Proportion bar: net vs tax -->
-        <div class="ice-proportion-bar">
-          <div class="ice-prop-net" id="ice-prop-net" style="width:67%"></div>
-          <div class="ice-prop-tax" id="ice-prop-tax" style="width:33%"></div>
-        </div>
-        <div class="ice-prop-labels">
-          <span class="ice-prop-lbl-net" id="ice-prop-net-lbl">Keep — </span>
-          <span class="ice-prop-lbl-tax" id="ice-prop-tax-lbl"> — Taxes</span>
-        </div>
+        <!-- Proportion bar: net vs tax — removed, % shown in overlay brackets -->
 
         <!-- Refund / Owed status badge -->
         <div class="ice-refund-badge green" id="ice-refund-pill">
@@ -3390,12 +3352,6 @@ function renderIceberg(r, inputs) {
   const gross = r.salary > 0 ? r.salary : 1;
   const netPct  = Math.max(3, Math.min(97, r.netIncome / gross * 100));
   const taxPct  = 100 - netPct;
-  const propNet = document.getElementById('ice-prop-net');
-  const propTax = document.getElementById('ice-prop-tax');
-  if (propNet) propNet.style.width = netPct.toFixed(1) + '%';
-  if (propTax) propTax.style.width = taxPct.toFixed(1) + '%';
-  set('ice-prop-net-lbl', `Keep ${netPct.toFixed(0)}%`);
-  set('ice-prop-tax-lbl', `${taxPct.toFixed(0)}% taxes`);
 
   // ── SVG Iceberg: dynamic shape based on net vs tax ratio ──
   if (r.salary > 0) {
@@ -3419,8 +3375,8 @@ function renderIceberg(r, inputs) {
   }
 
   // ── Overlay big numbers ──
-  set('ice-ov-net', fmt(Math.round(r.netIncome / div)));
-  set('ice-ov-tax', fmt(Math.round(r.total      / div)));
+  set('ice-ov-net', fmt(Math.round(r.netIncome / div)) + ' (' + netPct.toFixed(0) + '%)');
+  set('ice-ov-tax', fmt(Math.round(r.total      / div)) + ' (' + taxPct.toFixed(0) + '%)');
 
   // ── Rate pills ──
   set('ice-eff',  pct(r.effTotal));
