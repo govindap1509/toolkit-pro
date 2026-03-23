@@ -72,11 +72,23 @@ h3 { font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing
 .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 .two-col-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+/* INPUT CARD MASTHEAD */
+#input-card { padding: 0; overflow: hidden; border-color: rgba(184,77,198,0.2); box-shadow: 0 4px 24px rgba(184,77,198,0.08); }
+.input-card-masthead { padding: 14px 28px; background: linear-gradient(135deg, rgba(184,77,198,0.08) 0%, rgba(71,158,245,0.08) 100%); border-bottom: 1.5px solid rgba(184,77,198,0.15); display: flex; align-items: center; gap: 14px; }
+.input-card-masthead-icon { width: 38px; height: 38px; background: var(--gradient); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 3px 12px rgba(184,77,198,0.3); flex-shrink: 0; }
 /* Input sections grid: 3 columns inside the full-width inputs card */
 .input-sections-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
-.input-sec-col { padding: 0 28px; border-right: 1px solid var(--border); }
-.input-sec-col:first-child { padding-left: 0; }
-.input-sec-col:last-child { border-right: none; padding-right: 0; }
+.input-sec-col { padding: 22px 28px; border-right: 1px solid var(--border); position: relative; }
+.input-sec-col:last-child { border-right: none; }
+/* Colored top accent bar per column */
+.input-sec-col::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.input-sec-col:nth-child(1)::before { background: linear-gradient(90deg, #b84dc6, #9640be); }
+.input-sec-col:nth-child(2)::before { background: linear-gradient(90deg, #8b3cbc, #4e93de); }
+.input-sec-col:nth-child(3)::before { background: linear-gradient(90deg, #479ef5, #2a7ae0); }
+/* Subtle column tints */
+.input-sec-col:nth-child(1) { background: linear-gradient(180deg, rgba(184,77,198,0.025) 0%, transparent 40%); }
+.input-sec-col:nth-child(2) { background: linear-gradient(180deg, rgba(120,70,200,0.025) 0%, transparent 40%); }
+.input-sec-col:nth-child(3) { background: linear-gradient(180deg, rgba(71,158,245,0.03) 0%, transparent 40%); }
 
 /* CARDS */
 .card { background: white; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 28px; transition: box-shadow var(--transition); }
@@ -121,12 +133,11 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 .badge-amber { background: var(--amber-bg); color: var(--amber); }
 .badge-blue { background: var(--blue-tint); color: var(--blue); }
 
-/* SECTION HEADER NUMBERS */
-.input-section { margin-bottom: 20px; padding: 18px 0 0; border-top: 1px solid var(--border); }
-.input-section:first-child { border-top: none; padding-top: 0; }
-.input-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+/* SECTION HEADER CHIPS */
+.input-section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding: 10px 14px; background: linear-gradient(135deg, rgba(184,77,198,0.06), rgba(71,158,245,0.06)); border-radius: 9px; border: 1px solid rgba(184,77,198,0.13); }
+.input-section-icon { font-size: 15px; flex-shrink: 0; line-height: 1; }
 .input-section-num { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; flex-shrink: 0; }
-.input-section-title { font-size: 13px; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.04em; }
+.input-section-title { font-size: 12px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* TOOLTIPS */
 .tip-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; background: var(--bg-tertiary); color: var(--text-muted); font-size: 9px; font-weight: 700; cursor: help; vertical-align: middle; margin-left: 3px; position: relative; border: 1px solid var(--border); transition: all var(--transition); font-family: var(--font); }
@@ -262,13 +273,14 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 .metric-formula { font-size: 10px; color: var(--text-ghost); margin-top: 5px; line-height: 1.3; font-style: italic; }
 
 /* RESPONSIVE */
-@media (max-width: 1024px) { .four-col { grid-template-columns: repeat(2, 1fr); } .input-sections-grid { grid-template-columns: repeat(2, 1fr); } .input-sec-col:nth-child(2) { border-right: 1px solid var(--border); } .input-sec-col:nth-child(3) { border-right: none; padding-left: 28px; border-top: 1px solid var(--border); padding-top: 24px; margin-top: 8px; } }
+@media (max-width: 1024px) { .four-col { grid-template-columns: repeat(2, 1fr); } .input-sections-grid { grid-template-columns: repeat(2, 1fr); } .input-sec-col:nth-child(2) { border-right: 1px solid var(--border); } .input-sec-col:nth-child(3) { border-right: none; border-top: 1px solid var(--border); } }
 @media (max-width: 640px) {
   .comm-hero h1 { font-size: 32px; }
   .three-col, .four-col, .two-col-equal { grid-template-columns: 1fr; }
   .input-sections-grid { grid-template-columns: 1fr; }
-  .input-sec-col { padding: 0 !important; border-right: none !important; border-top: 1px solid var(--border); padding-top: 20px !important; margin-top: 8px; }
-  .input-sec-col:first-child { border-top: none; padding-top: 0 !important; margin-top: 0; }
+  .input-sec-col { border-right: none !important; border-top: 1px solid var(--border); }
+  .input-sec-col:first-child { border-top: none; }
+  .input-card-masthead > div:last-child { display: none; }
   .container { padding: 0 16px; }
   section { padding: 48px 0; }
   .comm-hero { padding: 48px 0 40px; }
@@ -363,11 +375,27 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
     <!-- FULL-WIDTH INPUTS CARD -->
     <div class="card" id="input-card" style="margin-bottom:32px">
+
+      <!-- Masthead -->
+      <div class="input-card-masthead">
+        <div class="input-card-masthead-icon">⚙️</div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:var(--text)">Configure Your Analysis</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px">Adjust any input — results, charts &amp; sensitivity update instantly</div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+          <span style="font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px;background:rgba(184,77,198,0.1);color:var(--ms-purple)">📍 Property</span>
+          <span style="font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px;background:rgba(71,158,245,0.1);color:var(--ms-blue)">💰 Income &amp; Costs</span>
+          <span style="font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px;background:rgba(120,70,200,0.1);color:#7b44cc">📈 Projections</span>
+        </div>
+      </div>
+
       <div class="input-sections-grid">
 
         <!-- COL 1: Property Details + Income -->
         <div class="input-sec-col">
           <div class="input-section-header">
+            <span class="input-section-icon">🏗️</span>
             <span class="input-section-num">01</span>
             <span class="input-section-title">Property Details</span>
           </div>
@@ -402,7 +430,8 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
             </div>
           </div>
 
-          <div class="input-section-header" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+          <div class="input-section-header" style="margin-top:22px">
+            <span class="input-section-icon">💰</span>
             <span class="input-section-num">02</span>
             <span class="input-section-title">Income</span>
           </div>
@@ -432,6 +461,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         <!-- COL 2: Operating Expenses + Financing -->
         <div class="input-sec-col">
           <div class="input-section-header">
+            <span class="input-section-icon">📋</span>
             <span class="input-section-num">03</span>
             <span class="input-section-title">Operating Expenses</span>
           </div>
@@ -466,7 +496,8 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
             </div>
           </div>
 
-          <div class="input-section-header" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+          <div class="input-section-header" style="margin-top:22px">
+            <span class="input-section-icon">🏦</span>
             <span class="input-section-num">04</span>
             <span class="input-section-title">Financing</span>
           </div>
@@ -503,6 +534,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         <!-- COL 3: Growth Assumptions + Tax -->
         <div class="input-sec-col">
           <div class="input-section-header">
+            <span class="input-section-icon">📈</span>
             <span class="input-section-num">05</span>
             <span class="input-section-title">Growth Assumptions</span>
           </div>
@@ -525,6 +557,11 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
               <label>Exit Cap Rate (%) <span class="tip-icon" data-tip="The cap rate used to estimate exit/resale value. Conservative: same as entry or 0.5% higher.">ℹ</span></label>
               <input type="number" id="exit-cap" value="6.5" min="3" max="15" step="0.25" oninput="recalc()">
             </div>
+          </div>
+          <div class="input-section-header" style="margin-top:22px">
+            <span class="input-section-icon">🧾</span>
+            <span class="input-section-num">06</span>
+            <span class="input-section-title">Tax Settings</span>
           </div>
           <div class="input-row">
             <div class="input-group">
