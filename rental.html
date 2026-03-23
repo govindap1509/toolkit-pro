@@ -114,8 +114,17 @@
   /* HERO */
   .hero {
     padding: 80px 0 64px;
-    background: var(--bg);
+    background: #fff;
     border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 0%, rgba(184,77,198,.07), transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 0%, rgba(71,158,245,.07), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 50% 100%, rgba(184,77,198,.04), transparent 60%);
   }
   .hero-inner { max-width: 700px; }
   .eyebrow {

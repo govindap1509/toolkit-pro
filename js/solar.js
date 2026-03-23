@@ -303,7 +303,7 @@ function solarRenderSystemPills(r, panels) {
   if (covEl) {
     const pct = Math.round(r.coverage);
     covEl.textContent = pct + '%';
-    covEl.style.color = pct >= 90 ? 'var(--sol-green)' : pct >= 60 ? 'var(--sol-amber-dark)' : 'var(--red)';
+    covEl.style.color = pct >= 90 ? 'var(--gp)' : pct >= 60 ? 'var(--sol-amber-dark)' : 'var(--red)';
   }
 
   const badge = $s('sol-panel-badge');
@@ -407,8 +407,8 @@ function solarRenderChart(r) {
   ctx.lineTo(xOf(0), zeroY);
   ctx.closePath();
   const grad = ctx.createLinearGradient(0, PAD.top, 0, zeroY);
-  grad.addColorStop(0, 'rgba(52,168,83,0.25)');
-  grad.addColorStop(1, 'rgba(52,168,83,0.02)');
+  grad.addColorStop(0, 'rgba(184,77,198,0.25)');
+  grad.addColorStop(1, 'rgba(184,77,198,0.02)');
   ctx.fillStyle = grad;
   ctx.fill();
   ctx.restore();
@@ -428,7 +428,7 @@ function solarRenderChart(r) {
   ctx.restore();
 
   ctx.beginPath();
-  ctx.strokeStyle = '#137333'; ctx.lineWidth = 2.5;
+  ctx.strokeStyle = '#b84dc6'; ctx.lineWidth = 2.5;
   ctx.lineJoin = 'round'; ctx.lineCap = 'round';
   flows.forEach((v, i) => {
     i === 0 ? ctx.moveTo(xOf(i), yOf(v)) : ctx.lineTo(xOf(i), yOf(v));
@@ -439,7 +439,7 @@ function solarRenderChart(r) {
     const bx = xOf(r.paybackYear);
     const by = zeroY;
     ctx.beginPath(); ctx.arc(bx, by, 5, 0, Math.PI * 2);
-    ctx.fillStyle = '#137333'; ctx.fill();
+    ctx.fillStyle = '#b84dc6'; ctx.fill();
     ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
 
     const beLabel = $s('sol-chart-be-label');
@@ -448,7 +448,7 @@ function solarRenderChart(r) {
       beLabel.style.display = 'inline-block';
     }
 
-    ctx.fillStyle = '#137333'; ctx.font = 'bold 10px DM Sans, sans-serif';
+    ctx.fillStyle = '#b84dc6'; ctx.font = 'bold 10px DM Sans, sans-serif';
     ctx.textAlign = bx < W/2 ? 'left' : 'right';
     ctx.fillText(`Yr ${r.paybackYear}`, bx + (bx < W/2 ? 8 : -8), by - 8);
   }
