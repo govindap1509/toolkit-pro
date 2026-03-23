@@ -676,24 +676,25 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 .ice-water-anim {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  height: 55%;
+  height: 58%;
   width: 100%;
   object-fit: cover;
   object-position: top center;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.92;
+  opacity: 0.95;
 }
 /* Iceberg PNG centered, straddling the waterline */
 .ice-berg-img {
   position: absolute;
-  left: 50%; bottom: 42%;
+  left: 50%; bottom: 0;
   transform: translateX(-50%);
-  height: 88%;
+  height: 96%;
   width: auto;
-  max-width: 70%;
+  max-width: 72%;
   z-index: 2;
   object-fit: contain;
+  object-position: bottom center;
   filter: drop-shadow(0 0 18px rgba(71,210,255,0.35));
   pointer-events: none;
 }
@@ -719,7 +720,7 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 /* ── SEA ZONE ── */
 .ice-sea {
   background: linear-gradient(180deg,
-    #0c3352 0%, #082743 25%, #071e35 55%, #050f1e 100%);
+    #041120 0%, #071e35 30%, #071e35 100%);
   padding: 0 0 4px;
   position: relative;
   overflow: hidden;
