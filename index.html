@@ -397,10 +397,11 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 
 /* ── LOGIN GATE ── */
 .community-gate {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 32px 20px; text-align: center; gap: 12px;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 18px 20px 6px; text-align: center; gap: 8px;
+  border-top: 1px solid var(--border2); margin-top: 14px;
 }
-.community-gate-icon { font-size: 32px; margin-bottom: 4px; }
+.community-gate-icon { font-size: 22px; margin-bottom: 2px; }
 .community-gate-title { font-family: var(--font-d); font-size: 16px; font-weight: 700; color: var(--text); }
 .community-gate-sub { font-size: 14px; color: var(--muted); max-width: 320px; line-height: 1.5; }
 .community-gate-btn { margin-top: 4px; padding: 10px 24px; background: var(--grad); color: #fff; border: none; border-radius: var(--r); font-family: var(--font-b); font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity var(--t), box-shadow var(--t); }
@@ -472,15 +473,14 @@ footer { background: var(--footer-bg); padding: 36px 24px 22px; margin-top: 40px
 
 /* ── US FLAG ── */
 .ice-flag-wrap {
+  position: absolute;
+  top: 6px; left: 50%;
+  transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center;
-  margin: 0 auto 14px; width: fit-content;
+  z-index: 6; pointer-events: none;
 }
-.ice-flag-emoji { font-size: 28px; line-height: 1; }
-.ice-flag-pole {
-  width: 2px; height: 22px;
-  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.1));
-  margin-top: 2px; border-radius: 1px;
-}
+.ice-flag-emoji { font-size: 26px; line-height: 1; }
+.ice-flag-pole { display: none; }
 
 /* ── SKY ZONE ── */
 .ice-sky {
@@ -1936,11 +1936,7 @@ select.sol-input {
         <div class="ice-moon"></div>
         <div class="ice-aurora"></div>
 
-        <!-- 🇺🇸 US Flag -->
-        <div class="ice-flag-wrap">
-          <span class="ice-flag-emoji">🇺🇸</span>
-          <div class="ice-flag-pole"></div>
-        </div>
+        <!-- 🇺🇸 US Flag moved to iceberg tip -->
 
         <!-- Eyebrow tag -->
         <div class="ice-sky-tag">
@@ -2010,6 +2006,10 @@ select.sol-input {
             <!-- spout -->
             <path d="M60 11 Q63 4 60 0 Q57 4 60 11" fill="rgba(180,230,255,0.55)"/>
           </svg>
+        </div>
+        <!-- 🇺🇸 US Flag at iceberg tip -->
+        <div class="ice-flag-wrap">
+          <span class="ice-flag-emoji">🇺🇸</span>
         </div>
         <!-- Iceberg PNG -->
         <img class="ice-berg-img" id="ice-berg-img" src="iceberg.png" alt="Tax Iceberg Visualization">
@@ -2200,20 +2200,21 @@ select.sol-input {
         <span style="font-size:12px;color:var(--faint)">Questions &amp; discussions</span>
       </div>
       <div class="panel-body" id="community-panel-body">
-        <!-- Login gate — shown when logged out -->
-        <div class="community-gate" id="community-gate">
-          <div class="community-gate-icon">🔐</div>
-          <div class="community-gate-title">Sign in to join the conversation</div>
-          <div class="community-gate-sub">Create a free account to ask questions, share tips, and discuss tax strategies with the community.</div>
-          <button class="community-gate-btn" onclick="openModal('auth')">Sign In / Create Account</button>
-        </div>
-        <!-- Forum — shown when logged in -->
+        <!-- Posts — always visible to everyone -->
+        <div class="forum-list" id="forum-list"></div>
+        <!-- Logged-in: post input -->
         <div id="community-forum" style="display:none">
-          <div class="forum-input-row">
+          <div class="forum-input-row" style="margin-top:14px;">
             <input type="text" id="forum-input" placeholder="Ask a tax question…" maxlength="200" onkeydown="if(event.key==='Enter')postQuestion()">
             <button class="btn btn-primary" onclick="postQuestion()">Post</button>
           </div>
-          <div class="forum-list" id="forum-list"></div>
+        </div>
+        <!-- Logged-out: join prompt below posts -->
+        <div class="community-gate" id="community-gate">
+          <div class="community-gate-icon">💬</div>
+          <div class="community-gate-title">Want to join the conversation?</div>
+          <div class="community-gate-sub">Sign in to ask questions, share tips, and discuss tax strategies.</div>
+          <button class="community-gate-btn" onclick="openModal('auth')">Sign In / Create Account</button>
         </div>
       </div>
     </div>
@@ -3371,7 +3372,7 @@ function renderIceberg(r, inputs) {
 
   // ── Overlay big numbers ──
   set('ice-ov-net', fmt(Math.round(r.netIncome / div)));
-  set('ice-ov-pct', '(' + netPct.toFixed(0) + '%)');
+  set('ice-ov-net-pct', '(' + netPct.toFixed(0) + '%)');
   set('ice-ov-tax', fmt(Math.round(r.total      / div)));
   set('ice-ov-tax-pct', '(' + taxPct.toFixed(0) + '%)');
 
