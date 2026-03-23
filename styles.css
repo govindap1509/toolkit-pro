@@ -1602,6 +1602,8 @@ select.sol-input {
 .hmc-featured .hmc-inner { background: var(--bg2); border-radius: 14px; height: 100%; }
 .hmc-solar { border-color: rgba(52,168,83,.25); }
 .hmc-solar:hover { border-color: rgba(52,168,83,.5); box-shadow: 0 12px 32px rgba(52,168,83,.1); }
+.hmc-rental { border-color: rgba(184,77,198,.25); }
+.hmc-rental:hover { border-color: rgba(184,77,198,.5); box-shadow: 0 12px 32px rgba(184,77,198,.1); }
 .hmc-soon { cursor: default; opacity: .6; }
 .hmc-soon:hover { transform: none; box-shadow: 0 1px 4px rgba(0,0,0,.06); border-color: var(--border); }
 .hmc-inner { padding: 24px; }
@@ -1610,6 +1612,7 @@ select.sol-input {
 .hmc-ico-tax  { background: var(--blue-tint); }
 .hmc-ico-mort { background: #E3F0FF; }
 .hmc-ico-solar{ background: #FEF9C3; }
+.hmc-ico-rental{ background: rgba(184,77,198,.12); }
 .hmc-ico-soon { background: var(--bg3); }
 .hmc-badges { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
 .hmb { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 100px; white-space: nowrap; }

@@ -1,0 +1,2910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US Rental Property Investment Analyzer — ToolKit Pro</title>
+<meta name="description" content="Analyze US rental property investments with tax-adjusted CoC, cap rate, IRR, DSCR and more. Free, no sign-up required.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="styles.css">
+<style>
+  :root {
+    --font: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    --bg: #FFFFFF;
+    --bg-alt: #F8F9FA;
+    --bg-card: #FFFFFF;
+    --bg-tertiary: #F1F3F4;
+    --blue: #1A73E8;
+    --blue-hover: #1557B0;
+    --blue-tint: #E8F0FE;
+    --text: #202124;
+    --text-body: #3C4043;
+    --text-muted: #5F6368;
+    --text-faint: #80868B;
+    --text-ghost: #BDC1C6;
+    --border: #DADCE0;
+    --border-mid: #E8EAED;
+    --green: #137333;
+    --green-bg: #E6F4EA;
+    --red: #C5221F;
+    --red-bg: #FCE8E6;
+    --amber: #B45309;
+    --amber-bg: #FEF3C7;
+    --footer-bg: #202124;
+    --footer-text: #E8EAED;
+    --ms-purple: #b84dc6;
+    --ms-blue: #479ef5;
+    --gradient: linear-gradient(90deg, #b84dc6 0%, #479ef5 100%);
+    --gradient-d: linear-gradient(135deg, #b84dc6 0%, #479ef5 100%);
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.10);
+    --shadow-blue: 0 4px 20px rgba(26,115,232,0.15);
+    --radius: 12px;
+    --radius-sm: 6px;
+    --transition: 200ms ease;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  /* Offset anchors so sticky nav (64px) doesn't obscure the target */
+  section[id], div[id] {
+    scroll-margin-top: 72px;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text-body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    height: 64px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-logo-icon {
+    width: 28px; height: 28px;
+    background: var(--gradient);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 14px;
+  }
+  .nav-badge {
+    font-size: 11px;
+    font-weight: 500;
+    background: var(--green-bg);
+    color: var(--green);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 64px 0; }
+  section:nth-child(even) { background: var(--bg-alt); }
+
+  /* HERO */
+  .hero {
+    padding: 80px 0 64px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-inner { max-width: 700px; }
+  .eyebrow {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  h1 .g { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline; }
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.6;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .hero-stat-num {
+    font-size: 28px;
+    font-weight: 600;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .hero-stat-label { font-size: 13px; color: var(--text-muted); }
+
+  /* SECTION TITLES */
+  h2 {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 18px; }
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* GRID LAYOUT */
+  .two-col { display: grid; grid-template-columns: 420px 1fr; gap: 32px; align-items: start; }
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .two-col-equal { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* CARDS */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 28px;
+    transition: box-shadow var(--transition);
+  }
+  .card:hover { box-shadow: var(--shadow-md); }
+
+  .card-featured {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 2px;
+    background: var(--gradient);
+    box-shadow: 0 4px 24px rgba(184,77,198,0.2);
+  }
+  .card-featured-inner {
+    background: white;
+    border-radius: 10px;
+    padding: 28px;
+  }
+
+  /* METRIC CARDS */
+  .metric-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition);
+  }
+  .metric-card:hover { box-shadow: var(--shadow-md); }
+  .metric-label {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .metric-value {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .metric-value.gradient-text {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+  }
+  .metric-value.green { color: var(--green); }
+  .metric-value.red { color: var(--red); }
+  .metric-value.amber { color: var(--amber); }
+  .metric-sub {
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-top: 4px;
+  }
+
+  /* INPUTS */
+  .input-group {
+    margin-bottom: 18px;
+  }
+  .input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  input[type="number"], select {
+    height: 44px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0 14px;
+    font-size: 14px;
+    font-family: var(--font);
+    color: var(--text);
+    width: 100%;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    outline: none;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input[type="number"]:focus, select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(26,115,232,0.15);
+  }
+  select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235F6368' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
+
+  /* SLIDERS */
+  .slider-wrap { display: flex; align-items: center; gap: 12px; margin-top: 6px; }
+  input[type="range"] {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--blue);
+    box-shadow: 0 1px 4px rgba(26,115,232,0.4);
+    transition: transform var(--transition);
+  }
+  input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  .slider-val {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--blue);
+    min-width: 52px;
+    text-align: right;
+  }
+
+  /* TOGGLE */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--bg-alt);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    margin-bottom: 18px;
+  }
+  .toggle-label { font-size: 14px; font-weight: 500; color: var(--text); }
+  .toggle-desc { font-size: 12px; color: var(--text-muted); }
+  .toggle {
+    position: relative;
+    width: 44px; height: 24px;
+    background: var(--border);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+  .toggle.on { background: var(--blue); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    background: white;
+    border-radius: 50%;
+    top: 3px; left: 3px;
+    transition: transform var(--transition);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle.on::after { transform: translateX(20px); }
+
+  /* BUTTONS */
+  .btn-primary {
+    background: var(--blue);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font);
+    padding: 11px 24px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: background var(--transition), box-shadow var(--transition);
+    display: inline-flex; align-items: center; gap: 8px;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: var(--blue-hover); box-shadow: 0 2px 8px rgba(26,115,232,0.35); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--blue);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font);
+    padding: 10px 24px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all var(--transition);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-secondary:hover { background: var(--bg-alt); border-color: var(--blue); }
+
+  .btn-gradient {
+    background: var(--gradient);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font);
+    padding: 11px 24px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: opacity var(--transition), box-shadow var(--transition);
+  }
+  .btn-gradient:hover { opacity: 0.9; box-shadow: 0 4px 16px rgba(184,77,198,0.3); }
+
+  /* BADGES */
+  .badge {
+    display: inline-flex; align-items: center;
+    font-size: 12px; font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-blue { background: var(--blue-tint); color: var(--blue); }
+  .badge-gradient { background: var(--gradient); color: white; }
+
+  /* DECISION CARD */
+  .decision-block {
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    border: 1px solid var(--border);
+    background: white;
+    margin-bottom: 16px;
+  }
+  .decision-block.good { border-left: 4px solid var(--green); }
+  .decision-block.warn { border-left: 4px solid var(--amber); }
+  .decision-block.bad  { border-left: 4px solid var(--red); }
+  .decision-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .decision-sub { font-size: 14px; color: var(--text-muted); }
+
+  .suggestion-list { list-style: none; margin-top: 12px; }
+  .suggestion-list li {
+    font-size: 14px;
+    color: var(--text-body);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-mid);
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .suggestion-list li:last-child { border-bottom: none; }
+  .suggestion-list li::before { content: '→'; color: var(--blue); font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+
+  /* CHART */
+  .chart-wrap { position: relative; height: 320px; }
+
+  /* DIVIDER */
+  .gradient-divider {
+    height: 2px;
+    background: var(--gradient);
+    border: none;
+    border-radius: 2px;
+    margin: 48px 0;
+  }
+
+  /* CTA */
+  .cta-section {
+    background: var(--footer-bg);
+    padding: 80px 0;
+  }
+  .cta-inner { max-width: 600px; }
+  .cta-section h2 { color: var(--footer-text); }
+  .cta-section p { color: #9AA0A6; font-size: 16px; margin-bottom: 32px; }
+  .cta-input-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .cta-input-row input {
+    flex: 1;
+    min-width: 200px;
+    background: #2D2F31;
+    border: 1px solid #3C4043;
+    color: white;
+  }
+  .cta-input-row input::placeholder { color: #5F6368; }
+  .cta-input-row input:focus { border-color: var(--blue); background: #333538; }
+  .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer {
+    background: var(--footer-bg);
+    border-top: 1px solid #3C4043;
+    padding: 20px 0;
+    text-align: center;
+  }
+  footer p { font-size: 12px; color: #5F6368; }
+
+  /* ACCORDION */
+  .accordion { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .accordion-header {
+    padding: 14px 20px; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 14px; font-weight: 500; color: var(--text);
+    background: white; transition: background var(--transition); user-select: none;
+  }
+  .accordion-header:hover { background: var(--bg-alt); }
+  .acc-icon { font-size: 12px; color: var(--text-muted); transition: transform var(--transition); }
+  .accordion.open .acc-icon { transform: rotate(180deg); }
+  .accordion-content { display: none; padding: 0 20px 16px; font-size: 14px; color: var(--text-body); line-height: 1.6; border-top: 1px solid var(--border-mid); }
+  .accordion.open .accordion-content { display: block; }
+
+  /* SHARE */
+  .share-block {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 32px 0;
+  }
+  .share-label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+  .share-btn {
+    width: 34px; height: 34px; border-radius: 6px; border: 1px solid var(--border);
+    background: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; transition: all var(--transition); color: var(--text-muted);
+  }
+  .share-btn:hover { border-color: var(--blue); color: var(--blue); }
+
+  /* FEEDBACK */
+  .feedback-widget {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 24px 0; border-top: 1px solid var(--border); margin-top: 32px;
+  }
+  .feedback-label { font-size: 14px; color: var(--text-body); }
+  .feedback-btn {
+    width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 6px;
+    background: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition); font-size: 16px;
+  }
+  .feedback-btn:hover { border-color: var(--blue); }
+  .feedback-btn.selected { background: var(--blue-tint); border-color: var(--blue); }
+  .feedback-thanks { font-size: 13px; color: var(--text-muted); display: none; }
+
+  /* TAX TOGGLE INDICATOR */
+  .tax-indicator {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 500; color: var(--text-muted);
+    background: var(--bg-tertiary); padding: 4px 10px; border-radius: 100px;
+    margin-left: auto;
+  }
+  .tax-indicator.on { background: var(--blue-tint); color: var(--blue); }
+
+  /* PROGRESS BAR */
+  .progress-track { background: var(--bg-tertiary); border-radius: 100px; height: 6px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 100px; background: var(--gradient); transition: width 400ms ease; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .two-col { grid-template-columns: 1fr; }
+    .four-col { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    h1 { font-size: 32px; }
+    .three-col, .four-col, .two-col-equal { grid-template-columns: 1fr; }
+    .container { padding: 0 16px; }
+    section { padding: 48px 0; }
+    .hero { padding: 48px 0 40px; }
+    .input-row { grid-template-columns: 1fr; }
+    .hero-stats { gap: 20px; }
+  }
+
+  /* ── HERO NAV PILLS ─────────────────────────────────────── */
+  .hero-nav-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: var(--font);
+    padding: 9px 18px;
+    border-radius: 100px;
+    border: none;
+    background: white;
+    color: var(--text-body);
+    text-decoration: none;
+    transition: all 220ms ease;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    /* Vivid gradient border via outline trick */
+    box-shadow:
+      0 0 0 1.5px transparent,
+      inset 0 0 0 1.5px transparent;
+    /* Use background-clip border trick */
+    background-image: none;
+    outline: 1.5px solid transparent;
+    /* Paint gradient border */
+    background-clip: padding-box;
+  }
+  /* Gradient border using pseudo-element */
+  .hero-pill:not(.hero-pill-primary) {
+    background: white;
+    position: relative;
+    isolation: isolate;
+  }
+  .hero-pill:not(.hero-pill-primary)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 100px;
+    padding: 1.5px;
+    background: linear-gradient(90deg, #b84dc6, #479ef5);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .hero-pill:not(.hero-pill-primary):hover {
+    color: var(--ms-purple);
+    background: linear-gradient(135deg, rgba(184,77,198,0.06), rgba(71,158,245,0.06));
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 18px rgba(184,77,198,0.22),
+      0 2px 8px rgba(71,158,245,0.15);
+  }
+  .hero-pill-primary {
+    background: var(--gradient);
+    color: white;
+    box-shadow: 0 4px 16px rgba(184,77,198,0.30);
+  }
+  .hero-pill-primary:hover {
+    opacity: 0.92;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(184,77,198,0.42);
+  }
+  .hero-pill-primary::before { display: none; }
+
+  /* ── KEY INSIGHTS PANEL ─────────────────────────────────── */
+  .insights-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .insight-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-body);
+    line-height: 1.5;
+    transition: box-shadow var(--transition);
+  }
+  .insight-row:hover { box-shadow: var(--shadow-sm); }
+  .insight-row.good  { border-left: 3px solid var(--green);  background: linear-gradient(90deg, rgba(19,115,51,0.03), white 60px); }
+  .insight-row.warn  { border-left: 3px solid var(--amber);  background: linear-gradient(90deg, rgba(180,83,9,0.03), white 60px); }
+  .insight-row.bad   { border-left: 3px solid var(--red);    background: linear-gradient(90deg, rgba(197,34,31,0.03), white 60px); }
+  .insight-row.info  { border-left: 3px solid var(--blue);   background: linear-gradient(90deg, rgba(26,115,232,0.03), white 60px); }
+  .insight-icon-wrap {
+    width: 28px; height: 28px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .insight-text strong { color: var(--text); }
+
+  /* ── ROI WATERFALL ──────────────────────────────────────── */
+  .roi-waterfall { padding: 24px; }
+  .roi-waterfall-row {
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-mid);
+  }
+  .roi-row-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+  .roi-row-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+  .roi-row-label { font-size: 14px; font-weight: 500; color: var(--text); }
+  .roi-row-sub   { font-size: 11px; color: var(--text-faint); margin-top: 2px; }
+  .roi-row-val   { font-size: 17px; font-weight: 700; color: var(--text); white-space: nowrap; }
+  .roi-waterfall-connector {
+    height: 16px; width: 2px;
+    background: linear-gradient(to bottom, var(--border-mid), var(--border));
+    margin-left: 18px;
+  }
+  .roi-waterfall-total {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-top: 20px; margin-top: 4px;
+    border-top: 2px solid var(--border);
+  }
+
+  /* ── CF FLIP PANEL ──────────────────────────────────────── */
+  .cf-flip-panel { padding: 24px; }
+  .cf-flip-steps { display: flex; flex-direction: column; gap: 14px; }
+  .cf-flip-step  { display: flex; flex-direction: column; gap: 6px; }
+  .cf-flip-step-label { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+  .cf-flip-bar-wrap   { display: flex; align-items: center; gap: 12px; }
+  .cf-flip-bar-track  {
+    flex: 1; height: 10px; background: var(--bg-tertiary);
+    border-radius: 100px; overflow: hidden; position: relative;
+  }
+  .cf-flip-bar-fill {
+    height: 100%; border-radius: 100px;
+    transition: width 600ms cubic-bezier(0.34,1.56,0.64,1);
+    position: absolute; top: 0; left: 0;
+  }
+  .cf-bar-pretax  { background: var(--red); }
+  .cf-bar-int     { background: linear-gradient(90deg, #137333, #34A853); }
+  .cf-bar-dep     { background: linear-gradient(90deg, #1A73E8, #4CA3FD); }
+  .cf-bar-aftertax { background: var(--gradient); }
+  .cf-bar-track-aftertax { height: 14px; }
+  .cf-flip-step-val {
+    font-size: 14px; font-weight: 600; color: var(--text);
+    white-space: nowrap; min-width: 72px; text-align: right;
+  }
+  .cf-flip-step-val.green { color: var(--green); }
+  .cf-flip-arrow {
+    font-size: 16px; color: var(--text-muted);
+    padding: 0 0 0 4px; display: flex; align-items: center; gap: 8px;
+  }
+  .cf-flip-divider {
+    height: 1px; background: var(--border); margin: 4px 0;
+  }
+  .cf-flip-step-total .cf-flip-bar-track { height: 14px; }
+
+
+  /* ── INLINE CONTEXTUAL CTAs ──────────────────────────────── */
+  .inline-cta {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; padding: 20px 24px; border-radius: var(--radius);
+    flex-wrap: wrap;
+  }
+  .inline-cta-pair {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .inline-cta-left {
+    display: flex; align-items: flex-start; gap: 14px; flex: 1; min-width: 0;
+  }
+  .inline-cta-icon {
+    font-size: 24px; flex-shrink: 0; margin-top: 2px;
+  }
+  .inline-cta-title {
+    font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px;
+  }
+  .inline-cta-desc {
+    font-size: 12px; color: var(--text-muted); line-height: 1.5;
+  }
+  .inline-cta-btn {
+    flex-shrink: 0; padding: 10px 18px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 600; font-family: var(--font);
+    cursor: pointer; white-space: nowrap; transition: all var(--transition);
+    background: var(--gradient); color: white; border: none;
+  }
+  .inline-cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .inline-cta-btn-muted {
+    background: transparent; color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+  .inline-cta-btn-muted:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-tint); transform: none; }
+
+  /* Colour variants */
+  .inline-cta-blue   { background: var(--blue-tint);  border: 1px solid rgba(26,115,232,0.25); }
+  .inline-cta-teal   { background: rgba(13,148,136,0.06); border: 1px solid rgba(13,148,136,0.2); }
+  .inline-cta-orange { background: rgba(249,115,22,0.06);  border: 1px solid rgba(249,115,22,0.2); }
+  .inline-cta-gradient {
+    background: var(--gradient);
+    border: none;
+    box-shadow: 0 4px 20px rgba(184,77,198,0.25);
+  }
+
+  /* Gradient CTA email form */
+  .inline-cta-form {
+    display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0;
+  }
+  .inline-cta-email-input {
+    height: 42px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+    border-radius: var(--radius-sm); padding: 0 14px;
+    font-size: 13px; font-family: var(--font); color: white; outline: none;
+    min-width: 200px; transition: border-color var(--transition);
+  }
+  .inline-cta-email-input::placeholder { color: rgba(255,255,255,0.55); }
+  .inline-cta-email-input:focus { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.2); }
+  .inline-cta-btn-white {
+    flex-shrink: 0; padding: 10px 18px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 600; font-family: var(--font);
+    cursor: pointer; white-space: nowrap; transition: all var(--transition);
+    background: white; color: var(--ms-purple); border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  .inline-cta-btn-white:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+
+  /* Coming soon badge */
+  .coming-soon-badge {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 100px;
+    background: var(--amber-bg); color: var(--amber);
+    vertical-align: middle; margin-left: 4px;
+  }
+
+  /* Case study CTA row */
+  .cs-cta-row {
+    display: flex; align-items: center; gap: 32px;
+    margin-top: 48px; flex-wrap: wrap;
+  }
+  .cs-cta-left, .cs-cta-right { flex: 1; min-width: 200px; }
+  .cs-cta-right { text-align: center; }
+  .cs-cta-divider {
+    width: 1px; height: 64px; background: var(--border); flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .inline-cta { flex-direction: column; align-items: flex-start; }
+    .inline-cta-pair { flex-direction: column; }
+    .inline-cta-form { width: 100%; }
+    .inline-cta-email-input { min-width: 0; width: 100%; }
+    .cs-cta-row { flex-direction: column; text-align: center; }
+    .cs-cta-divider { width: 100%; height: 1px; }
+  }
+
+  /* ── LEADS / MODALS (kept for modal functionality) ─────── */
+
+  .leads-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+
+  .lead-card {
+    background: #2A2C2E;
+    border: 1px solid #3C4043;
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    display: flex; flex-direction: column; gap: 0;
+    position: relative;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .lead-card:hover {
+    border-color: rgba(184,77,198,0.4);
+    box-shadow: 0 8px 32px rgba(184,77,198,0.12);
+  }
+  .lead-card-featured {
+    border: 1px solid rgba(184,77,198,0.45);
+    background: linear-gradient(160deg, rgba(184,77,198,0.07) 0%, #2A2C2E 50%);
+    box-shadow: 0 4px 24px rgba(184,77,198,0.15);
+  }
+  .lead-card-badge {
+    position: absolute; top: -12px; left: 24px;
+    font-size: 11px; font-weight: 600;
+    padding: 3px 12px; border-radius: 100px;
+  }
+  .lead-icon-wrap {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 16px; flex-shrink: 0;
+  }
+  .lead-card-title {
+    font-size: 16px; font-weight: 600; color: var(--footer-text);
+    margin-bottom: 10px; line-height: 1.3;
+  }
+  .lead-card-desc {
+    font-size: 13px; color: #9AA0A6; line-height: 1.6;
+    margin-bottom: 16px; flex: 1;
+  }
+  .lead-feature-list {
+    list-style: none; margin-bottom: 20px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .lead-feature-list li {
+    font-size: 12px; color: #BDC1C6; line-height: 1.4;
+  }
+  .lead-form-inline {
+    display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;
+  }
+  .lead-input {
+    height: 44px; background: #1E2022; border: 1px solid #3C4043;
+    border-radius: var(--radius-sm); padding: 0 14px;
+    font-size: 14px; font-family: var(--font); color: white; outline: none;
+    transition: border-color var(--transition);
+    width: 100%;
+  }
+  .lead-input:focus { border-color: var(--ms-purple); }
+  .lead-input::placeholder { color: #5F6368; }
+  .lead-btn {
+    width: 100%; justify-content: center; font-size: 13px;
+    padding: 11px 16px; border: none; cursor: pointer;
+    font-family: var(--font); font-weight: 500;
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; gap: 7px;
+  }
+  .lead-btn-outline {
+    background: transparent; color: var(--footer-text);
+    border: 1.5px solid #3C4043;
+    transition: all var(--transition);
+    position: relative; isolation: isolate;
+  }
+  .lead-btn-outline::before {
+    content: ''; position: absolute; inset: 0;
+    border-radius: var(--radius-sm); padding: 1.5px;
+    background: var(--gradient);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    border: none; opacity: 0; transition: opacity var(--transition);
+  }
+  .lead-btn-outline:hover { background: rgba(184,77,198,0.08); color: white; }
+  .lead-btn-outline:hover::before { opacity: 1; }
+  .lead-disclaimer {
+    font-size: 11px; color: #5F6368; margin-top: 8px; text-align: center;
+  }
+
+  /* Trust strip */
+  .trust-strip {
+    display: flex; align-items: center; justify-content: center;
+    flex-wrap: wrap; gap: 0; margin-top: 48px;
+    padding: 20px 28px; background: #1E2022;
+    border: 1px solid #3C4043; border-radius: var(--radius);
+  }
+  .trust-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 500; color: #9AA0A6;
+    padding: 0 20px;
+  }
+  .trust-divider { width: 1px; height: 20px; background: #3C4043; flex-shrink: 0; }
+
+  /* ── MODALS ─────────────────────────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: white; border-radius: 16px;
+    width: 100%; max-width: 560px; max-height: 90vh;
+    overflow-y: auto; padding: 36px;
+    position: relative;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+    animation: modalIn 220ms ease;
+  }
+  @keyframes modalIn { from { opacity:0; transform:translateY(16px) scale(0.98); } to { opacity:1; transform:none; } }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--border); background: white;
+    font-size: 14px; color: var(--text-muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition);
+  }
+  .modal-close:hover { background: var(--bg-alt); color: var(--text); }
+  .modal-icon { font-size: 36px; margin-bottom: 12px; }
+  .modal-title { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .modal-desc  { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
+  .modal-form  { display: flex; flex-direction: column; gap: 14px; }
+  .modal-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal-field { display: flex; flex-direction: column; gap: 5px; }
+  .modal-label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .modal-input {
+    height: 44px; background: white; border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 0 12px;
+    font-size: 14px; font-family: var(--font); color: var(--text);
+    outline: none; transition: border-color var(--transition), box-shadow var(--transition);
+    width: 100%;
+  }
+  .modal-input:focus { border-color: var(--ms-purple); box-shadow: 0 0 0 3px rgba(184,77,198,0.12); }
+  .modal-textarea { height: 90px; padding: 10px 12px; resize: vertical; }
+  .modal-submit-btn {
+    width: 100%; justify-content: center; font-size: 15px;
+    padding: 13px; margin-top: 4px; border: none; cursor: pointer;
+    font-family: var(--font);
+  }
+  .modal-success { text-align: center; padding: 20px 0; }
+  .modal-success-icon { font-size: 48px; margin-bottom: 12px; }
+  .modal-success-title { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .modal-success-desc  { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .loan-chip-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500; color: var(--text-body);
+    padding: 7px 14px; border-radius: 100px;
+    border: 1px solid var(--border); cursor: pointer;
+    transition: all var(--transition); background: white;
+  }
+  .loan-chip-label:has(input:checked) {
+    background: var(--blue-tint); border-color: var(--blue); color: var(--blue);
+  }
+  .loan-chip-label input { display: none; }
+
+  /* Responsive */
+  @media (max-width: 1024px) { .leads-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px)  {
+    .leads-grid { grid-template-columns: 1fr; }
+    .modal-field-row { grid-template-columns: 1fr; }
+    .modal-box { padding: 24px; }
+    .trust-item { padding: 8px 12px; }
+    .trust-divider { display: none; }
+  }
+
+  /* ── FAQ ─────────────────────────────────────────────────── */
+
+  .faq-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .faq-item {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: box-shadow var(--transition), border-color var(--transition);
+  }
+  .faq-item:has(.faq-header[aria-expanded="true"]) {
+    border-color: rgba(184,77,198,0.30);
+    box-shadow: 0 4px 20px rgba(184,77,198,0.08);
+  }
+
+  .faq-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 24px;
+    background: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font);
+    transition: background var(--transition);
+  }
+  .faq-header:hover { background: var(--bg-alt); }
+  .faq-header[aria-expanded="true"] { background: white; }
+
+  .faq-q {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .faq-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 300;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    line-height: 1;
+    transition: all var(--transition);
+    background: white;
+  }
+  .faq-header[aria-expanded="true"] .faq-icon {
+    background: var(--gradient);
+    border-color: transparent;
+    color: white;
+    content: '−';
+    transform: rotate(45deg);
+  }
+
+  .faq-body {
+    display: none;
+    padding: 0 24px 20px;
+    font-size: 14px;
+    color: var(--text-body);
+    line-height: 1.65;
+    border-top: 1px solid var(--border-mid);
+  }
+  .faq-body p { margin: 0; }
+  .faq-body p + p { margin-top: 10px; }
+
+  .faq-list-inner {
+    margin: 10px 0 0 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .faq-list-inner li {
+    font-size: 14px;
+    color: var(--text-body);
+    line-height: 1.55;
+    padding-left: 4px;
+  }
+  .faq-list-inner li::marker { color: var(--ms-purple); }
+
+  /* ── CASE STUDY SUMMARY GRID ── */
+  .cs-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .cs-summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition);
+  }
+  .cs-summary-card:hover { box-shadow: var(--shadow-md); }
+  .cs-summary-featured {
+    border: 2px solid transparent;
+    background:
+      linear-gradient(white, white) padding-box,
+      linear-gradient(135deg, #b84dc6, #479ef5) border-box;
+    box-shadow: 0 4px 20px rgba(184,77,198,0.12);
+  }
+  .cs-summary-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; margin-bottom: 12px;
+  }
+  .cs-summary-label {
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 6px;
+  }
+  .cs-summary-val {
+    font-size: 26px; font-weight: 700; color: var(--text);
+    line-height: 1.1; margin-bottom: 6px;
+  }
+  .cs-summary-gradient {
+    background: var(--gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; display: inline-block;
+  }
+  .cs-summary-sub { font-size: 12px; color: var(--text-faint); line-height: 1.4; }
+
+  /* ── CASE STUDY ACCORDION ── */
+  .cs-accordion {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .cs-accordion:has(.cs-acc-header[aria-expanded="true"]) {
+    border-color: rgba(184,77,198,0.25);
+    box-shadow: 0 4px 20px rgba(184,77,198,0.08);
+  }
+  .cs-acc-header {
+    width: 100%; display: flex; align-items: center;
+    justify-content: space-between; gap: 16px;
+    padding: 18px 24px; background: white; border: none;
+    cursor: pointer; text-align: left; font-family: var(--font);
+    transition: background var(--transition);
+  }
+  .cs-acc-header:hover { background: var(--bg-alt); }
+  .cs-acc-left { display: flex; align-items: center; gap: 14px; flex: 1; }
+  .cs-acc-num {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    background: var(--gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; display: inline-block;
+    flex-shrink: 0; min-width: 20px;
+  }
+  .cs-acc-title { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.3; }
+  .cs-acc-preview { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .cs-acc-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 300; color: var(--text-muted);
+    flex-shrink: 0; transition: all var(--transition); background: white;
+    line-height: 1;
+  }
+  .cs-acc-header[aria-expanded="true"] .cs-acc-icon {
+    background: var(--gradient); border-color: transparent;
+    color: white; transform: rotate(45deg);
+  }
+  .cs-acc-body {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border-mid);
+  }
+  .cs-acc-header[aria-expanded="true"] + .cs-acc-body { display: block; }
+
+  @media (max-width: 1024px) { .cs-summary-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px)  { .cs-summary-grid { grid-template-columns: 1fr; } }
+
+  /* ── CASE STUDY ──────────────────────────────────────────── */
+
+  .cs-location-badge {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    flex-shrink: 0;
+  }
+  .cs-loc-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--gradient);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  /* Snapshot strip */
+  .cs-snapshot-strip {
+    display: flex; align-items: center; flex-wrap: wrap;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0 8px;
+    gap: 0;
+  }
+  .cs-snap-item {
+    display: flex; flex-direction: column;
+    padding: 18px 24px;
+    flex: 1; min-width: 120px;
+  }
+  .cs-snap-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 5px; }
+  .cs-snap-val   { font-size: 18px; font-weight: 600; color: var(--text); }
+  .cs-snap-divider { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
+
+  /* Steps grid */
+  .cs-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .cs-step-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .cs-step-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gradient);
+  }
+  .cs-step-num {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    background: var(--gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    display: inline-block; margin-bottom: 8px;
+  }
+  .cs-step-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 16px; line-height: 1.3; }
+  .cs-step-body  { font-size: 13px; }
+  .cs-calc-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border-mid);
+    color: var(--text-muted);
+  }
+  .cs-calc-row:last-of-type { border-bottom: none; }
+  .cs-calc-total {
+    font-weight: 600; color: var(--text) !important;
+    padding-top: 10px; margin-top: 4px;
+    border-top: 1px solid var(--border) !important;
+    border-bottom: none !important;
+  }
+  .cs-val-pos { color: var(--green); font-weight: 500; }
+  .cs-val-neg { color: var(--red);   font-weight: 500; }
+  .cs-warning-chip {
+    display: inline-flex; align-items: center;
+    font-size: 11px; font-weight: 500;
+    background: var(--amber-bg); color: var(--amber);
+    padding: 4px 10px; border-radius: 100px;
+    margin-top: 12px;
+  }
+
+  /* Tax bridge */
+  .cs-tax-bridge {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(184,77,198,0.15) 0%, rgba(71,158,245,0.15) 100%);
+    box-shadow: var(--shadow-sm);
+  }
+  .cs-tax-bridge > div {
+    /* override — inner wrapper not needed, use flex directly */
+  }
+  .cs-tax-bridge {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid rgba(184,77,198,0.25);
+    background: white;
+    box-shadow: 0 4px 20px rgba(184,77,198,0.10);
+  }
+  .cs-tax-bridge-left {
+    padding: 32px;
+    background: linear-gradient(135deg, rgba(184,77,198,0.05) 0%, rgba(71,158,245,0.05) 100%);
+    border-right: 1px solid rgba(184,77,198,0.15);
+  }
+  .cs-tax-bridge-right {
+    padding: 32px;
+    background: white;
+  }
+  .cs-tax-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+    background: var(--gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    display: inline-block; margin-bottom: 10px;
+  }
+  .cs-tax-title {
+    font-size: 22px; font-weight: 600; color: var(--text); line-height: 1.3;
+  }
+  .cs-tax-highlight {
+    background: var(--gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    display: inline;
+  }
+  .cs-tax-deduction-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-mid);
+    font-size: 14px; color: var(--text-body);
+  }
+  .cs-tax-deduction-total {
+    font-weight: 700; color: var(--text) !important;
+    border-bottom: 2px solid var(--border) !important;
+    padding-bottom: 12px !important;
+  }
+  .cs-tax-ded-label { color: var(--text-muted); }
+  .cs-tax-ded-val   { font-weight: 500; color: var(--text); }
+  .cs-tax-rate-row  {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 12px;
+    font-size: 13px; color: var(--text-muted);
+  }
+  .cs-tax-savings-val {
+    font-size: 16px; font-weight: 700; color: var(--green);
+  }
+
+  /* Returns grid */
+  .cs-returns-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 1fr;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .cs-return-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .cs-return-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 14px;
+  }
+  .cs-return-label { font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
+  .cs-return-val   { font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+  .cs-return-sub   { font-size: 12px; color: var(--text-faint); line-height: 1.4; }
+
+  /* Insights box */
+  .cs-insights-box {
+    background: linear-gradient(135deg, rgba(184,77,198,0.04) 0%, rgba(71,158,245,0.04) 100%);
+    border: 1.5px solid rgba(184,77,198,0.20);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-top: 40px;
+  }
+  .cs-insights-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+  }
+  .cs-insights-icon { font-size: 20px; }
+  .cs-insights-title { font-size: 16px; font-weight: 600; color: var(--text); }
+  .cs-insights-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .cs-insight-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .cs-insight-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+  }
+  .cs-insight-text { font-size: 13px; color: var(--text-body); line-height: 1.55; }
+  .cs-insight-text strong { color: var(--text); }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .cs-steps-grid     { grid-template-columns: repeat(2, 1fr); }
+    .cs-returns-grid   { grid-template-columns: repeat(2, 1fr); }
+    .cs-tax-bridge     { grid-template-columns: 1fr; }
+    .cs-tax-bridge-left { border-right: none; border-bottom: 1px solid rgba(184,77,198,0.15); }
+  }
+  @media (max-width: 640px) {
+    .cs-steps-grid     { grid-template-columns: 1fr; }
+    .cs-returns-grid   { grid-template-columns: 1fr; }
+    .cs-insights-grid  { grid-template-columns: 1fr; }
+    .cs-snapshot-strip { flex-direction: column; padding: 0; }
+    .cs-snap-divider   { width: 100%; height: 1px; }
+    .cs-snap-item      { padding: 14px 20px; }
+    .cs-tax-bridge-left, .cs-tax-bridge-right { padding: 20px; }
+  }
+
+  /* ── EMI CONFIRMATION BOX ─────────────────────────────── */
+  .emi-confirm-wrap {
+    background: linear-gradient(135deg, #b84dc6 0%, #479ef5 100%);
+    border-radius: 12px;
+    padding: 2px;
+    margin: 4px 0 20px;
+    box-shadow: 0 4px 24px rgba(184,77,198,0.25);
+  }
+  .emi-confirm-inner {
+    background: #FFFFFF;
+    border-radius: 10px 10px 0 0;
+    padding: 20px 22px 14px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .emi-confirm-left { flex: 1; min-width: 0; }
+  .emi-confirm-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .emi-confirm-num {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, #b84dc6 0%, #479ef5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    margin-bottom: 6px;
+    transition: all 300ms ease;
+  }
+  .emi-confirm-breakdown {
+    font-size: 12px;
+    color: var(--text-faint);
+    font-weight: 400;
+  }
+  .emi-confirm-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .emi-confirm-pill {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+    transition: all 300ms ease;
+  }
+  .emi-confirm-pill.low  { background: var(--green-bg);  color: var(--green); }
+  .emi-confirm-pill.mid  { background: var(--amber-bg);  color: var(--amber); }
+  .emi-confirm-pill.high { background: var(--red-bg);    color: var(--red);   }
+  .emi-confirm-pill.calc { background: var(--bg-tertiary); color: var(--text-muted); }
+  .emi-confirm-hint {
+    font-size: 11px;
+    color: var(--text-faint);
+    text-align: right;
+    line-height: 1.4;
+  }
+  .emi-confirm-bar-wrap {
+    background: rgba(184,77,198,0.08);
+    height: 5px;
+    overflow: hidden;
+  }
+  .emi-confirm-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #b84dc6 0%, #479ef5 100%);
+    transition: width 400ms ease;
+  }
+  .emi-confirm-footer {
+    background: #fafafa;
+    border-radius: 0 0 10px 10px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 22px;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+
+  /* ── INPUT STEPPER ─────────────────────────────────────────── */
+  .input-stepper {
+    display: flex; align-items: center; margin-bottom: 24px;
+    padding: 16px 20px;
+    background: var(--bg-alt); border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .input-step { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
+  .input-step-circle {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--gradient); color: white;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(184,77,198,0.30);
+  }
+  .input-step-label { font-size: 10px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .input-step-line { flex: 1; height: 2px; background: var(--gradient); margin: 0 6px; opacity: 0.35; margin-bottom: 14px; }
+
+  /* ── INPUT SECTIONS ─────────────────────────────────────────── */
+  .input-section {
+    margin-bottom: 20px;
+    padding: 18px 0 0;
+    border-top: 1px solid var(--border);
+  }
+  .input-section-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+  }
+  .input-section-num {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+    background: var(--gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    display: inline-block; flex-shrink: 0;
+  }
+  .input-section-title {
+    font-size: 13px; font-weight: 600; color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  /* ── TOOLTIP ICONS ──────────────────────────────────────────── */
+  .tip-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--bg-tertiary); color: var(--text-muted);
+    font-size: 9px; font-weight: 700; font-style: normal;
+    cursor: help; vertical-align: middle; margin-left: 3px;
+    position: relative; border: 1px solid var(--border);
+    transition: all var(--transition);
+    font-family: var(--font);
+  }
+  .tip-icon:hover { background: var(--blue-tint); color: var(--blue); border-color: var(--blue); }
+  .tip-icon::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 8px); left: 50%;
+    transform: translateX(-50%);
+    background: #202124; color: white;
+    font-size: 11px; font-weight: 400; line-height: 1.45;
+    padding: 8px 12px; border-radius: 8px;
+    white-space: normal; max-width: 220px; width: max-content;
+    pointer-events: none; opacity: 0;
+    transition: opacity 180ms ease; z-index: 200;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    text-transform: none; letter-spacing: 0;
+  }
+  .tip-icon::before {
+    content: ''; position: absolute; bottom: calc(100% + 2px); left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: #202124;
+    pointer-events: none; opacity: 0; transition: opacity 180ms ease; z-index: 200;
+  }
+  .tip-icon:hover::after, .tip-icon:hover::before { opacity: 1; }
+
+  /* ── ADVANCED METRIC CARDS ──────────────────────────────────── */
+  .adv-card { position: relative; overflow: hidden; }
+  .adv-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gradient);
+  }
+  .adv-card-icon {
+    font-size: 18px; margin-bottom: 8px; display: block;
+  }
+
+  /* ── PRINT-READY CLASSES */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-in { animation: fadeUp 500ms ease forwards; }
+
+  /* TOOLTIP */
+  [data-tip] { position: relative; cursor: help; }
+  [data-tip]::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+    background: var(--text); color: white; font-size: 11px; font-weight: 400; line-height: 1.4;
+    padding: 6px 10px; border-radius: 6px; white-space: nowrap; pointer-events: none;
+    opacity: 0; transition: opacity var(--transition); z-index: 10;
+  }
+  [data-tip]:hover::after { opacity: 1; }
+
+  .info-icon { font-size: 11px; color: var(--text-ghost); cursor: help; }
+
+  /* NUM HIGHLIGHT */
+  .highlight-num {
+    font-size: 32px; font-weight: 600;
+    background: var(--gradient);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    display: inline-block; line-height: 1.1;
+  }
+</style>
+</style>
+</head>
+<body>
+
+<!-- ════════════════ HEADER ════════════════ -->
+<header>
+  <a href="/" class="logo" style="cursor:pointer;text-decoration:none">
+    <div class="logo-mark">T</div>
+    <span class="logo-text">ToolKit<span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pro</span></span>
+  </a>
+  <div class="header-right" style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px">
+      <span style="opacity:.35">/ </span>
+      <span style="font-weight:500;color:var(--text)">US Rental Property Analyzer</span>
+    </span>
+    <a href="/" style="background:none;border:1px solid var(--border);border-radius:var(--r);font-family:var(--font-b);font-size:12px;font-weight:500;color:var(--muted);padding:5px 12px;cursor:pointer;transition:all .2s;text-decoration:none" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">← All Tools</a>
+    <div id="auth-header-area">
+      <button id="header-login-btn" onclick="openModal('auth')" style="background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-family:var(--font-b);font-size:13px;font-weight:500;padding:6px 14px;cursor:pointer;transition:background var(--t);" onmouseover="this.style.background='var(--blue-h)'" onmouseout="this.style.background='var(--blue)'">Sign In</button>
+      <div id="header-user" style="display:none" class="auth-user-bar">
+        <div class="auth-avatar" id="header-avatar">U</div>
+        <span class="auth-name" id="header-username"></span>
+        <button class="auth-logout" onclick="logOut()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div style="background:var(--bg2);border-bottom:1px solid var(--border2);padding:10px 24px;display:flex;align-items:center;gap:8px">
+  <a href="/" style="background:none;border:none;font-family:var(--font-b);font-size:12px;font-weight:500;color:var(--blue);cursor:pointer;padding:0;text-decoration:none">← All Tools</a>
+  <span style="font-size:11px;color:var(--ghost);margin:0 4px">/</span>
+  <span style="font-size:12px;color:var(--muted)">US Rental Property Analyzer</span>
+</div>
+
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <p class="eyebrow">Real Estate Investment Analysis</p>
+      <h1>US Rental Property<br><span class="g">Investment Analyzer</span></h1>
+      <p class="hero-sub">Analyze rental income, cash flow, tax benefits, and compare against stocks, bonds, REITs and more — all in real time.</p>
+      <div class="hero-stats">
+        <div>
+          <span class="hero-stat-num" id="stat-coc">—</span>
+          <span class="hero-stat-label">Tax-Adj. CoC</span>
+        </div>
+        <div>
+          <span class="hero-stat-num" id="stat-cap">—</span>
+          <span class="hero-stat-label">Cap Rate</span>
+        </div>
+        <div>
+          <span class="hero-stat-num" id="stat-roi">—</span>
+          <span class="hero-stat-label">Total ROI</span>
+        </div>
+        <div>
+          <span class="hero-stat-num" id="stat-total">—</span>
+          <span class="hero-stat-label" id="stat-total-label">Year 1 Return (incl. Cash Flow &amp; Appreciation)</span>
+        </div>
+      </div>
+
+      <!-- Quick-nav pills -->
+      <div class="hero-nav-pills">
+        <button class="hero-pill hero-pill-primary" onclick="navScrollTo('analyzer')">
+          <span>🧮</span> Start Analyzing
+        </button>
+        <button class="hero-pill" onclick="navScrollTo('case-study')">
+          <span>📊</span> Sample Case Study
+        </button>
+        <button class="hero-pill" onclick="navScrollTo('faq')">
+          <span>❓</span> FAQ
+        </button>
+        <button class="hero-pill" onclick="navScrollTo('breakdown')">
+          <span>🧾</span> Full Financial Breakdown
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INPUT + RESULTS -->
+<section id="analyzer">
+  <div class="container">
+    <div class="two-col">
+
+      <!-- LEFT: INPUTS -->
+      <div>
+        <div class="card">
+
+          <!-- Step progress bar -->
+          <div class="input-stepper">
+            <div class="input-step active" id="step-1">
+              <div class="input-step-circle">1</div>
+              <div class="input-step-label">Property</div>
+            </div>
+            <div class="input-step-line"></div>
+            <div class="input-step active" id="step-2">
+              <div class="input-step-circle">2</div>
+              <div class="input-step-label">Financing</div>
+            </div>
+            <div class="input-step-line"></div>
+            <div class="input-step active" id="step-3">
+              <div class="input-step-circle">3</div>
+              <div class="input-step-label">Assumptions</div>
+            </div>
+            <div class="input-step-line"></div>
+            <div class="input-step active" id="step-4">
+              <div class="input-step-circle">4</div>
+              <div class="input-step-label">Tax</div>
+            </div>
+          </div>
+
+          <!-- Section 1: Property -->
+          <div class="input-section">
+            <div class="input-section-header">
+              <span class="input-section-num">01</span>
+              <span class="input-section-title">Property Details</span>
+            </div>
+            <div class="input-row">
+              <div class="input-group">
+                <label>Purchase Price ($) <span class="tip-icon" data-tip="The total cost to acquire the property including purchase price. Does not include closing costs.">ℹ</span></label>
+                <input type="number" id="price" value="400000" min="50000" max="5000000" step="5000" oninput="recalc()">
+              </div>
+              <div class="input-group">
+                <label>Down Payment ($) <span class="tip-icon" data-tip="Cash you invest upfront. Higher down payment = lower EMI but lower cash-on-cash return.">ℹ</span></label>
+                <input type="number" id="down" value="80000" min="0" max="2000000" step="5000" oninput="recalc()">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Financing -->
+          <div class="input-section">
+            <div class="input-section-header">
+              <span class="input-section-num">02</span>
+              <span class="input-section-title">Financing</span>
+            </div>
+            <div class="input-group">
+              <label>Interest Rate (%) <span class="tip-icon" data-tip="Annual mortgage interest rate. Even 0.5% difference changes your monthly payment significantly.">ℹ</span></label>
+              <div class="slider-wrap">
+                <input type="range" id="rate-slider" min="2" max="12" step="0.1" value="6.5" oninput="syncSlider('rate','rate-slider'); recalc()">
+                <input type="number" id="rate" value="6.5" min="2" max="12" step="0.1" style="width:70px;flex-shrink:0" oninput="syncInput('rate','rate-slider'); recalc()">
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Loan Term (years) <span class="tip-icon" data-tip="30-year loans have lower monthly payments. 15-year builds equity faster and saves interest.">ℹ</span></label>
+              <select id="term" onchange="recalc()">
+                <option value="30" selected>30 years</option>
+                <option value="15">15 years</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- EMI CONFIRMATION BOX -->
+          <div class="emi-confirm-wrap">
+            <div class="emi-confirm-inner">
+              <div class="emi-confirm-left">
+                <div class="emi-confirm-label">Your Monthly Mortgage Payment</div>
+                <div class="emi-confirm-num" id="emi-display">$2,,528</div>
+                <div class="emi-confirm-breakdown" id="emi-breakdown">$320k loan · 6.5% · 30 yr</div>
+              </div>
+              <div class="emi-confirm-right">
+                <div class="emi-confirm-pill" id="emi-status-pill">Calculating…</div>
+                <div class="emi-confirm-hint">Does this match your<br>actual quote?</div>
+              </div>
+            </div>
+            <div class="emi-confirm-bar-wrap">
+              <div class="emi-confirm-bar-fill" id="emi-bar"></div>
+            </div>
+            <div class="emi-confirm-footer">
+              <span id="emi-annual-label">Annual: —</span>
+              <span id="emi-ltv-label">LTV: —</span>
+              <span id="emi-dsr-label">Debt-to-Rent: —</span>
+            </div>
+          </div>
+
+          <!-- Section 3: Rental + Expenses + Assumptions -->
+          <div class="input-section">
+            <div class="input-section-header">
+              <span class="input-section-num">03</span>
+              <span class="input-section-title">Income &amp; Expenses</span>
+            </div>
+            <div class="input-group">
+              <label>Monthly Rent ($) <span class="tip-icon" data-tip="Expected rent per month. Use Zillow or Rentometer to verify local market rates.">ℹ</span></label>
+              <div class="slider-wrap">
+                <input type="range" id="rent-slider" min="500" max="10000" step="50" value="2500" oninput="syncSlider('rent','rent-slider'); recalc()">
+                <input type="number" id="rent" value="2500" min="500" max="10000" step="50" style="width:80px;flex-shrink:0" oninput="syncInput('rent','rent-slider'); recalc()">
+              </div>
+            </div>
+            <div class="input-group">
+              <label>Vacancy Rate (%) <span class="tip-icon" data-tip="% of time the property sits empty. US average is 5–8%. Always budget for at least 5%.">ℹ</span></label>
+              <div class="slider-wrap">
+                <input type="range" id="vac-slider" min="0" max="20" step="0.5" value="6" oninput="syncSlider('vac','vac-slider'); recalc()">
+                <input type="number" id="vac" value="6" min="0" max="20" step="0.5" style="width:60px;flex-shrink:0" oninput="syncInput('vac','vac-slider'); recalc()">
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="input-group">
+                <label>Property Tax (% of price) <span class="tip-icon" data-tip="Annual property tax as % of purchase price. Varies by state: TX ~2%, CA ~1.1%, FL ~0.9%.">ℹ</span></label>
+                <input type="number" id="ptax" value="1.2" min="0" max="5" step="0.1" oninput="recalc()">
+              </div>
+              <div class="input-group">
+                <label>Insurance (annual $) <span class="tip-icon" data-tip="Annual landlord insurance. Typically $1,000–$2,500/yr depending on property size and location.">ℹ</span></label>
+                <input type="number" id="ins" value="1500" min="0" max="20000" step="100" oninput="recalc()">
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="input-group">
+                <label>Maintenance (% of rent) <span class="tip-icon" data-tip="Budget 5–15% of gross rent for repairs, upkeep. Older properties need more. Common rule: 1% of value/yr.">ℹ</span></label>
+                <input type="number" id="maint" value="8" min="0" max="30" step="0.5" oninput="recalc()">
+              </div>
+              <div class="input-group">
+                <label>Property Mgmt (% of rent) <span class="tip-icon" data-tip="Professional managers charge 8–12% of rent. Set to 0 if self-managing.">ℹ</span></label>
+                <input type="number" id="mgmt" value="10" min="0" max="30" step="0.5" oninput="recalc()">
+              </div>
+            </div>
+            <div class="input-group">
+              <label>HOA Fees (monthly $) <span class="tip-icon" data-tip="Monthly homeowner association fee. Often $0 for SFH, $100–$500+ for condos/townhomes.">ℹ</span></label>
+              <input type="number" id="hoa" value="0" min="0" max="2000" step="25" oninput="recalc()">
+            </div>
+            <div class="input-row">
+              <div class="input-group">
+                <label>Appreciation (%/yr) <span class="tip-icon" data-tip="Expected annual property value increase. US historical average: 3–5%. High-growth cities: 5–8%.">ℹ</span></label>
+                <input type="number" id="appr" value="4" min="0" max="15" step="0.5" oninput="recalc()">
+              </div>
+              <div class="input-group">
+                <label>Rent Growth (%/yr) <span class="tip-icon" data-tip="Expected annual rent increase. US average: 3–4%. Used for long-term projections.">ℹ</span></label>
+                <input type="number" id="rentgrowth" value="3" min="0" max="15" step="0.5" oninput="recalc()">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Tax -->
+          <div class="input-section" style="margin-bottom:0">
+            <div class="input-section-header">
+              <span class="input-section-num">04</span>
+              <span class="input-section-title">Tax Assumptions</span>
+            </div>
+
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Include Tax Benefits <span class="tip-icon" data-tip="Enables depreciation and mortgage interest deductions. Turn off to see pre-tax returns only.">ℹ</span></div>
+                <div class="toggle-desc">Depreciation + mortgage interest deductions</div>
+              </div>
+              <div class="toggle on" id="tax-toggle" onclick="toggleTax()"></div>
+            </div>
+            <div id="tax-inputs">
+              <div class="input-row">
+                <div class="input-group">
+                  <label>Household Income ($) <span class="tip-icon" data-tip="Your total annual income. Used to calculate your marginal tax bracket for benefit estimation.">ℹ</span></label>
+                  <input type="number" id="income" value="150000" min="0" max="2000000" step="5000" oninput="recalc()">
+                </div>
+                <div class="input-group">
+                  <label>Tax Rate (%) <span class="tip-icon" data-tip="Your effective marginal tax rate. 22% for $89k–$190k income. 24% for $190k–$364k.">ℹ</span></label>
+                  <input type="number" id="taxrate" value="24" min="0" max="50" step="1" oninput="recalc()">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div>
+
+        <!-- Key Metrics Grid -->
+        <div style="margin-bottom:24px">
+          <h2><span class="icon">📊</span>Key Metrics <span class="tax-indicator on" id="tax-badge">Tax Benefits ON</span></h2>
+          <div class="four-col" style="margin-bottom:16px">
+            <div class="metric-card">
+              <div class="metric-label">Monthly Mortgage</div>
+              <div class="metric-value" id="m-emi">—</div>
+              <div class="metric-sub">P+I payment</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Net Operating Income</div>
+              <div class="metric-value" id="m-noi">—</div>
+              <div class="metric-sub">Annual NOI</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Annual Cash Flow</div>
+              <div class="metric-value" id="m-cf">—</div>
+              <div class="metric-sub" id="m-cf-sub">Pre-tax</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Cap Rate</div>
+              <div class="metric-value" id="m-cap">—</div>
+              <div class="metric-sub">NOI / Price</div>
+            </div>
+          </div>
+          <div class="four-col">
+            <div class="metric-card">
+              <div class="metric-label">Cash-on-Cash Return</div>
+              <div class="metric-value" id="m-coc">—</div>
+              <div class="metric-sub">Pre-tax CoC</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Tax Savings</div>
+              <div class="metric-value" id="m-taxsav">—</div>
+              <div class="metric-sub">Annual benefit</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Adj. Cash Flow</div>
+              <div class="metric-value" id="m-acf">—</div>
+              <div class="metric-sub">After-tax</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Tax-Adj. CoC</div>
+              <div class="metric-value gradient-text" id="m-tcoc">—</div>
+              <div class="metric-sub">After-tax CoC</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Metrics -->
+        <div style="margin-bottom:24px">
+          <h2><span class="icon">⚡</span>Advanced Metrics</h2>
+          <div class="four-col">
+            <div class="metric-card adv-card">
+              <div class="adv-card-icon">📐</div>
+              <div class="metric-label">IRR (5-Year) <span class="tip-icon" data-tip="Internal Rate of Return — the annualised return if you sold after 5 years. Accounts for all cash flows + exit value. The gold standard metric.">ℹ</span></div>
+              <div class="metric-value gradient-text" id="m-irr">—</div>
+              <div class="metric-sub">Annualised total return</div>
+            </div>
+            <div class="metric-card adv-card">
+              <div class="adv-card-icon">🛡️</div>
+              <div class="metric-label">DSCR <span class="tip-icon" data-tip="Debt Service Coverage Ratio = NOI ÷ Annual Mortgage. Lenders require ≥1.25. Below 1.0 means rent doesn't cover debt.">ℹ</span></div>
+              <div class="metric-value" id="m-dscr">—</div>
+              <div class="metric-sub" id="m-dscr-sub">NOI ÷ mortgage</div>
+            </div>
+            <div class="metric-card adv-card">
+              <div class="adv-card-icon">⚖️</div>
+              <div class="metric-label">Break-even Occupancy <span class="tip-icon" data-tip="The minimum occupancy % needed to cover all expenses including mortgage. Below this = monthly loss.">ℹ</span></div>
+              <div class="metric-value" id="m-beo">—</div>
+              <div class="metric-sub" id="m-beo-sub">min occupancy needed</div>
+            </div>
+            <div class="metric-card adv-card">
+              <div class="adv-card-icon">📊</div>
+              <div class="metric-label">Gross Rent Multiplier <span class="tip-icon" data-tip="GRM = Price ÷ Annual Gross Rent. Lower is better. Below 10 is strong; above 15 is expensive.">ℹ</span></div>
+              <div class="metric-value" id="m-grm">—</div>
+              <div class="metric-sub" id="m-grm-sub">price ÷ gross rent</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decision Engine -->
+        <h2><span class="icon">🧠</span>Investment Decision</h2>
+        <div id="decision-container"></div>
+
+        <div id="suggestions-wrap" style="display:none;margin-top:16px">
+          <div class="accordion open" id="suggestions-acc">
+            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+              <span>💡 Improvement Suggestions</span>
+              <span class="acc-icon">▼</span>
+            </div>
+            <div class="accordion-content">
+              <ul class="suggestion-list" id="suggestions-list"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CONTEXTUAL CTA 1: Expert call — after decision verdict ── -->
+        <div class="inline-cta inline-cta-blue" style="margin-top:24px">
+          <div class="inline-cta-left">
+            <div class="inline-cta-icon">📞</div>
+            <div>
+              <div class="inline-cta-title">Want expert eyes on this deal?</div>
+              <div class="inline-cta-desc">A certified analyst will review your numbers and flag anything you may have missed — free 30-min call.</div>
+            </div>
+          </div>
+          <button class="inline-cta-btn" onclick="rentalOpenModal('modal-expert')">Book Free Call →</button>
+        </div>
+
+        <!-- ── KEY INSIGHTS PANEL ── -->
+        <div style="margin-top:28px">
+          <h2><span class="icon">🔍</span>Key Insights</h2>
+          <div class="insights-panel" id="insights-panel">
+            <!-- populated by JS -->
+          </div>
+        </div>
+
+        <!-- ── ROI WATERFALL ── -->
+        <div style="margin-top:28px">
+          <h2><span class="icon">💰</span>Total ROI Breakdown</h2>
+          <div class="roi-waterfall card">
+            <div class="roi-waterfall-row" id="roi-row-cf">
+              <div class="roi-row-left">
+                <div class="roi-row-icon" style="background:var(--green-bg)">💵</div>
+                <div>
+                  <div class="roi-row-label">After-Tax Cash Flow</div>
+                  <div class="roi-row-sub" id="roi-cf-sub">—</div>
+                </div>
+              </div>
+              <div class="roi-row-val" id="roi-cf-val">—</div>
+            </div>
+            <div class="roi-waterfall-connector"></div>
+            <div class="roi-waterfall-row" id="roi-row-appr">
+              <div class="roi-row-left">
+                <div class="roi-row-icon" style="background:var(--blue-tint)">📈</div>
+                <div>
+                  <div class="roi-row-label">Appreciation (Year 1)</div>
+                  <div class="roi-row-sub" id="roi-appr-sub">—</div>
+                </div>
+              </div>
+              <div class="roi-row-val" id="roi-appr-val">—</div>
+            </div>
+            <div class="roi-waterfall-connector"></div>
+            <div class="roi-waterfall-row" id="roi-row-paydown">
+              <div class="roi-row-left">
+                <div class="roi-row-icon" style="background:#F3E8FF">🏦</div>
+                <div>
+                  <div class="roi-row-label">Loan Paydown (Equity)</div>
+                  <div class="roi-row-sub" id="roi-paydown-sub">—</div>
+                </div>
+              </div>
+              <div class="roi-row-val" id="roi-paydown-val">—</div>
+            </div>
+            <div class="roi-waterfall-total">
+              <div class="roi-total-left">
+                <div style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Total Year 1 Return</div>
+                <div class="highlight-num" id="roi-total-val" style="font-size:32px">—</div>
+              </div>
+              <div class="roi-total-right">
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;text-align:right">ROI on Capital</div>
+                <div class="highlight-num" id="roi-pct-val" style="font-size:32px;text-align:right">—</div>
+                <div style="font-size:11px;color:var(--text-faint);text-align:right" id="roi-capital-note">on <span id="roi-down-val">—</span> invested</div>
+              </div>
+            </div>
+            <!-- ROI progress bars -->
+            <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px" id="roi-bars">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px">
+                  <span>Cash Flow share</span><span id="bar-cf-pct">—</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" id="bar-cf" style="width:0%;background:var(--green)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px">
+                  <span>Appreciation share</span><span id="bar-appr-pct">—</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" id="bar-appr" style="width:0%;background:var(--blue)"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-bottom:4px">
+                  <span>Loan paydown share</span><span id="bar-paydown-pct">—</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" id="bar-paydown" style="width:0%;background:#7C3AED"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CASH FLOW FLIP PANEL ── -->
+        <div style="margin-top:28px">
+          <h2><span class="icon">🔄</span>How Negative Cash Flow Turns Positive</h2>
+          <div class="cf-flip-panel card" id="cf-flip-panel">
+            <div class="cf-flip-steps">
+
+              <div class="cf-flip-step">
+                <div class="cf-flip-step-label">Pre-Tax Cash Flow</div>
+                <div class="cf-flip-bar-wrap">
+                  <div class="cf-flip-bar-track">
+                    <div class="cf-flip-bar-fill cf-bar-pretax" id="cfb-pretax" style="width:0%"></div>
+                  </div>
+                  <div class="cf-flip-step-val" id="cfv-pretax">—</div>
+                </div>
+              </div>
+
+              <div class="cf-flip-arrow">↓ <span style="font-size:11px;color:var(--text-muted)">Add Tax Benefits</span></div>
+
+              <div class="cf-flip-step">
+                <div class="cf-flip-step-label" style="color:var(--text-muted)">+ Mortgage Interest Deduction</div>
+                <div class="cf-flip-bar-wrap">
+                  <div class="cf-flip-bar-track">
+                    <div class="cf-flip-bar-fill cf-bar-int" id="cfb-int" style="width:0%"></div>
+                  </div>
+                  <div class="cf-flip-step-val green" id="cfv-int">—</div>
+                </div>
+              </div>
+
+              <div class="cf-flip-step">
+                <div class="cf-flip-step-label" style="color:var(--text-muted)">+ Depreciation Deduction</div>
+                <div class="cf-flip-bar-wrap">
+                  <div class="cf-flip-bar-track">
+                    <div class="cf-flip-bar-fill cf-bar-dep" id="cfb-dep" style="width:0%"></div>
+                  </div>
+                  <div class="cf-flip-step-val green" id="cfv-dep">—</div>
+                </div>
+              </div>
+
+              <div class="cf-flip-divider"></div>
+
+              <div class="cf-flip-step cf-flip-step-total">
+                <div class="cf-flip-step-label" style="font-weight:600;color:var(--text)">After-Tax Cash Flow</div>
+                <div class="cf-flip-bar-wrap">
+                  <div class="cf-flip-bar-track cf-bar-track-aftertax">
+                    <div class="cf-flip-bar-fill cf-bar-aftertax" id="cfb-aftertax" style="width:0%"></div>
+                  </div>
+                  <div class="cf-flip-step-val" id="cfv-aftertax" style="font-size:18px;font-weight:700">—</div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Flip verdict chip -->
+            <div id="cf-verdict" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON CHART -->
+<section id="compare" style="background:var(--bg-alt)">
+  <div class="container">
+    <h2><span class="icon">📈</span>Investment Comparison</h2>
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px;margin-top:-16px">
+      Property total return = Tax-adjusted cash yield <strong>+</strong> appreciation on down payment invested.
+      All other assets show their expected annual return on equivalent capital.
+    </p>
+
+    <!-- Legend -->
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;align-items:center">
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="width:14px;height:14px;border-radius:3px;background:linear-gradient(135deg,#b84dc6,#479ef5)"></div>
+        <span style="font-size:12px;font-weight:500;color:var(--text-muted)">Cash Yield (Tax-Adj. CoC)</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="width:14px;height:14px;border-radius:3px;background:#E8F0FE;border:1.5px dashed #1A73E8"></div>
+        <span style="font-size:12px;font-weight:500;color:var(--text-muted)">Appreciation Return on Down Payment</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="width:14px;height:14px;border-radius:3px;background:#DADCE0"></div>
+        <span style="font-size:12px;font-weight:500;color:var(--text-muted)">Other Asset Returns</span>
+      </div>
+    </div>
+
+    <div class="card" style="padding:28px 28px 20px">
+      <div class="chart-wrap" style="height:340px">
+        <canvas id="compare-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Summary stats row -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px" id="chart-summary">
+      <div class="metric-card" style="text-align:center">
+        <div class="metric-label">Property Total Return</div>
+        <div class="metric-value gradient-text" id="cs-total">—</div>
+        <div class="metric-sub">CoC + Appreciation</div>
+      </div>
+      <div class="metric-card" style="text-align:center">
+        <div class="metric-label">vs S&amp;P 500 (10%)</div>
+        <div class="metric-value" id="cs-vsp">—</div>
+        <div class="metric-sub" id="cs-vsp-sub">difference</div>
+      </div>
+      <div class="metric-card" style="text-align:center">
+        <div class="metric-label">Leverage Advantage</div>
+        <div class="metric-value" id="cs-lev">—</div>
+        <div class="metric-sub" id="cs-lev-sub">appreciation on full asset, paid by <span id="cs-lev-ltv">—</span> down</div>
+      </div>
+    </div>
+
+    <!-- ── CONTEXTUAL CTA 3: Report capture after chart ── -->
+    <div class="inline-cta inline-cta-gradient" style="margin-top:28px">
+      <div class="inline-cta-left">
+        <div class="inline-cta-icon">📄</div>
+        <div>
+          <div class="inline-cta-title" style="color:white">Get this analysis as a full PDF report</div>
+          <div class="inline-cta-desc" style="color:rgba(255,255,255,0.75)">Cap rate, CoC, IRR, DSCR, benchmark comparison, and a written buy/pass verdict — sent to your inbox instantly.</div>
+        </div>
+      </div>
+      <div class="inline-cta-form">
+        <input type="email" id="lead-email-report" placeholder="your@email.com" class="inline-cta-email-input">
+        <button class="inline-cta-btn-white" onclick="submitLead('report')">Send Report →</button>
+      </div>
+    </div>
+
+    <div style="margin-top:20px">
+      <div class="share-block">
+        <span class="share-label">Share</span>
+        <button class="share-btn" onclick="copyLink(this)" title="Copy link">🔗</button>
+        <button class="share-btn" onclick="shareLinkedIn()" title="LinkedIn">in</button>
+        <button class="share-btn" onclick="shareTwitter()" title="X/Twitter">𝕏</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPENSE BREAKDOWN -->
+<section id="breakdown">
+  <div class="container">
+    <h2><span class="icon">🧾</span>Full Financial Breakdown</h2>
+    <div class="two-col-equal">
+      <div class="card">
+        <h3>Income Statement</h3>
+        <table id="income-table" style="width:100%;border-collapse:collapse;font-size:14px">
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Gross Rental Income</td><td id="t-gross" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Less: Vacancy Loss</td><td id="t-vac" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid);color:var(--red)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid);font-weight:600;color:var(--text)">Effective Rental Income</td><td id="t-eff" style="text-align:right;font-weight:600;padding:8px 0;border-bottom:1px solid var(--border-mid)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Property Tax</td><td id="t-ptax" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid);color:var(--red)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Insurance</td><td id="t-ins" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid);color:var(--red)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Maintenance</td><td id="t-maint" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid);color:var(--red)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Property Management</td><td id="t-mgmt" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid);color:var(--red)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border)">HOA</td><td id="t-hoa" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border);color:var(--red)">—</td></tr>
+          <tr><td style="padding:10px 0 0;font-weight:600;color:var(--text)">Net Operating Income</td><td id="t-noi" style="text-align:right;font-weight:700;padding:10px 0 0;font-size:16px">—</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Cash Flow Statement</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Net Operating Income</td><td id="t2-noi" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Annual Mortgage (P+I)</td><td id="t2-mort" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid);color:var(--red)">—</td></tr>
+          <tr><td style="padding:8px 0;font-weight:600;color:var(--text);border-bottom:1px solid var(--border)">Pre-Tax Cash Flow</td><td id="t2-cf" style="text-align:right;font-weight:700;padding:8px 0;border-bottom:1px solid var(--border);font-size:16px">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Interest Deduction</td><td id="t2-int" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--text-muted);border-bottom:1px solid var(--border-mid)">Depreciation</td><td id="t2-dep" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border-mid)">—</td></tr>
+          <tr><td style="padding:8px 0;color:var(--green);border-bottom:1px solid var(--border)">Tax Savings</td><td id="t2-taxsav" style="text-align:right;font-weight:500;padding:8px 0;border-bottom:1px solid var(--border);color:var(--green)">—</td></tr>
+          <tr><td style="padding:10px 0 0;font-weight:600;color:var(--text)">Adjusted Cash Flow</td><td id="t2-acf" style="text-align:right;font-weight:700;padding:10px 0 0;font-size:16px">—</td></tr>
+        </table>
+        <hr class="gradient-divider" style="margin:24px 0 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:2px">Total Cash Invested</div>
+            <div style="font-size:18px;font-weight:600;color:var(--text)" id="t2-invested">—</div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:2px;text-align:right">Pre-Tax CoC</div>
+            <div style="font-size:18px;font-weight:600;color:var(--text);text-align:right" id="t2-coc">—</div>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:2px;text-align:right">Tax-Adj. CoC</div>
+            <div class="metric-value gradient-text" style="font-size:22px;text-align:right" id="t2-tcoc">—</div>
+          </div>
+        </div>
+        <!-- Download button -->
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;line-height:1.5">
+            Download a full PDF-style report with all your inputs, analysis, and an investment conclusion.
+          </div>
+          <button class="btn-gradient" onclick="downloadReport()" style="width:100%;justify-content:center;font-size:14px;padding:12px 20px;border:none;cursor:pointer">
+            📄 Download Investment Report
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="feedback-widget">
+      <span class="feedback-label">Was this analysis helpful?</span>
+      <button class="feedback-btn" onclick="feedbackClick(this,'👍')">👍</button>
+      <button class="feedback-btn" onclick="feedbackClick(this,'👎')">👎</button>
+      <span class="feedback-thanks">Thank you for your feedback!</span>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+<section id="case-study" style="background:var(--bg)">
+  <div class="container">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:36px">
+      <div>
+        <p class="eyebrow">Real Case Study</p>
+        <h2 style="font-size:32px;font-weight:400;margin-bottom:12px;line-height:1.25">📊 Dallas Rental Property<br><span style="font-weight:600">How the numbers actually work</span></h2>
+        <p style="font-size:16px;color:var(--text-muted);max-width:540px;line-height:1.6">A real deal — showing why monthly cash flow alone tells only half the story.</p>
+      </div>
+      <div class="cs-location-badge">
+        <div class="cs-loc-icon">📍</div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">Dallas, Texas</div>
+          <div style="font-size:12px;color:var(--text-muted)">Single-family home · 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ALWAYS VISIBLE: Key summary ── -->
+    <div class="cs-summary-grid">
+
+      <!-- Cost card -->
+      <div class="cs-summary-card">
+        <div class="cs-summary-icon" style="background:var(--blue-tint)">🏠</div>
+        <div class="cs-summary-label">Cost of Property</div>
+        <div class="cs-summary-val">$256,000</div>
+        <div class="cs-summary-sub">20% down · $51,200 invested</div>
+      </div>
+
+      <!-- Monthly rent -->
+      <div class="cs-summary-card">
+        <div class="cs-summary-icon" style="background:var(--green-bg)">💵</div>
+        <div class="cs-summary-label">Monthly Rent</div>
+        <div class="cs-summary-val">$2,000</div>
+        <div class="cs-summary-sub">$22,800 effective / year</div>
+      </div>
+
+      <!-- Annual profit — featured -->
+      <div class="cs-summary-card cs-summary-featured">
+        <div class="cs-summary-icon" style="background:rgba(184,77,198,0.10)">🚀</div>
+        <div class="cs-summary-label">Total Annual Profit</div>
+        <div class="cs-summary-val cs-summary-gradient">$18,591</div>
+        <div class="cs-summary-sub">Cash Flow + Appreciation + Paydown</div>
+      </div>
+
+      <!-- ROI -->
+      <div class="cs-summary-card cs-summary-featured">
+        <div class="cs-summary-icon" style="background:rgba(71,158,245,0.10)">📈</div>
+        <div class="cs-summary-label">Total ROI</div>
+        <div class="cs-summary-val cs-summary-gradient">~36%</div>
+        <div class="cs-summary-sub">on $51,200 capital invested</div>
+      </div>
+
+    </div>
+
+    <!-- ── COLLAPSIBLE SECTIONS ── -->
+    <div style="margin-top:32px;display:flex;flex-direction:column;gap:10px">
+
+      <!-- 1. Step-by-step calculation -->
+      <div class="cs-accordion">
+        <button class="cs-acc-header" onclick="toggleCsAcc(this)" aria-expanded="false">
+          <div class="cs-acc-left">
+            <span class="cs-acc-num">01</span>
+            <div>
+              <div class="cs-acc-title">Step-by-Step Calculation</div>
+              <div class="cs-acc-preview">Income → Expenses → NOI → Cash Flow</div>
+            </div>
+          </div>
+          <span class="cs-acc-icon">+</span>
+        </button>
+        <div class="cs-acc-body">
+          <div class="cs-steps-grid" style="margin-top:20px">
+            <div class="cs-step-card">
+              <div class="cs-step-num">01</div>
+              <div class="cs-step-title">Effective Rental Income</div>
+              <div class="cs-step-body">
+                <div class="cs-calc-row"><span>Annual Gross Rent</span><span class="cs-val-pos">$24,000</span></div>
+                <div class="cs-calc-row"><span>Less: Vacancy (5%)</span><span class="cs-val-neg">− $1,200</span></div>
+                <div class="cs-calc-row cs-calc-total"><span>Effective Income</span><span>$22,800</span></div>
+              </div>
+            </div>
+            <div class="cs-step-card">
+              <div class="cs-step-num">02</div>
+              <div class="cs-step-title">Annual Expenses</div>
+              <div class="cs-step-body">
+                <div class="cs-calc-row"><span>Property Tax</span><span class="cs-val-neg">− $5,119</span></div>
+                <div class="cs-calc-row"><span>Insurance</span><span class="cs-val-neg">− $1,500</span></div>
+                <div class="cs-calc-row"><span>Maintenance</span><span class="cs-val-neg">− $3,000</span></div>
+                <div class="cs-calc-row"><span>Property Mgmt</span><span style="color:var(--green);font-weight:500">Self-managed</span></div>
+                <div class="cs-calc-row cs-calc-total"><span>Total Expenses</span><span>$9,619</span></div>
+              </div>
+            </div>
+            <div class="cs-step-card">
+              <div class="cs-step-num">03</div>
+              <div class="cs-step-title">Net Operating Income</div>
+              <div class="cs-step-body">
+                <div class="cs-calc-row"><span>Effective Income</span><span class="cs-val-pos">$22,800</span></div>
+                <div class="cs-calc-row"><span>Less: Expenses</span><span class="cs-val-neg">− $9,619</span></div>
+                <div class="cs-calc-row cs-calc-total"><span>NOI</span><span>$13,181</span></div>
+                <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-mid)">
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px">Cap Rate</div>
+                  <div style="font-size:18px;font-weight:600;color:var(--text)">5.15%</div>
+                  <div style="font-size:11px;color:var(--text-faint)">$13,181 ÷ $256,000</div>
+                </div>
+              </div>
+            </div>
+            <div class="cs-step-card">
+              <div class="cs-step-num">04</div>
+              <div class="cs-step-title">Pre-Tax Cash Flow</div>
+              <div class="cs-step-body">
+                <div class="cs-calc-row"><span>NOI</span><span class="cs-val-pos">$13,181</span></div>
+                <div class="cs-calc-row"><span>Annual Loan Payment</span><span class="cs-val-neg">− $15,500</span></div>
+                <div class="cs-calc-row cs-calc-total" style="color:var(--red)"><span>Pre-Tax Cash Flow</span><span>− $2,319</span></div>
+                <div class="cs-warning-chip">⚠️ Negative before tax</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Tax bridge -->
+      <div class="cs-accordion">
+        <button class="cs-acc-header" onclick="toggleCsAcc(this)" aria-expanded="false">
+          <div class="cs-acc-left">
+            <span class="cs-acc-num">02</span>
+            <div>
+              <div class="cs-acc-title">How Tax Benefits Flip This Deal</div>
+              <div class="cs-acc-preview">−$2,319 pre-tax → +$5,351 after-tax via $7,670 in savings</div>
+            </div>
+          </div>
+          <span class="cs-acc-icon">+</span>
+        </button>
+        <div class="cs-acc-body">
+          <div class="cs-tax-bridge" style="margin-top:20px">
+            <div class="cs-tax-bridge-left">
+              <div class="cs-tax-eyebrow">The Tax Advantage</div>
+              <div class="cs-tax-title">How a −$2,319 deal becomes <span class="cs-tax-highlight">+$5,351</span></div>
+              <p style="font-size:14px;color:var(--text-muted);line-height:1.65;margin-top:8px">The IRS lets you deduct mortgage interest, property taxes, and a non-cash depreciation allowance — turning a negative cash flow deal profitable on an after-tax basis.</p>
+            </div>
+            <div class="cs-tax-bridge-right">
+              <div class="cs-tax-deduction-row"><span class="cs-tax-ded-label">Mortgage Interest</span><span class="cs-tax-ded-val">$13,000</span></div>
+              <div class="cs-tax-deduction-row"><span class="cs-tax-ded-label">Property Tax</span><span class="cs-tax-ded-val">$5,119</span></div>
+              <div class="cs-tax-deduction-row"><span class="cs-tax-ded-label">Depreciation <span style="font-size:10px;color:var(--text-faint)">(non-cash)</span></span><span class="cs-tax-ded-val">$7,450</span></div>
+              <div class="cs-tax-deduction-row cs-tax-deduction-total"><span>Total Deductions</span><span>$25,569</span></div>
+              <div class="cs-tax-rate-row"><span>@ 30% tax rate</span><span class="cs-tax-savings-val">Tax Savings: $7,670</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Total return breakdown -->
+      <div class="cs-accordion">
+        <button class="cs-acc-header" onclick="toggleCsAcc(this)" aria-expanded="false">
+          <div class="cs-acc-left">
+            <span class="cs-acc-num">03</span>
+            <div>
+              <div class="cs-acc-title">Total Return Breakdown</div>
+              <div class="cs-acc-preview">$5,351 cash flow · $10,240 appreciation · $3,000 paydown</div>
+            </div>
+          </div>
+          <span class="cs-acc-icon">+</span>
+        </button>
+        <div class="cs-acc-body">
+          <div class="cs-returns-grid" style="margin-top:20px">
+            <div class="cs-return-card">
+              <div class="cs-return-icon" style="background:var(--green-bg)">💵</div>
+              <div class="cs-return-label">After-Tax Cash Flow</div>
+              <div class="cs-return-val" style="color:var(--green)">+$5,351</div>
+              <div class="cs-return-sub">Pre-tax −$2,319 + tax savings $7,670</div>
+            </div>
+            <div class="cs-return-card">
+              <div class="cs-return-icon" style="background:var(--blue-tint)">📈</div>
+              <div class="cs-return-label">Appreciation (4%)</div>
+              <div class="cs-return-val" style="color:var(--blue)">+$10,240</div>
+              <div class="cs-return-sub">$256,000 × 4% on full asset value</div>
+            </div>
+            <div class="cs-return-card">
+              <div class="cs-return-icon" style="background:#F3E8FF">🏦</div>
+              <div class="cs-return-label">Loan Paydown</div>
+              <div class="cs-return-val" style="color:#7C3AED">+$3,000</div>
+              <div class="cs-return-sub">Equity built via principal payments</div>
+            </div>
+            <div class="card-featured">
+              <div class="card-featured-inner" style="height:100%;display:flex;flex-direction:column;justify-content:space-between">
+                <div>
+                  <div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px">Total Annual Profit</div>
+                  <div class="highlight-num" style="font-size:44px">$18,591</div>
+                  <div style="font-size:13px;color:var(--text-faint);margin-top:6px">Cash Flow + Appreciation + Paydown</div>
+                </div>
+                <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+                    <span style="font-size:13px;color:var(--text-muted)">Capital Invested</span>
+                    <span style="font-size:15px;font-weight:600;color:var(--text)">$51,200</span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline">
+                    <span style="font-size:13px;color:var(--text-muted)">Total ROI</span>
+                    <span class="highlight-num" style="font-size:28px">~36%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Key insights -->
+      <div class="cs-accordion">
+        <button class="cs-acc-header" onclick="toggleCsAcc(this)" aria-expanded="false">
+          <div class="cs-acc-left">
+            <span class="cs-acc-num">04</span>
+            <div>
+              <div class="cs-acc-title">Key Insights from This Deal</div>
+              <div class="cs-acc-preview">5 lessons every real estate investor should know</div>
+            </div>
+          </div>
+          <span class="cs-acc-icon">+</span>
+        </button>
+        <div class="cs-acc-body">
+          <div class="cs-insights-box" style="margin-top:20px">
+            <div class="cs-insights-grid">
+              <div class="cs-insight-item"><div class="cs-insight-dot" style="background:var(--amber)"></div><div class="cs-insight-text"><strong>Negative pre-tax ≠ bad deal.</strong> This property loses $2,319/yr before taxes but earns $5,351 after — tax benefits are the key lever.</div></div>
+              <div class="cs-insight-item"><div class="cs-insight-dot" style="background:var(--blue)"></div><div class="cs-insight-text"><strong>Depreciation is your best friend.</strong> A $7,450 non-cash deduction reduces your tax bill without any actual cost.</div></div>
+              <div class="cs-insight-item"><div class="cs-insight-dot" style="background:var(--green)"></div><div class="cs-insight-text"><strong>Texas property tax cuts deeply.</strong> At $5,119, it's the single biggest expense — lower tax jurisdictions dramatically improve deal quality.</div></div>
+              <div class="cs-insight-item"><div class="cs-insight-dot" style="background:#7C3AED"></div><div class="cs-insight-text"><strong>Marginal improvements compound.</strong> An extra $150/month rent or a $10k lower purchase price flips this to positive pre-tax cash flow.</div></div>
+              <div class="cs-insight-item"><div class="cs-insight-dot" style="background:var(--ms-purple)"></div><div class="cs-insight-text"><strong>Total return is what matters.</strong> Investors who focus only on monthly cash flow miss 70%+ of this deal's value.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="cs-cta-row">
+      <div class="cs-cta-left">
+        <p style="font-size:16px;color:var(--text-muted);margin-bottom:16px">Ready to run the numbers on your deal?</p>
+        <button class="btn-gradient" onclick="navScrollTo('analyzer')" style="font-size:15px;padding:13px 32px;border:none;cursor:pointer">
+          🧮 Try Your Own Numbers
+        </button>
+      </div>
+      <div class="cs-cta-divider"></div>
+      <div class="cs-cta-right">
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:12px">Not sure if <em>your</em> deal stacks up?</p>
+        <button class="btn-secondary" onclick="rentalOpenModal('modal-expert')" style="font-size:14px;padding:12px 24px;cursor:pointer">
+          📞 Talk to an Expert — Free
+        </button>
+        <p style="font-size:11px;color:var(--text-faint);margin-top:8px">No obligation · 30-min call · Expert advice</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── MODAL: Talk to Expert ── -->
+<div class="modal-overlay" id="modal-expert" onclick="closeModalOutside(event,'modal-expert')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="rentalCloseModal('modal-expert')">✕</button>
+    <div class="modal-icon">📞</div>
+    <h3 class="modal-title">Book Your Free Strategy Call</h3>
+    <p class="modal-desc">Fill in your details and a certified investment analyst will reach out within 48 hours to schedule your free 30-minute call.</p>
+    <div class="modal-form" id="form-expert">
+      <div class="modal-field-row">
+        <div class="modal-field">
+          <label class="modal-label">Full Name *</label>
+          <input type="text" class="modal-input" id="exp-name" placeholder="John Smith">
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Email *</label>
+          <input type="email" class="modal-input" id="exp-email" placeholder="john@email.com">
+        </div>
+      </div>
+      <div class="modal-field-row">
+        <div class="modal-field">
+          <label class="modal-label">Phone</label>
+          <input type="tel" class="modal-input" id="exp-phone" placeholder="+1 (555) 000-0000">
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Investment Budget</label>
+          <select class="modal-input" id="exp-budget">
+            <option value="">Select range</option>
+            <option>Under $200k</option>
+            <option>$200k – $500k</option>
+            <option>$500k – $1M</option>
+            <option>$1M+</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">What's your biggest question?</label>
+        <textarea class="modal-input modal-textarea" id="exp-message" placeholder="e.g. I'm analyzing a duplex in Austin and unsure about the financing structure..."></textarea>
+      </div>
+      <button class="btn-gradient modal-submit-btn" onclick="submitModal('expert')">
+        📞 Request My Free Call
+      </button>
+    </div>
+    <div class="modal-success" id="success-expert" style="display:none">
+      <div class="modal-success-icon">✅</div>
+      <div class="modal-success-title">You're on the list!</div>
+      <p class="modal-success-desc">An analyst will contact you within 48 hours to schedule your call. Check your email for confirmation.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Find Properties ── -->
+<div class="modal-overlay" id="modal-properties" onclick="closeModalOutside(event,'modal-properties')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="rentalCloseModal('modal-properties')">✕</button>
+    <div class="modal-icon">🏘️</div>
+    <h3 class="modal-title">Find Investment Properties</h3>
+    <p class="modal-desc">Tell us your criteria and we'll send curated listings matched to your investment goals — including off-market deals.</p>
+    <div class="modal-form" id="form-properties">
+      <div class="modal-field-row">
+        <div class="modal-field">
+          <label class="modal-label">Full Name *</label>
+          <input type="text" class="modal-input" id="prop-name" placeholder="Jane Doe">
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Email *</label>
+          <input type="email" class="modal-input" id="prop-email" placeholder="jane@email.com">
+        </div>
+      </div>
+      <div class="modal-field-row">
+        <div class="modal-field">
+          <label class="modal-label">Target Market / City</label>
+          <input type="text" class="modal-input" id="prop-city" placeholder="e.g. Dallas TX, Phoenix AZ">
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Max Purchase Price</label>
+          <select class="modal-input" id="prop-price">
+            <option value="">Select range</option>
+            <option>Under $200k</option>
+            <option>$200k – $400k</option>
+            <option>$400k – $700k</option>
+            <option>$700k – $1M</option>
+            <option>$1M+</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-field-row">
+        <div class="modal-field">
+          <label class="modal-label">Property Type</label>
+          <select class="modal-input" id="prop-type">
+            <option value="">Any type</option>
+            <option>Single-family home</option>
+            <option>Multi-family (2–4 units)</option>
+            <option>Condo / Townhome</option>
+            <option>Commercial</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Min Target Return</label>
+          <select class="modal-input" id="prop-return">
+            <option value="">Any return</option>
+            <option>8%+ CoC</option>
+            <option>10%+ CoC</option>
+            <option>15%+ Total ROI</option>
+            <option>Cash flow positive only</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-gradient modal-submit-btn" onclick="submitModal('properties')">
+        🔍 Send Me Properties
+      </button>
+    </div>
+    <div class="modal-success" id="success-properties" style="display:none">
+      <div class="modal-success-icon">✅</div>
+      <div class="modal-success-title">Search request received!</div>
+      <p class="modal-success-desc">We'll send matched listings to your email within 24 hours. Check your inbox — and your spam folder just in case.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Loan Eligibility ── -->
+<div class="modal-overlay" id="modal-loan" onclick="closeModalOutside(event,'modal-loan')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="rentalCloseModal('modal-loan')">✕</button>
+    <div class="modal-icon">🏦</div>
+    <h3 class="modal-title">Check Loan Eligibility</h3>
+    <p class="modal-desc">Answer a few quick questions to see which investment property loan options you qualify for — no hard credit pull required.</p>
+    <div class="modal-form" id="form-loan">
+      <div class="modal-field-row">
+        <div class="modal-field">
+          <label class="modal-label">Full Name *</label>
+          <input type="text" class="modal-input" id="loan-name" placeholder="Alex Johnson">
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Email *</label>
+          <input type="email" class="modal-input" id="loan-email" placeholder="alex@email.com">
+        </div>
+      </div>
+      <div class="modal-field-row">
+        <div class="modal-field">
+          <label class="modal-label">Annual Income (approx.)</label>
+          <select class="modal-input" id="loan-income">
+            <option value="">Select range</option>
+            <option>Under $75k</option>
+            <option>$75k – $150k</option>
+            <option>$150k – $300k</option>
+            <option>$300k+</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Credit Score (approx.)</label>
+          <select class="modal-input" id="loan-credit">
+            <option value="">Not sure</option>
+            <option>Below 620</option>
+            <option>620 – 680</option>
+            <option>680 – 740</option>
+            <option>740+</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-field-row">
+        <div class="modal-field">
+          <label class="modal-label">Purchase Price (this deal)</label>
+          <input type="text" class="modal-input" id="loan-price" placeholder="e.g. $400,000">
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Down Payment Available</label>
+          <select class="modal-input" id="loan-down">
+            <option value="">Select</option>
+            <option>Less than 15%</option>
+            <option>15% – 20%</option>
+            <option>20% – 25%</option>
+            <option>25%+</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Loan type interest</label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
+          <label class="loan-chip-label"><input type="checkbox" id="ln-conv"> <span>Conventional</span></label>
+          <label class="loan-chip-label"><input type="checkbox" id="ln-dscr" checked> <span>DSCR</span></label>
+          <label class="loan-chip-label"><input type="checkbox" id="ln-port"> <span>Portfolio</span></label>
+          <label class="loan-chip-label"><input type="checkbox" id="ln-hard"> <span>Hard Money</span></label>
+        </div>
+      </div>
+      <button class="btn-gradient modal-submit-btn" onclick="submitModal('loan')">
+        ✅ Check My Eligibility
+      </button>
+    </div>
+    <div class="modal-success" id="success-loan" style="display:none">
+      <div class="modal-success-icon">✅</div>
+      <div class="modal-success-title">Eligibility check submitted!</div>
+      <p class="modal-success-desc">A lending specialist will review your profile and email you loan options within 24 hours. No hard pull — your credit score is safe.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section id="faq" style="background:var(--bg-alt)">
+  <div class="container">
+    <div style="max-width:760px;margin:0 auto">
+
+      <div style="text-align:center;margin-bottom:48px">
+        <p class="eyebrow" style="display:inline-block;margin-bottom:12px">Know Before You Invest</p>
+        <h2 style="font-size:32px;font-weight:400;color:var(--text);line-height:1.25;margin-bottom:0">Frequently Asked <span style="font-weight:600">Questions</span></h2>
+      </div>
+
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-header" onclick="toggleFaq(this)" aria-expanded="false">
+            <span class="faq-q">What is a good ROI for rental property in the USA?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>A good ROI typically ranges between <strong>8% to 15% annually</strong>. Experienced investors often target 15%+ total return by combining cash flow, property appreciation, tax benefits, and loan paydown. The right ROI depends on your risk tolerance, location, and investment strategy — a lower-risk market like the Midwest may yield 10% while a high-growth market like Austin may return more via appreciation.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-header" onclick="toggleFaq(this)" aria-expanded="false">
+            <span class="faq-q">Why is my rental property showing negative cash flow — is it still worth buying?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>Negative pre-tax cash flow is common in high-demand cities and doesn't automatically make a deal bad. Investors still profit through three other channels:</p>
+            <ul class="faq-list-inner">
+              <li><strong>Property appreciation</strong> — typically 3–5%/year on the full asset value</li>
+              <li><strong>Tax benefits</strong> — depreciation and interest deductions can flip negative to positive after-tax</li>
+              <li><strong>Loan paydown</strong> — tenants are effectively paying down your mortgage, building equity</li>
+            </ul>
+            <p style="margin-top:12px">Use the <em>Tax Benefits toggle</em> in this calculator to see how after-tax returns change your picture.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-header" onclick="toggleFaq(this)" aria-expanded="false">
+            <span class="faq-q">How do tax benefits actually improve real estate returns?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>Real estate investors get access to three powerful deductions that most other investments don't offer:</p>
+            <ul class="faq-list-inner">
+              <li><strong>Mortgage interest deduction</strong> — the interest portion of your loan payment is fully deductible</li>
+              <li><strong>Property tax deduction</strong> — annual property taxes reduce your taxable rental income</li>
+              <li><strong>Depreciation</strong> — the IRS lets you deduct 1/27.5th of the structure's value each year as a non-cash expense, even if the property is appreciating</li>
+            </ul>
+            <p style="margin-top:12px">Combined, these can generate <strong>$5,000–$15,000+</strong> in annual tax savings on a typical rental property, effectively subsidizing negative cash flow.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-header" onclick="toggleFaq(this)" aria-expanded="false">
+            <span class="faq-q">What is the 1% rule — and should I use it?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>The <strong>1% rule</strong> states that monthly rent should equal at least 1% of the purchase price. Example: a $200,000 property should rent for $2,000/month.</p>
+            <p style="margin-top:10px">It's a useful quick-filter, but don't rely on it alone. High-appreciation markets (NYC, Austin, LA) rarely meet the 1% rule yet still deliver strong total returns. Use it to screen deals, then run the full analysis here to confirm.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-header" onclick="toggleFaq(this)" aria-expanded="false">
+            <span class="faq-q">How much down payment do I need for an investment property?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>Most US lenders require <strong>20% to 25% down</strong> for investment properties — higher than the 3–5% available for primary residences. Key points:</p>
+            <ul class="faq-list-inner">
+              <li>20% down = standard conventional loan, best rates</li>
+              <li>25% down = often required for 2–4 unit properties</li>
+              <li>Less than 20% = possible via portfolio loans or DSCR loans, but at higher rates</li>
+            </ul>
+            <p style="margin-top:10px">A larger down payment improves cash flow but reduces your cash-on-cash return by deploying more capital. Use the Down Payment slider to find your optimal balance.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-header" onclick="toggleFaq(this)" aria-expanded="false">
+            <span class="faq-q">What are the biggest mistakes new real estate investors make?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>The most common and costly mistakes are:</p>
+            <ul class="faq-list-inner">
+              <li><strong>Overestimating rent</strong> — always verify with current comparable listings, not wishful thinking</li>
+              <li><strong>Underestimating expenses</strong> — vacancy, maintenance, and capex surprises kill deals</li>
+              <li><strong>Ignoring total return</strong> — focusing only on monthly cash flow misses 60–70% of what makes real estate profitable</li>
+              <li><strong>Buying on emotion</strong> — a beautiful property in a weak rental market is still a weak deal</li>
+              <li><strong>Skipping due diligence</strong> — always inspect, verify rent rolls, and review local tax rates before closing</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="f-brand">ToolKit<span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pro</span></div>
+  <p class="f-disc">This tool provides estimates for educational and planning purposes only. Actual returns may differ. Consult a qualified financial advisor before making investment decisions.</p>
+  <div class="f-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Disclaimer</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="f-copy">© 2026 ToolKit Pro · All calculations are estimates only · Not financial advice</div>
+</footer>
+
+
+
+
+<!-- ════════════════ TOOLKIT PRO MODALS ════════════════ -->
+<!-- Help Modal -->
+<div class="modal-overlay" id="modal-help">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title">👋 Get Expert Investment Help</span>
+      <button class="modal-x" onclick="closeModal('help')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="modal-plan">
+        <strong>Free 30-minute consultation</strong> with a certified investment analyst. We’ll review your rental property numbers and identify opportunities to improve returns.<br><br>
+        📅 Available Mon–Fri · 9am–6pm EST · Video or Phone
+      </div>
+      <div id="help-form">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="m-name" placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="m-email" placeholder="jane@email.com">
+        </div>
+        <div class="form-group">
+          <label>Message (optional)</label>
+          <textarea id="m-msg" placeholder="Describe your investment situation…" style="height:80px"></textarea>
+        </div>
+        <button class="btn btn-grad" style="width:100%;justify-content:center;margin-top:6px" onclick="submitHelp()">Request Consultation →</button>
+      </div>
+      <div class="modal-success" id="help-success">
+        <div class="modal-success-icon">✅</div>
+        <p style="font-weight:600;color:var(--text);margin-bottom:6px">You’re all set!</p>
+        <p style="font-size:13px;color:var(--muted)">We’ll reach out within 24 hours to confirm your appointment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="modal-auth">
+  <div class="modal">
+    <div class="modal-hd">
+      <span class="modal-title">👤 Sign In to ToolKit Pro</span>
+      <button class="modal-x" onclick="closeModal('auth')">✕</button>
+    </div>
+    <div class="modal-bd">
+      <div class="auth-tab-row">
+        <button class="auth-tab active" id="auth-tab-in" onclick="switchAuthTab('in')">Sign In</button>
+        <button class="auth-tab" id="auth-tab-up" onclick="switchAuthTab('up')">Create Account</button>
+      </div>
+      <div id="auth-form-in">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="auth-email-in" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-pass-in" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;height:42px;font-size:14px" onclick="doSignIn()">Sign In →</button>
+        <p id="auth-err-in" style="font-size:12px;color:var(--red);margin-top:8px;display:none"></p>
+      </div>
+      <div id="auth-form-up" style="display:none">
+        <div class="form-group">
+          <label>Display Name</label>
+          <input type="text" id="auth-name-up" placeholder="Your Name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="auth-email-up" placeholder="you@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-pass-up" placeholder="At least 6 characters">
+        </div>
+        <button class="btn btn-grad" style="width:100%;justify-content:center;margin-top:8px;height:42px;font-size:14px" onclick="doSignUp()">Create Account →</button>
+        <p id="auth-err-up" style="font-size:12px;color:var(--red);margin-top:8px;display:none"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/rental.js"></script>
+
+</body>
+</html>

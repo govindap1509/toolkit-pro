@@ -2,7 +2,8 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/tax",   "destination": "/tax.html"   },
-    { "source": "/solar", "destination": "/solar.html" }
+    { "source": "/tax",    "destination": "/tax.html"    },
+    { "source": "/solar",  "destination": "/solar.html"  },
+    { "source": "/rental", "destination": "/rental.html" }
   ]
 }
